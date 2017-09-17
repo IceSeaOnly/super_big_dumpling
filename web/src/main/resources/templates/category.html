@@ -1,0 +1,122 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
+    <h1><a href="">父类目</a>/<a href="">子类目</a></h1>
+</div>
+<!--End-breadcrumbs-->
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid" id="id_add_form"  hidden="hidden">
+        <div class="span6">
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon" onclick="$('#id_add_form').fadeToggle()"> <i class="icon-align-justify"></i> </span>
+                    <h5>增加类目</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form action="#" method="get" class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label">类目名:</label>
+                            <div class="controls">
+                                <input type="text" class="span11" placeholder="First name" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">类目图:</label>
+                            <div class="controls">
+                                <input type="file" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">状态:</label>
+                            <div class="controls">
+                                <label>
+                                    <input type="radio" name="radios" />
+                                    上线</label>
+                                <label>
+                                    <input type="radio" name="radios" />
+                                    下线</label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">类目介绍:</label>
+                            <div class="controls">
+                                <textarea class="span11" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon" onclick="$('#id_add_form').fadeIn()"> <i class="icon-th"></i> </span>
+                    <h5><- 添加按钮</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th width="5%">Id</th>
+                            <th width="20%">类目名</th>
+                            <th width="10%">创建人</th>
+                            <th width="15%">创建时间</th>
+                            <th width="15%">最后更新</th>
+                            <th width="10%">状态</th>
+                            <th width="25%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>类目1</td>
+                            <td>冰海</td>
+                            <td>2017-9-17 22:58:00</td>
+                            <td>2017-9-17 22:58:00</td>
+                            <td><span class="label label-success">上线</td>
+                            <td>
+                                <button class="btn btn-mini btn-success">操作</button>
+                                <button class="btn btn-mini btn-info">操作</button>
+                                <button class="btn btn-mini btn-warning">操作</button>
+                                <button class="btn btn-mini btn-danger">操作</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>类目1</td>
+                            <td>冰海</td>
+                            <td>2017-9-17 22:58:00</td>
+                            <td>2017-9-17 22:58:00</td>
+                            <td><span class="label label-inverse">下线</td>
+                            <td>
+                                <button class="btn btn-mini btn-success">操作</button>
+                                <button class="btn btn-mini btn-info">操作</button>
+                                <button class="btn btn-mini btn-warning">操作</button>
+                                <button class="btn btn-mini btn-danger">操作</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>类目1</td>
+                            <td>冰海</td>
+                            <td>2017-9-17 22:58:00</td>
+                            <td>2017-9-17 22:58:00</td>
+                            <td><span class="label label-danger">删除</td>
+                            <td>
+                                <button class="btn btn-mini btn-success">操作</button>
+                                <button class="btn btn-mini btn-info">操作</button>
+                                <button class="btn btn-mini btn-warning">操作</button>
+                                <button class="btn btn-mini btn-danger">操作</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

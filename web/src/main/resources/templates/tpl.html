@@ -53,8 +53,8 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表板</a>
     <ul>
-        <li class="active"><a href="index.html"><i class="icon icon-home"></i> <span>仪表板</span></a> </li>
-        <li> <a href="charts.html"><i class="icon icon-signal"></i> <span>Charts &amp; graphs</span></a> </li>
+        <li th:class="${tpl_page == 'index' ? 'active':''}"><a href="/admin/"><i class="icon icon-home"></i> <span>仪表板</span></a> </li>
+        <li th:class="${tpl_page == 'category' ? 'active':''}"> <a href="/admin/category"><i class="icon icon-signal"></i> <span>类目管理</span></a> </li>
         <li> <a href="widgets.html"><i class="icon icon-inbox"></i> <span>Widgets</span></a> </li>
         <li><a href="tables.html"><i class="icon icon-th"></i> <span>Tables</span></a></li>
         <li><a href="grid.html"><i class="icon icon-fullscreen"></i> <span>Full width</span></a></li>
@@ -92,12 +92,6 @@
 
 <!--main-container-part-->
 <div id="content">
-    <!--breadcrumbs-->
-    <div id="content-header">
-        <div id="breadcrumb"> <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
-    </div>
-    <!--End-breadcrumbs-->
-
     <div th:include="${tpl_page}"></div>
 </div>
 

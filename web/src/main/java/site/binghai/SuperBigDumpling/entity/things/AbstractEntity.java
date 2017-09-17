@@ -14,4 +14,5 @@ public class AbstractEntity {
     private boolean isDeleted = false;
     private boolean available = true;
     private int userId;
+    private String owner;
 }

@@ -21,7 +21,6 @@ public class Category extends AbstractEntity {
     @OneToOne
     private Category fatherCategory; // 父类目
     private String cname;
-
     public boolean isSuperCategory(){
         return fatherCategory == null;
     }
