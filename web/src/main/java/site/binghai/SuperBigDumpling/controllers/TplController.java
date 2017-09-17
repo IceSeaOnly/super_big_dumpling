@@ -1,6 +1,7 @@
 package site.binghai.SuperBigDumpling.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -10,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class TplController {
+
     @RequestMapping("tpl")
-    public String tpl(){
+    public String tpl(Model map){
         return "tpl";
     }
 }
