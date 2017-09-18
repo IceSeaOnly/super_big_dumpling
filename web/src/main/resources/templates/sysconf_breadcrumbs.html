@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<script>
+    function delRec(id) {
+        ifConfirmThenRedirect("确认删除此记录",'/admin/sysconfig/delBreadcrumbs?id='+id);
+    }
+</script>
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"><a class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
+    <h1><a href="">面包屑金句</a></h1>
+</div>
+<!--End-breadcrumbs-->
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid" id="id_add_form" hidden="hidden">
+        <div class="span6">
+            <div class="widget-box">
+                <div class="widget-title"><span class="icon" onclick="$('#id_add_form').fadeToggle()"> <i
+                        class="icon-align-justify"></i> </span>
+                    <h5>增加面包屑金句</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form action="/admin/sysconfig/addBreadcrumbs" method="post" class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label">内容:</label>
+                            <div class="controls">
+                                <textarea class="span11" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title"><span class="icon" onclick="$('#id_add_form').fadeIn()"> <i
+                        class="icon-th"></i> </span>
+                    <h5><- 添加按钮</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th width="5%">Id</th>
+                            <th width="45%">内容</th>
+                            <th width="10%">创建人</th>
+                            <th width="15%">创建时间</th>
+                            <th width="25%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="rec:${records}">
+                            <td th:text="${rec.id}">1</td>
+                            <td th:text="${rec.content}">哈哈哈</td>
+                            <td th:text="${rec.owner}">冰海</td>
+                            <td th:text="${rec.created}">2017-9-17 22:58:00</td>
+                            <td>
+                                <button class="btn btn-mini btn-success" th:onclick="'delRec('+${rec.id}+')'">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

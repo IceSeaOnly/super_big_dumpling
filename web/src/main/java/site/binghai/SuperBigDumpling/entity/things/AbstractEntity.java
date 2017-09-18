@@ -1,6 +1,9 @@
 package site.binghai.SuperBigDumpling.entity.things;
 
+import lombok.Data;
+
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 /**
  * Created by binghai on 2017/9/15.
@@ -8,11 +11,12 @@ import javax.persistence.MappedSuperclass;
  * @ MoGuJie
  */
 @MappedSuperclass
-public class AbstractEntity {
-    private long created = System.currentTimeMillis();
-    private long updated = System.currentTimeMillis();
-    private boolean isDeleted = false;
-    private boolean available = true;
-    private int userId;
-    private String owner;
+@Data
+public class AbstractEntity implements Serializable{
+    protected long created = System.currentTimeMillis();
+    protected long updated = System.currentTimeMillis();
+    protected boolean isDeleted = false;
+    protected boolean available = true;
+    protected int userId;
+    protected String owner;
 }
