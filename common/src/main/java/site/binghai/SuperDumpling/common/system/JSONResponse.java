@@ -1,4 +1,4 @@
-package site.binghai.SuperDumpling.system;
+package site.binghai.SuperDumpling.common.system;
 
 import lombok.Data;
 

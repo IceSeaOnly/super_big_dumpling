@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.binghai.SuperDumpling.common.definations.DeleteAble;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
@@ -20,12 +21,38 @@ public class SimpleDataService{
     @Autowired
     private EntityManager entityManager;
 
-    public <T>T findById(Serializable id,Class<T> clazz){
+    /**
+     * 条件单查询
+     * */
+    public <T>T findByIdWithConditions(Serializable id,Class<T> clazz,boolean available,boolean isDeleted){
         SimpleJpaRepository repo = getSimpleJpaRepository(clazz);
-        return (T) repo.findOne(id);
+        Object obj = repo.findOne(id);
+        if(obj == null){
+            return null;
+        }
+        DeleteAble deleteAble = (DeleteAble) obj;
+        if(available && !deleteAble.accessAble()){
+            return null;
+        }
+        if(isDeleted && deleteAble.hasDelete()){
+            return null;
+        }
+        return (T) deleteAble;
+    }
+
+    public <T>T findById(Serializable id,Class<T> clazz){
+        return findByIdWithConditions(id,clazz,true,false);
     }
 
     public List findAll(Class clazz){
+        SimpleJpaRepository repo = getSimpleJpaRepository(clazz);
+        return repo.findAll((a,b,c)->c.equal(a.get("isDeleted"),false));
+    }
+
+    /**
+     * 查询包括已删除的所有记录
+     * */
+    public List findAllIncludeDeleted(Class clazz){
         SimpleJpaRepository repo = getSimpleJpaRepository(clazz);
         return repo.findAll();
     }
@@ -37,23 +64,20 @@ public class SimpleDataService{
     }
 
     @Transactional
-    public void delete(Object obj){
-        SimpleJpaRepository repo = getSimpleJpaRepository(obj.getClass());
-        repo.delete(obj);
-    }
-
-    @Transactional
     public void deleteById(Serializable id,Class cz){
         SimpleJpaRepository repo = getSimpleJpaRepository(cz);
-        repo.delete(id);
+        DeleteAble obj = (DeleteAble) repo.findOne(id);
+        obj.delete();
+        obj.unAvailable();
+        repo.flush();
     }
 
     private <T> SimpleJpaRepository getSimpleJpaRepository(Class<T> clazz) {
         SimpleJpaRepository repo = cache.get(clazz);
-        if(repo == null){
-            repo = getRepository(clazz);
+        if(repo != null){
+            return repo;
         }
-        return repo;
+        return getRepository(clazz);
     }
 
     private SimpleJpaRepository getRepository(Class T){
