@@ -39,6 +39,15 @@
     function redirectPageTo(url) {
         window.location.href = url;
     }
+
+    /**
+     * 加载面包屑金句
+     * */
+    function loadGoldBreadcrumb() {
+        $.get("/openApi/goldBreadcrumb",function (data, status) {
+            $("#breadcrumb").html('<a class=\"tip-bottom\"><i class=\"icon-home\"></i>' +data+'</a>');
+        })
+    }
 </script>
 <body>
 
@@ -175,6 +184,8 @@
     function resetMenu() {
         document.gomenu.selector.selectedIndex = 2;
     }
+
+    loadGoldBreadcrumb();
 </script>
 </body>
 </html>

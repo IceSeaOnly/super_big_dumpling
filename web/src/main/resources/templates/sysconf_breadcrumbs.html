@@ -6,7 +6,7 @@
 </script>
 <!--breadcrumbs-->
 <div id="content-header">
-    <div id="breadcrumb"><a class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
+    <div id="breadcrumb"></div>
     <h1><a href="">面包屑金句</a></h1>
 </div>
 <!--End-breadcrumbs-->
@@ -58,9 +58,9 @@
                             <td th:text="${rec.id}">1</td>
                             <td th:text="${rec.content}">哈哈哈</td>
                             <td th:text="${rec.owner}">冰海</td>
-                            <td th:text="${rec.created}">2017-9-17 22:58:00</td>
+                            <td th:text="${#dates.format(rec.created,'yyyy-MM-dd HH:mm:ss')}">2017-9-17 22:58:00</td>
                             <td>
-                                <button class="btn btn-mini btn-success" th:onclick="'delRec('+${rec.id}+')'">删除</button>
+                                <button class="btn btn-mini btn-danger" th:onclick="'delRec('+${rec.id}+')'">删除</button>
                             </td>
                         </tr>
                         </tbody>
