@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 
@@ -22,5 +23,10 @@ public class CategoryController {
     public String category(Model model){
         model.addAttribute("cts",service.findAll(Category.class));
         return "category";
+    }
+
+    @RequestMapping("getCategory")
+    public Object getCategory(@RequestParam int categoryId){
+        return service.findById(categoryId,Category.class);
     }
 }

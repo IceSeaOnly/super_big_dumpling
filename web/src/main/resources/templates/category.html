@@ -4,6 +4,20 @@
     <h1><a href="">父类目</a>/<a href="">子类目</a></h1>
 </div>
 <!--End-breadcrumbs-->
+<div class="container-fluid" id="introduce_text_div">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon"> <i class="icon-list"></i> </span>
+                    <h5>类目介绍</h5>
+                </div>
+                <div class="widget-content" div="introduce_text_area">类目介绍文本</div>
+            </div>
+        </div>
+    </div>
+    </hr>
+</div>
 <div class="container-fluid">
     <hr>
     <div class="row-fluid" id="id_add_form"  hidden="hidden">
@@ -77,40 +91,12 @@
                             <td>冰海</td>
                             <td>2017-9-17 22:58:00</td>
                             <td>2017-9-17 22:58:00</td>
-                            <td><span class="label label-success">上线</td>
+                            <td><span class="label label-success">上线</span></td>
                             <td>
-                                <button class="btn btn-mini btn-success">查看子类目</button>
-                                <button class="btn btn-mini btn-info">查看类目介绍</button>
-                                <button class="btn btn-mini btn-warning">查看类目图片/button>
-                                <button class="btn btn-mini btn-danger">删除此类目</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>类目1</td>
-                            <td>冰海</td>
-                            <td>2017-9-17 22:58:00</td>
-                            <td>2017-9-17 22:58:00</td>
-                            <td><span class="label label-inverse">下线</td>
-                            <td>
-                                <button class="btn btn-mini btn-success">操作</button>
-                                <button class="btn btn-mini btn-info">操作</button>
-                                <button class="btn btn-mini btn-warning">操作</button>
-                                <button class="btn btn-mini btn-danger">操作</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>类目1</td>
-                            <td>冰海</td>
-                            <td>2017-9-17 22:58:00</td>
-                            <td>2017-9-17 22:58:00</td>
-                            <td><span class="label label-danger">删除</td>
-                            <td>
-                                <button class="btn btn-mini btn-success">操作</button>
-                                <button class="btn btn-mini btn-info">操作</button>
-                                <button class="btn btn-mini btn-warning">操作</button>
-                                <button class="btn btn-mini btn-danger">操作</button>
+                                <button class="btn btn-mini btn-success">子类目</button>
+                                <button class="btn btn-mini btn-info">介绍</button>
+                                <button class="btn btn-mini btn-warning">封面</button>
+                                <button class="btn btn-mini btn-danger">删除</button>
                             </td>
                         </tr>
                         </tbody>
@@ -120,3 +106,8 @@
         </div>
     </div>
 </div>
+<script>
+    function openIntroduceByCategoryId(cid) {
+        $.get("/admin/getCategory?categoryId")
+    }
+</script>
