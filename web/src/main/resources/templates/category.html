@@ -1,64 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org">
 <!--breadcrumbs-->
 <div id="content-header">
-    <div id="breadcrumb"> <a class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
-    <h1><a href="">父类目</a>/<a href="">子类目</a></h1>
+    <div id="breadcrumb"><a class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
+    <h1><a href="/admin/category">父类目</a>/<a th:if="${currentCategory != null}" href="" th:text="${currentCategory.cname}">子类目</a></h1>
 </div>
 <!--End-breadcrumbs-->
-<div class="container-fluid" id="introduce_text_div">
-    <hr>
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="widget-box">
-                <div class="widget-title"> <span class="icon"> <i class="icon-list"></i> </span>
-                    <h5>类目介绍</h5>
-                </div>
-                <div class="widget-content" div="introduce_text_area">类目介绍文本</div>
-            </div>
-        </div>
-    </div>
-    </hr>
-</div>
 <div class="container-fluid">
     <hr>
-    <div class="row-fluid" id="id_add_form"  hidden="hidden">
+    <div class="row-fluid" id="id_add_form" hidden="hidden">
         <div class="span6">
             <div class="widget-box">
-                <div class="widget-title"> <span class="icon" onclick="$('#id_add_form').fadeToggle()"> <i class="icon-align-justify"></i> </span>
+                <div class="widget-title"><span class="icon" onclick="$('#id_add_form').fadeToggle()"> <i
+                        class="icon-align-justify"></i> </span>
                     <h5>增加类目</h5>
                 </div>
                 <div class="widget-content nopadding">
-                    <form action="#" method="get" class="form-horizontal">
+                    <form action="/admin/addCategory" method="post" class="form-horizontal">
                         <div class="control-group">
                             <label class="control-label">类目名:</label>
                             <div class="controls">
-                                <input type="text" class="span11" placeholder="First name" />
+                                <input type="text" class="span11" name="cname"/>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">类目图:</label>
+                            <label class="control-label">类目图链接:</label>
                             <div class="controls">
-                                <input type="file" />
+                                <input type="text" class="span11" name="imgUrl" placeholder="点击下方按钮打开图片传送门"/>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">状态:</label>
                             <div class="controls">
                                 <label>
-                                    <input type="radio" name="radios" />
+                                    <input type="radio" name="available" value="true"/>
                                     上线</label>
                                 <label>
-                                    <input type="radio" name="radios" />
+                                    <input type="radio" name="available" value="false"/>
                                     下线</label>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">类目介绍:</label>
                             <div class="controls">
-                                <textarea class="span11" ></textarea>
+                                <textarea class="span11" name="categoryDesc"></textarea>
                             </div>
+                        </div>
+                        <div th:if="${currentCategory != null}">
+                            <input type="hidden" name="fatherCategory" th:value="${currentCategory.id}"/>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success">保存</button>
+                            <button class="btn btn-info" type="button" onclick="uploadImg()">打开上传页面</button>
                         </div>
                     </form>
                 </div>
@@ -68,7 +60,8 @@
     <div class="row-fluid">
         <div class="span12">
             <div class="widget-box">
-                <div class="widget-title"> <span class="icon" onclick="$('#id_add_form').fadeIn()"> <i class="icon-th"></i> </span>
+                <div class="widget-title"><span class="icon" onclick="$('#id_add_form').fadeIn()"> <i
+                        class="icon-th"></i> </span>
                     <h5><- 添加按钮</h5>
                 </div>
                 <div class="widget-content nopadding">
@@ -85,17 +78,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>类目1</td>
-                            <td>冰海</td>
-                            <td>2017-9-17 22:58:00</td>
-                            <td>2017-9-17 22:58:00</td>
-                            <td><span class="label label-success">上线</span></td>
+                        <tr th:each="ctg:${categorys}">
+                            <td th:text="${ctg.id}">1</td>
+                            <td th:text="${ctg.cname}">类目1</td>
+                            <td th:text="${ctg.owner}">冰海</td>
+                            <td th:text="${#dates.format(ctg.created,'yyyy-MM-dd')}">2017-9-17 22:58:00</td>
+                            <td th:text="${#dates.format(ctg.updated,'yyyy-MM-dd')}">2017-9-17 22:58:00</td>
+                            <td><span th:class="'label label-'+${ctg.available?'success':'danger'}" th:text="${ctg.available?'上线':'下线'}">上线</span></td>
                             <td>
-                                <button class="btn btn-mini btn-success">子类目</button>
-                                <button class="btn btn-mini btn-info">介绍</button>
-                                <button class="btn btn-mini btn-warning">封面</button>
+                                <button class="btn btn-mini btn-success" th:onclick="'childCategory('+${ctg.id}+')'">子类目</button>
+                                <button class="btn btn-mini btn-info" th:onclick="'showCategoryInfo('+${ctg.id}+')'">介绍
+                                </button>
+                                <button class="btn btn-mini btn-warning" th:onclick="'showFaceImg('+${ctg.id}+')'">封面</button>
                                 <button class="btn btn-mini btn-danger">删除</button>
                             </td>
                         </tr>
@@ -107,7 +101,19 @@
     </div>
 </div>
 <script>
-    function openIntroduceByCategoryId(cid) {
-        $.get("/admin/getCategory?categoryId")
+
+    function showCategoryInfo(cid) {
+        $.getJSON("/admin/entityGate/categories/"+cid, "", function (data, status) {
+            info('类目信息',data['categoryDesc'])
+        });
+    }
+    function showFaceImg(cid) {
+        $.getJSON("/admin/entityGate/categories/"+cid, "", function (data, status) {
+            showImg(data['imgUrl'])
+        });
+    }
+    function childCategory(cid) {
+        redirectPageTo("?childCategory="+cid)
     }
 </script>
+</html>

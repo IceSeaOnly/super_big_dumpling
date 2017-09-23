@@ -53,6 +53,43 @@
             $("#breadcrumb").html('<a class=\"tip-bottom\"><i class=\"icon-home\"></i>' +data+'</a>');
         })
     }
+
+    function info(title,content) {
+        swal(
+            title,
+            content,
+            'info'
+        )
+    }
+
+    function innerWeb(_title,url) {
+        swal({
+            title:_title,
+            html: '<div width="100%"><iframe src="'+url+'" width="100%" height="400"></iframe> </div>',
+            showCloseButton: true,
+            width: 500,
+            padding: 10,
+            showCancelButton: false,
+            showConfirmButton: false,
+            cancelButtonText:'关闭'
+        });
+    }
+
+    function uploadImg(){
+        innerWeb("请上传图片并复制url","http://image.binghai.site/")
+    }
+
+    function showImg(imgUrl) {
+        swal({
+            html: '<div width="100%"><img src="'+imgUrl+'" width="100%"/></div>',
+            showCloseButton: true,
+            width: 500,
+            padding: 10,
+            showCancelButton: false,
+            showConfirmButton: false,
+            cancelButtonText:'关闭'
+        });
+    }
 </script>
 <body>
 
