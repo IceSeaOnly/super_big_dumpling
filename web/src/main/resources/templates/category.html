@@ -80,17 +80,17 @@
                         <tbody>
                         <tr th:each="ctg:${categorys}">
                             <td th:text="${ctg.id}">1</td>
-                            <td th:text="${ctg.cname}">类目1</td>
+                            <td th:if="${currentCategory != null}" th:text="${ctg.cname}">类目1</td>
+                            <td th:if="${currentCategory == null}" th:text="${ctg.cname}" th:onclick="'childCategory('+${ctg.id}+')'">类目1</td>
                             <td th:text="${ctg.owner}">冰海</td>
                             <td th:text="${#dates.format(ctg.created,'yyyy-MM-dd')}">2017-9-17 22:58:00</td>
                             <td th:text="${#dates.format(ctg.updated,'yyyy-MM-dd')}">2017-9-17 22:58:00</td>
                             <td><span th:class="'label label-'+${ctg.available?'success':'danger'}" th:text="${ctg.available?'上线':'下线'}">上线</span></td>
                             <td>
-                                <button class="btn btn-mini btn-success" th:onclick="'childCategory('+${ctg.id}+')'">子类目</button>
-                                <button class="btn btn-mini btn-info" th:onclick="'showCategoryInfo('+${ctg.id}+')'">介绍
-                                </button>
+                                <button th:if="${currentCategory == null}" class="btn btn-mini btn-success" th:onclick="'childCategory('+${ctg.id}+')'">子类目</button>
+                                <button class="btn btn-mini btn-info" th:onclick="'showCategoryInfo('+${ctg.id}+')'">介绍</button>
                                 <button class="btn btn-mini btn-warning" th:onclick="'showFaceImg('+${ctg.id}+')'">封面</button>
-                                <button class="btn btn-mini btn-danger">删除</button>
+                                <button class="btn btn-mini btn-danger" th:onclick="'deleteCategory('+${ctg.id}+')'">删除</button>
                             </td>
                         </tr>
                         </tbody>
@@ -101,6 +101,10 @@
     </div>
 </div>
 <script>
+
+    function deleteCategory(cid) {
+        ifConfirmThenAjax("确认删除操作","/admin/deleteCategory?categoryId="+cid)
+    }
 
     function showCategoryInfo(cid) {
         $.getJSON("/admin/entityGate/categories/"+cid, "", function (data, status) {

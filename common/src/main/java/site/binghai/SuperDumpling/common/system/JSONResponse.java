@@ -9,7 +9,21 @@ import lombok.Data;
  */
 @Data
 public class JSONResponse {
-    private String code = "success";
+    private Boolean result;
     private Object data;
     private String msg;
+
+    private JSONResponse(Boolean result, Object data, String msg) {
+        this.result = result;
+        this.data = data;
+        this.msg = msg;
+    }
+
+    public static JSONResponse errorResp(ErrorList error,String extraMsg,Object data){
+        return new JSONResponse(Boolean.FALSE,data,error.getErrorMsg()+";"+extraMsg);
+    }
+
+    public static JSONResponse successResp(String msg,Object data){
+        return new JSONResponse(Boolean.TRUE,data,msg);
+    }
 }

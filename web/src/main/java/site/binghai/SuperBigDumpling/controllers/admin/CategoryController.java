@@ -5,11 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.service.CategoryService;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
+import site.binghai.SuperDumpling.common.system.ErrorList;
+import site.binghai.SuperDumpling.common.system.JSONResponse;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -37,8 +40,7 @@ public class CategoryController {
         // 查看子类目
         Category category = service.findById(childCategory, Category.class);
         if (category == null) {
-            model.addAttribute("currentCategory", "参数错误");
-            return "category";
+            return "error";
         }
         model.addAttribute("currentCategory", category);
         model.addAttribute("categorys", categoryService.findByFatherCategory(category));
@@ -58,5 +60,22 @@ public class CategoryController {
             return "redirect:category";
         }
         return "redirect:category?childCategory=" + category.getFatherCategory().getId();
+    }
+
+    @RequestMapping("deleteCategory")
+    @ResponseBody
+    public Object deleteCategory(@RequestParam int categoryId){
+        Category category = service.findById(categoryId,Category.class);
+        if(null == category){
+            return JSONResponse.errorResp(ErrorList.INVALID_PARAMETER,"",null);
+        }
+
+        if(category.isSuperCategory() && categoryService.findByFatherCategory(category).size() > 0){
+            return JSONResponse.errorResp(ErrorList.NON_EMPTY_SUPER_CATEGORY,"",null);
+        }
+
+        service.deleteById(categoryId,Category.class);
+
+        return JSONResponse.successResp("删除成功",null);
     }
 }

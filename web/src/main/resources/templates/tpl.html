@@ -19,6 +19,35 @@
     <link rel="stylesheet" href="/css/select2.css" />
 </head>
 <script>
+    function ifConfirmThenAjax(content,requestUrl) {
+        swal({
+            title: '确认警告',
+            text: content,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: "取消",
+            showLoaderOnConfirm: true,
+            preConfirm: function() {
+                return new Promise(function(resolve) {
+                    $.getJSON(requestUrl,"",function (data, status) {
+                        resolve(data);
+                    });
+                });
+            }
+        }).then(function(queryResult) {
+            console.log(queryResult);
+            if(queryResult['result']){
+                success("操作完成",queryResult['msg'],true);
+            }else{
+                error("操作失败",queryResult['msg'],true);
+            }
+        });
+    }
+
+
     function ifConfirmThenRedirect(content,jumpUrl) {
         swal({
             title: '确认警告',
@@ -62,6 +91,29 @@
         )
     }
 
+    function success(title,content,needReload) {
+        swal(
+            title,
+            content,
+            'success'
+        ).then(function () {
+            if(needReload){
+                setTimeout(reload,300);
+            }
+        });
+    }
+
+    function error(title,content,needReload) {
+        swal(
+            title,
+            content,
+            'error'
+        ).then(function () {
+            if(needReload){
+                setTimeout(reload,300);
+            }
+        });
+    }
     function innerWeb(_title,url) {
         swal({
             title:_title,
@@ -89,6 +141,10 @@
             showConfirmButton: false,
             cancelButtonText:'关闭'
         });
+    }
+    
+    function reload() {
+        window.location.reload();
     }
 </script>
 <body>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.binghai.SuperBigDumpling.dao.CategoryDao;
 import site.binghai.SuperBigDumpling.entity.things.Category;
+import site.binghai.SuperBigDumpling.utils.BeansUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +20,8 @@ public class CategoryService {
 
     public List<Category> findByFatherCategory(Category category){
         List<Category> rs = dao.findByFatherCategory(category);
-        return rs == null ? Collections.EMPTY_LIST : rs;
+        return rs == null ?
+                Collections.EMPTY_LIST :
+                BeansUtils.deleteAableFileter(rs,false,true);
     }
 }
