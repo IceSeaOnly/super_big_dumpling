@@ -2,24 +2,52 @@
 <html lang="en">
 <head>
     <title>Matrix Admin</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="/css/bootstrap-wysihtml5.css" />
     <link rel="stylesheet" href="/css/matrix-style.css" />
     <link rel="stylesheet" href="/css/matrix-media.css" />
-    <link rel="stylesheet" href="/css/fullcalendar.css" />
-    <link rel="stylesheet" href="/css/sweetalert2.min.css" />
-    <link rel="stylesheet" href="/font-awesome/css/font-awesome.css"/>
-    <link rel="stylesheet" href="/css/jquery.gritter.css" />
-    <link rel="stylesheet" href="/css/colorpicker.css" />
-    <link rel="stylesheet" href="/css/datepicker.css" />
-    <link rel="stylesheet" href="/css/uniform.css" />
-    <link rel="stylesheet" href="/css/select2.css" />
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.css" />
 </head>
 <script>
-    function ifConfirmThenAjax(content,requestUrl) {
+    var cssBlackList = new Array();
+    var jsBlackList = new Array();
+
+    function addCssBlackList(name) {
+        cssBlackList.push(name);
+    }
+
+    function addJsBlackList(name) {
+        jsBlackList.push(name);
+    }
+
+    function dynaLoadJs(path) {
+        var shortName = path.substr(path.lastIndexOf("/") + 1);
+        if ($.inArray(shortName, jsBlackList) != -1) {
+            console.log(shortName + ' is in black list');
+            return;
+        }
+
+        jQuery.getScript(path, function(data, status, jqxhr) {});
+    }
+
+    function dynaLoadCss(path) {
+        var shortName = path.substr(path.lastIndexOf("/") + 1);
+        if ($.inArray(shortName, cssBlackList) != -1) {
+            console.log(shortName + ' is in black list');
+            return;
+        }
+
+        $("head").append("<link>");
+        css = $("head").children(":last");
+        css.attr({
+            rel: "stylesheet",
+            type: "text/css",
+            href: path
+        });
+    }
+    function ifConfirmThenAjax(content, requestUrl) {
         swal({
             title: '确认警告',
             text: content,
@@ -30,25 +58,25 @@
             confirmButtonText: '确认',
             cancelButtonText: "取消",
             showLoaderOnConfirm: true,
-            preConfirm: function() {
-                return new Promise(function(resolve) {
-                    $.getJSON(requestUrl,"",function (data, status) {
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.getJSON(requestUrl, "", function (data, status) {
                         resolve(data);
                     });
                 });
             }
-        }).then(function(queryResult) {
+        }).then(function (queryResult) {
             console.log(queryResult);
-            if(queryResult['result']){
-                success("操作完成",queryResult['msg'],true);
-            }else{
-                error("操作失败",queryResult['msg'],true);
+            if (queryResult['result']) {
+                success("操作完成", queryResult['msg'], true);
+            } else {
+                error("操作失败", queryResult['msg'], true);
             }
         });
     }
 
 
-    function ifConfirmThenRedirect(content,jumpUrl) {
+    function ifConfirmThenRedirect(content, jumpUrl) {
         swal({
             title: '确认警告',
             text: content,
@@ -58,14 +86,14 @@
             cancelButtonColor: '#d33',
             confirmButtonText: '确认',
             cancelButtonText: "取消"
-        }).then(function(isConfirm) {
+        }).then(function (isConfirm) {
             if (isConfirm) {
                 swal(
                     '完成',
                     '操作已完成',
                     'success'
                 );
-                setTimeout(redirectPageTo,500,jumpUrl);
+                setTimeout(redirectPageTo, 500, jumpUrl);
             }
         });
     }
@@ -78,12 +106,12 @@
      * 加载面包屑金句
      * */
     function loadGoldBreadcrumb() {
-        $.get("/openApi/goldBreadcrumb",function (data, status) {
-            $("#breadcrumb").html('<a class=\"tip-bottom\"><i class=\"icon-home\"></i>' +data+'</a>');
+        $.get("/openApi/goldBreadcrumb", function (data, status) {
+            $("#breadcrumb").html('<a class=\"tip-bottom\"><i class=\"icon-home\"></i>' + data + '</a>');
         })
     }
 
-    function info(title,content) {
+    function info(title, content) {
         swal(
             title,
             content,
@@ -91,58 +119,58 @@
         )
     }
 
-    function success(title,content,needReload) {
+    function success(title, content, needReload) {
         swal(
             title,
             content,
             'success'
         ).then(function () {
-            if(needReload){
-                setTimeout(reload,300);
+            if (needReload) {
+                setTimeout(reload, 300);
             }
         });
     }
 
-    function error(title,content,needReload) {
+    function error(title, content, needReload) {
         swal(
             title,
             content,
             'error'
         ).then(function () {
-            if(needReload){
-                setTimeout(reload,300);
+            if (needReload) {
+                setTimeout(reload, 300);
             }
         });
     }
-    function innerWeb(_title,url) {
+    function innerWeb(_title, url) {
         swal({
-            title:_title,
-            html: '<div width="100%"><iframe src="'+url+'" width="100%" height="400"></iframe> </div>',
+            title: _title,
+            html: '<div width="100%"><iframe src="' + url + '" width="100%" height="400"></iframe> </div>',
             showCloseButton: true,
             width: 500,
             padding: 10,
             showCancelButton: false,
             showConfirmButton: false,
-            cancelButtonText:'关闭'
+            cancelButtonText: '关闭'
         });
     }
 
-    function uploadImg(){
-        innerWeb("请上传图片并复制url","http://image.binghai.site/")
+    function uploadImg() {
+        innerWeb("请上传图片并复制url", "http://image.binghai.site/")
     }
 
     function showImg(imgUrl) {
         swal({
-            html: '<div width="100%"><img src="'+imgUrl+'" width="100%"/></div>',
+            html: '<div width="100%"><img src="' + imgUrl + '" width="100%"/></div>',
             showCloseButton: true,
             width: 500,
             padding: 10,
             showCancelButton: false,
             showConfirmButton: false,
-            cancelButtonText:'关闭'
+            cancelButtonText: '关闭'
         });
     }
-    
+
     function reload() {
         window.location.reload();
     }
@@ -159,7 +187,9 @@
 <!--顶部管理菜单-->
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
-        <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎!冰海</span><b class="caret"></b></a>
+        <li class="dropdown" id="profile-messages"><a title="" href="#" data-toggle="dropdown"
+                                                      data-target="#profile-messages" class="dropdown-toggle"><i
+                class="icon icon-user"></i> <span class="text">欢迎!冰海</span><b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="#"><i class="icon-user"></i> 我的主页</a></li>
                 <li class="divider"></li>
@@ -168,7 +198,9 @@
                 <li><a href="login.html"><i class="icon-key"></i> 登出</a></li>
             </ul>
         </li>
-        <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
+        <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages"
+                                                   class="dropdown-toggle"><i class="icon icon-envelope"></i> <span
+                class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a class="sAdd" title="" href="#"><i class="icon-plus"></i> 新建信息</a></li>
                 <li class="divider"></li>
@@ -180,7 +212,8 @@
             </ul>
         </li>
         <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-        <li class=""><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span class="text">登出</span></a></li>
+        <li class=""><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span class="text">登出</span></a>
+        </li>
     </ul>
 </div>
 <!--close-顶部管理菜单-->
@@ -188,12 +221,16 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表板</a>
     <ul>
-        <li th:class="${tpl_page.startsWith('index')? 'active':''}"><a href="/admin/"><i class="icon icon-home"></i> <span>仪表板</span></a> </li>
-        <li th:class="${tpl_page.startsWith('category') ? 'active':''}"> <a href="/admin/category"><i class="icon icon-signal"></i> <span>类目管理</span></a> </li>
-        <li> <a href="widgets.html"><i class="icon icon-inbox"></i> <span>Widgets</span></a> </li>
+        <li th:class="${tpl_page.startsWith('index')? 'active':''}"><a href="/admin/"><i class="icon icon-home"></i>
+            <span>仪表板</span></a></li>
+        <li th:class="${tpl_page.startsWith('category') ? 'active':''}"><a href="/admin/category/"><i
+                class="icon icon-signal"></i> <span>类目管理</span></a></li>
+        <li th:class="${tpl_page.startsWith('tradeitem') ? 'active':''}"><a href="/admin/tradeItem/"><i
+                class="icon icon-inbox"></i> <span>商品管理</span></a></li>
         <li><a href="tables.html"><i class="icon icon-th"></i> <span>Tables</span></a></li>
         <li><a href="grid.html"><i class="icon icon-fullscreen"></i> <span>Full width</span></a></li>
-        <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Forms</span> <span class="label label-important">3</span></a>
+        <li class="submenu"><a href="#"><i class="icon icon-th-list"></i> <span>Forms</span> <span
+                class="label label-important">3</span></a>
             <ul>
                 <li><a href="form-common.html">Basic Form</a></li>
                 <li><a href="form-validation.html">Form with Validation</a></li>
@@ -202,12 +239,14 @@
         </li>
         <li><a href="buttons.html"><i class="icon icon-tint"></i> <span>Buttons &amp; icons</span></a></li>
         <li><a href="interface.html"><i class="icon icon-pencil"></i> <span>Eelements</span></a></li>
-        <li th:class="'submenu '+${tpl_page.startsWith('sysconf') ? 'active':''}"> <a href="#"><i class="icon icon-cogs"></i> <span>系统设置</span> <span class="label label-important">5</span></a>
+        <li th:class="'submenu '+${tpl_page.startsWith('sysconf') ? 'active':''}"><a href="#"><i
+                class="icon icon-cogs"></i> <span>系统设置</span> <span class="label label-important">5</span></a>
             <ul>
                 <li><a href="/admin/sysconfig/breadcrumbs">面包屑金句</a></li>
             </ul>
         </li>
-        <li class="submenu"> <a href="#"><i class="icon icon-info-sign"></i> <span>Error</span> <span class="label label-important">4</span></a>
+        <li class="submenu"><a href="#"><i class="icon icon-info-sign"></i> <span>Error</span> <span
+                class="label label-important">4</span></a>
             <ul>
                 <li><a href="error403.html">Error 403</a></li>
                 <li><a href="error404.html">Error 404</a></li>
@@ -220,7 +259,6 @@
 <!--sidebar-menu-->
 
 
-
 <!--main-container-part-->
 <div id="content">
     <div th:include="${tpl_page}"></div>
@@ -231,42 +269,55 @@
 <!--Footer-part-->
 
 <div class="row-fluid">
-    <div id="footer" class="span12"> 2013 &copy; Matrix Admin. Brought to you by <a href="http://www.binghai.site">冰海技术</a> </div>
+    <div id="footer" class="span12"> 2013 &copy; Matrix Admin. Brought to you by <a
+            href="http://www.binghai.site">冰海技术</a></div>
 </div>
 
 <!--end-Footer-part-->
 
-<script src="/js/excanvas.min.js"></script>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/sweetalert2.min.js"></script>
 <script src="/js/jquery.ui.custom.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<!--<script src="/js/jquery.flot.min.js"></script>-->
-<!--<script src="/js/jquery.flot.resize.min.js"></script>-->
-<script src="/js/jquery.peity.min.js"></script>
-<script src="/js/fullcalendar.min.js"></script>
 <script src="/js/matrix.js"></script>
 <!--<script src="/js/matrix.dashboard.js"></script>-->
-<script src="/js/jquery.gritter.min.js"></script>
-<script src="/js/matrix.interface.js"></script>
-<script src="/js/matrix.chat.js"></script>
-<script src="/js/jquery.validate.js"></script>
-<script src="/js/matrix.form_validation.js"></script>
-<script src="/js/jquery.wizard.js"></script>
-<script src="/js/jquery.uniform.js"></script>
-<script src="/js/select2.min.js"></script>
-<script src="/js/matrix.popover.js"></script>
-<script src="/js/jquery.dataTables.min.js"></script>
-<script src="/js/matrix.tables.js"></script>
-<script src="/js/bootstrap-colorpicker.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
-<script src="/js/masked.js"></script>
+<!--<script src="/js/jquery.flot.min.js"></script>-->
+<!--<script src="/js/jquery.flot.resize.min.js"></script>-->
 <!--<script src="/js/matrix.form_common.js"></script>-->
-<script src="/js/wysihtml5-0.3.0.js"></script>
-<script src="/js/bootstrap-wysihtml5.js"></script>
 
 <script type="text/javascript">
     loadGoldBreadcrumb();
+</script>
+
+<script>
+    dynaLoadCss("/css/bootstrap-wysihtml5.css");
+    dynaLoadCss("/css/fullcalendar.css");
+    dynaLoadCss("/css/sweetalert2.min.css");
+    dynaLoadCss("/css/jquery.gritter.css");
+    dynaLoadCss("/css/colorpicker.css");
+    dynaLoadCss("/css/datepicker.css");
+    dynaLoadCss("/css/uniform.css");
+    dynaLoadCss("/css/select2.css");
+
+    dynaLoadJs("/js/jquery.validate.js");
+    dynaLoadJs("/js/jquery.wizard.js");
+    dynaLoadJs("/js/jquery.uniform.js");
+    dynaLoadJs("/js/excanvas.min.js");
+    dynaLoadJs("/js/sweetalert2.min.js");
+    dynaLoadJs("/js/jquery.peity.min.js");
+    dynaLoadJs("/js/fullcalendar.min.js");
+    dynaLoadJs("/js/jquery.gritter.min.js");
+    dynaLoadJs("/js/matrix.interface.js");
+    dynaLoadJs("/js/matrix.chat.js");
+    dynaLoadJs("/js/matrix.form_validation.js");
+    dynaLoadJs("/js/select2.min.js");
+    dynaLoadJs("/js/matrix.popover.js");
+    dynaLoadJs("/js/jquery.dataTables.min.js");
+    dynaLoadJs("/js/matrix.tables.js");
+    dynaLoadJs("/js/bootstrap-colorpicker.js");
+    dynaLoadJs("/js/bootstrap-datepicker.js");
+    dynaLoadJs("/js/masked.js");
+    dynaLoadJs("/js/wysihtml5-0.3.0.js");
+    dynaLoadJs("/js/bootstrap-wysihtml5.js");
 </script>
 </body>
 </html>

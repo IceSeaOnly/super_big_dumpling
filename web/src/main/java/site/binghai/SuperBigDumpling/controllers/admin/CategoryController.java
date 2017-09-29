@@ -23,14 +23,14 @@ import java.util.List;
  * GitHub: https://github.com/IceSeaOnly
  */
 @Controller
-@RequestMapping("admin")
+@RequestMapping("admin/category")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private SimpleDataService service;
 
-    @RequestMapping("category")
+    @RequestMapping("/")
     public String category(Integer childCategory, Model model) {
         if (childCategory == null) { //查看父类目
             List<Category> rs = service.findAll(Category.class);
@@ -47,17 +47,12 @@ public class CategoryController {
         return "category";
     }
 
-    @RequestMapping("getCategory")
-    public Object getCategory(@RequestParam int categoryId) {
-        return service.findById(categoryId, Category.class);
-    }
-
     @RequestMapping("addCategory")
     public String addCategory(Category category, HttpSession session) {
         BeansUtils.initThings(category, UserUtils.getAdministrator(session));
         service.save(category);
         if(category.isSuperCategory()){
-            return "redirect:category";
+            return "redirect:";
         }
         return "redirect:category?childCategory=" + category.getFatherCategory().getId();
     }

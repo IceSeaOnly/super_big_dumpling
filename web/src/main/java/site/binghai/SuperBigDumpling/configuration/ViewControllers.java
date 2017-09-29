@@ -17,6 +17,10 @@ public class ViewControllers extends WebMvcConfigurerAdapter {
      * */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/admin/tradeItem/").setViewName("tradeitem");
         super.addViewControllers(registry);
     }
+
+
+
 }

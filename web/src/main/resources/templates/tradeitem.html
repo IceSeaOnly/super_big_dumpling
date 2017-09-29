@@ -1,0 +1,99 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <!--breadcrumbs-->
+    <div id="content-header">
+        <div id="breadcrumb"><a class="tip-bottom"><i class="icon-home"></i> 面包屑导航</a></div>
+        <h1><a href="/admin/category">父类目</a>/<a th:if="${currentCategory != null}" href=""
+                                                 th:text="${currentCategory.cname}">子类目</a></h1>
+    </div>
+    <!--End-breadcrumbs-->
+    <div class="container-fluid">
+        <!-- 父类目 -->
+        <div class="btn-group">
+            <button class="btn btn-mid">父类目</button>
+            <button class="btn dropdown-toggle"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </div>
+        <!-- 子类目 -->
+        <div class="btn-group">
+            <button class="btn btn-mid">子类目</button>
+            <button class="btn dropdown-toggle"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </div>
+
+        <button class="btn btn-info">预览此类目</button>
+        <input type="text" placeholder="商品Id" style="margin-bottom: 0">
+        <button class="btn btn-info">搜索Id</button>
+    </div>
+    <!-- 预览区 -->
+    <div class="container-fluid">
+        <hr>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+
+                    <div class="widget-title"><span class="icon"> <i class="icon-picture"></i> </span>
+                        <h5></h5>
+                    </div>
+
+                    <div class="widget-content">
+                        <ul class="thumbnails">
+                            <li class="span2"><a> <img src="/img/gallery/imgbox3.jpg" alt=""> </a>
+                                <div align="center">
+                                    <span class="label label-success">Id</span>&nbsp<span
+                                        class="label label-info">商品名</span><br/>
+                                    <span class="label label-inverse">父类目/子类目</span><br/>
+                                    <span class="badge">原价</span>&nbsp<span class="badge badge-important">现价</span>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        addCssBlackList("fullcalendar.css");
+        addCssBlackList("sweetalert2.min.css");
+        addCssBlackList("jquery.gritter.css");
+        addCssBlackList("colorpicker.css");
+        addCssBlackList("datepicker.css");
+        addCssBlackList("uniform.css");
+        addCssBlackList("select2.css");
+        addCssBlackList("bootstrap-wysihtml5.css");
+
+        addJsBlackList("jquery.validate.js");
+        addJsBlackList("jquery.wizard.js");
+        addJsBlackList("jquery.uniform.js");
+        addJsBlackList("excanvas.min.js");
+        addJsBlackList("sweetalert2.min.js");
+        addJsBlackList("jquery.peity.min.js");
+        addJsBlackList("fullcalendar.min.js");
+        addJsBlackList("jquery.gritter.min.js");
+        addJsBlackList("matrix.interface.js");
+        addJsBlackList("matrix.chat.js");
+        addJsBlackList("matrix.form_validation.js");
+        addJsBlackList("select2.min.js");
+        addJsBlackList("matrix.popover.js");
+        addJsBlackList("jquery.dataTables.min.js");
+        addJsBlackList("matrix.tables.js");
+        addJsBlackList("bootstrap-colorpicker.js");
+        addJsBlackList("bootstrap-datepicker.js");
+        addJsBlackList("masked.js");
+        addJsBlackList("wysihtml5-0.3.0.js");
+        addJsBlackList("bootstrap-wysihtml5.js");
+    </script>
+</div>
