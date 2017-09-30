@@ -54,7 +54,7 @@ public class CategoryController {
         if(category.isSuperCategory()){
             return "redirect:";
         }
-        return "redirect:category?childCategory=" + category.getFatherCategory().getId();
+        return "redirect:/admin/category/?childCategory=" + category.getFatherCategory().getId();
     }
 
     @RequestMapping("deleteCategory")
