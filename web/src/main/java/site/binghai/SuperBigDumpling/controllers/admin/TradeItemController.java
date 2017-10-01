@@ -1,9 +1,7 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,7 +10,6 @@ import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
-import site.binghai.SuperDumpling.common.utils.MapUtils;
 
 import javax.servlet.http.HttpSession;
 

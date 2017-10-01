@@ -12,7 +12,7 @@ import javax.persistence.Id;
  * 团
  * @ MoGuJie
  */
-@Entity
+@Entity(name = "groups")
 @Data
 public class Group extends AbstractEntity{
     @Id

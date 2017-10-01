@@ -12,7 +12,7 @@ import javax.persistence.Id;
  *
  * @ MoGuJie
  */
-@Entity
+@Entity(name = "orders")
 @Data
 public class Order extends AbstractEntity {
     @Id

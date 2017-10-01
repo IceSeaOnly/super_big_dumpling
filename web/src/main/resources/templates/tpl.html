@@ -24,7 +24,7 @@
     function dynaLoadJs(path) {
         var shortName = path.substr(path.lastIndexOf("/") + 1);
         if ($.inArray(shortName, jsBlackList) != -1) {
-            console.log(shortName + ' is in black list');
+//            console.log(shortName + ' is in black list');
             return;
         }
 
@@ -34,7 +34,7 @@
     function dynaLoadCss(path) {
         var shortName = path.substr(path.lastIndexOf("/") + 1);
         if ($.inArray(shortName, cssBlackList) != -1) {
-            console.log(shortName + ' is in black list');
+//            console.log(shortName + ' is in black list');
             return;
         }
 
