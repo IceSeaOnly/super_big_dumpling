@@ -73,4 +73,14 @@ public class CategoryController {
 
         return JSONResponse.successResp("删除成功",null);
     }
+
+    @ResponseBody
+    @RequestMapping("list")
+    public Object list(Integer sc){ // sc为父级类目id
+        if(sc == null){
+            return categoryService.findByFatherCategory(null);
+        }else{
+            return categoryService.findByFatherCategory(service.findById(sc,Category.class));
+        }
+    }
 }

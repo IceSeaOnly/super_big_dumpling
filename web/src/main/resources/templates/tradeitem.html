@@ -9,7 +9,7 @@
         <!-- 父类目 -->
         <div class="btn-group">
             <button data-toggle="dropdown" class="btn dropdown-toggle">父类目<span class="caret"></span></button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" id="superCate">
                 <li><a>类目1</a></li>
                 <li><a>类目2</a></li>
             </ul>
@@ -56,18 +56,23 @@
         </div>
     </div>
 </div>
-
+<script id="superCateTmpl" type="text/html">
+    <%for(var i = 0; i < data.length; i++) {%>
+    <li><a><%:=data[i].cname%></a></li>
+    <%}%>
+</script>
 <script>
     function listSuperCategory() {
-        var map = {};
-        $.getJSON("/admin/entityGate/categories/", "", function (data, status) {
-            var cs = data['_embedded']['categories'];
-            for(var obj in cs){
-                if(obj['superCategory']){
-                    map[obj['']]
-                }
-            }
+        $.getJSON("/admin/category/list", "", function (data, status) {
+            var tpl = document.getElementById('superCateTmpl').innerHTML;
+            $("#superCate").html(template(tpl, data));
         });
+
+    }
+
+
+    function initPage() {
+        listSuperCategory();
     }
 </script>
 

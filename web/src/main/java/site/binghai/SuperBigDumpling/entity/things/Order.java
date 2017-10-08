@@ -2,10 +2,12 @@ package site.binghai.SuperBigDumpling.entity.things;
 
 import lombok.Data;
 import site.binghai.SuperBigDumpling.entity.people.User;
+import site.binghai.SuperBigDumpling.enums.OrderStatusEnum;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Arrays;
 
 /**
  * Created by binghai on 2017/9/30.
@@ -29,4 +31,18 @@ public class Order extends AbstractEntity {
     private String refundId;
     private long payTime;
     private long refundTime;
+    private String remarks; //备注信息
+    private String address;
+    private String recipients; //收件人
+    private String recipientsPhone; //收件人手机
+
+    public OrderStatusEnum getStatusEnum() {
+        return OrderStatusEnum.of(status);
+    }
+
+    public void setAddress(Address... adds) {
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(adds).forEach(v -> sb.append(v.getName()));
+        address = sb.toString();
+    }
 }

@@ -278,6 +278,7 @@
 <script src="/js/jquery.ui.custom.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/matrix.js"></script>
+<script src="/js/template.js"></script>
 <!--<script src="/js/matrix.dashboard.js"></script>-->
 <!--<script src="/js/jquery.flot.min.js"></script>-->
 <!--<script src="/js/jquery.flot.resize.min.js"></script>-->
@@ -314,6 +315,11 @@
     dynaLoadJs("/js/masked.js");
     dynaLoadJs("/js/wysihtml5-0.3.0.js");
     dynaLoadJs("/js/bootstrap-wysihtml5.js");
+</script>
+<script>
+    $(document).ready(function(){
+        initPage();
+    });
 </script>
 </body>
 </html>
