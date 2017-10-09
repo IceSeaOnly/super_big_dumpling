@@ -8,27 +8,35 @@
     <div class="container-fluid">
         <!-- 父类目 -->
         <div class="btn-group">
-            <button data-toggle="dropdown" class="btn dropdown-toggle">父类目<span class="caret"></span></button>
+            <button id="superCateFace" data-toggle="dropdown" class="btn dropdown-toggle">父类目<span class="caret"></span>
+            </button>
             <ul class="dropdown-menu" id="superCate">
-                <li><a>类目1</a></li>
-                <li><a>类目2</a></li>
+                <!--<li><a>类目1</a></li>-->
+                <!--<li><a>类目2</a></li>-->
             </ul>
         </div>
         <!-- 子类目 -->
         <div class="btn-group">
-            <button data-toggle="dropdown" class="btn dropdown-toggle">子类目<span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><a>类目1</a></li>
-                <li><a>类目2</a></li>
+            <button id="childCateFace" data-toggle="dropdown" class="btn dropdown-toggle">子类目<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="childCate">
+                <!--<li><a>类目1</a></li>-->
+                <!--<li><a>类目2</a></li>-->
             </ul>
         </div>
 
-        <button class="btn btn-info" onclick="listSuperCategory()">预览此类目</button>
+        <button class="btn btn-info" onclick="previewItems()" id="preview_btn">预览此类目</button>
         <input type="text" placeholder="商品Id" style="margin-bottom: 0">
-        <button class="btn btn-info">搜索Id</button>
+        <button class="btn btn-info" id="search_btn">搜索Id</button>
+        <button class="btn btn-success" onclick="addItemPage()">添加商品</button>
     </div>
+
+    <!-- 添加页面 -->
+    <div id="addItem_frame" th:include="addItemPage" style="display: none"></div>
+    <!-- 添加页面end -->
+
     <!-- 预览区 -->
-    <div class="container-fluid">
+    <div class="container-fluid" id="preview_frame">
         <hr>
         <div class="row-fluid">
             <div class="span12">
@@ -56,20 +64,85 @@
         </div>
     </div>
 </div>
-<script id="superCateTmpl" type="text/html">
-    <%for(var i = 0; i < data.length; i++) {%>
-    <li><a><%:=data[i].cname%></a></li>
-    <%}%>
+<script type="text/x-jsrender" id="superCateTmpl">
+        <li><a href="javascript:changeCate(0,{{:id}},'{{:cname}}')">{{:cname}}</a></li>
+
+</script>
+
+<script type="text/x-jsrender" id="childCateTmpl">
+        <li><a href="javascript:changeCate(1,{{:id}},'{{:cname}}')">{{:cname}}</a></li>
+
 </script>
 <script>
+    var superCateIndex = -1;
+    var childCateIndex = -1;
+
     function listSuperCategory() {
         $.getJSON("/admin/category/list", "", function (data, status) {
-            var tpl = document.getElementById('superCateTmpl').innerHTML;
-            $("#superCate").html(template(tpl, data));
+            var template = $.templates("#superCateTmpl");
+            var html = template.render(data);
+            $("#superCate").html(html);
+
+            if (data.length > 0) {
+                changeCate(0, data[0]['id'], data[0]['cname']);
+            }else{
+                slideErrorMsg('类目错误','不存在任何类目!');
+            }
         });
+    }
+
+    function listChildCategory(index) {
+        if(index == -1){
+            slideErrorMsg('类目错误','父级类目不正确或没有子类目!');
+            return;
+        }
+        $.getJSON("/admin/category/list?sc="+index, "", function (data, status) {
+            var template = $.templates("#childCateTmpl");
+            var html = template.render(data);
+            $("#childCate").html(html);
+
+            if (data.length > 0) {
+                changeCate(1, data[0]['id'], data[0]['cname']);
+            }else{
+                slideErrorMsg('类目错误','父级类目不正确或没有子类目!');
+                changeCate(1, -1, '错误类目');
+            }
+        });
+    }
+
+    function changeCate(type, id, cname) {
+        if (type == 0) {
+            $("#superCateFace").text(cname);
+            superCateIndex = id;
+            listChildCategory(id);
+        } else {
+            $("#childCateFace").text(cname);
+            childCateIndex = id;
+        }
+    }
+
+    function previewItems() {
+        if(superCateIndex == -1 || childCateIndex == -1){
+            slideErrorMsg('搜索错误','搜索类目不正确');
+            return;
+        }
+
 
     }
 
+    var preview_frame_switch = false;
+    function addItemPage() {
+        if(preview_frame_switch){
+            $("#preview_frame").fadeIn();
+            $("#addItem_frame").fadeOut();
+        }else{
+            $("#addItem_frame").fadeIn();
+            $("#preview_frame").fadeOut();
+        }
+        preview_frame_switch = !preview_frame_switch;
+        $("#preview_btn").attr('disabled',preview_frame_switch);
+        $("#search_btn").attr('disabled',preview_frame_switch);
+    }
 
     function initPage() {
         listSuperCategory();
@@ -77,27 +150,15 @@
 </script>
 
 <script>
-    addCssBlackList("sweetalert2.min.css");
-    addCssBlackList("jquery.gritter.css");
-    addCssBlackList("colorpicker.css");
-    addCssBlackList("datepicker.css");
-    addCssBlackList("uniform.css");
-    addCssBlackList("select2.css");
-    addCssBlackList("bootstrap-wysihtml5.css");
-
     addJsBlackList("jquery.validate.js");
     addJsBlackList("jquery.wizard.js");
     addJsBlackList("excanvas.min.js");
     addJsBlackList("jquery.peity.min.js");
     addJsBlackList("fullcalendar.min.js");
-    addJsBlackList("jquery.gritter.min.js");
-    addJsBlackList("matrix.interface.js");
     addJsBlackList("matrix.chat.js");
     addJsBlackList("matrix.form_validation.js");
     addJsBlackList("matrix.popover.js");
     addJsBlackList("bootstrap-colorpicker.js");
     addJsBlackList("bootstrap-datepicker.js");
     addJsBlackList("masked.js");
-    addJsBlackList("wysihtml5-0.3.0.js");
-    addJsBlackList("bootstrap-wysihtml5.js");
 </script>

@@ -173,6 +173,14 @@
     function reload() {
         window.location.reload();
     }
+
+    function slideErrorMsg(title,msg) {
+        $.gritter.add({
+            title:	title,
+            text:	msg,
+            sticky: false
+        });
+    }
 </script>
 <body>
 
@@ -278,7 +286,7 @@
 <script src="/js/jquery.ui.custom.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/matrix.js"></script>
-<script src="/js/template.js"></script>
+<script src="/js/jsrender.js"></script>
 <!--<script src="/js/matrix.dashboard.js"></script>-->
 <!--<script src="/js/jquery.flot.min.js"></script>-->
 <!--<script src="/js/jquery.flot.resize.min.js"></script>-->
@@ -303,7 +311,6 @@
     dynaLoadJs("/js/jquery.peity.min.js");
     dynaLoadJs("/js/fullcalendar.min.js");
     dynaLoadJs("/js/jquery.gritter.min.js");
-    dynaLoadJs("/js/matrix.interface.js");
     dynaLoadJs("/js/matrix.chat.js");
     dynaLoadJs("/js/matrix.form_validation.js");
     dynaLoadJs("/js/select2.min.js");
