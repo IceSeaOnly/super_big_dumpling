@@ -8,31 +8,50 @@
                 <div class="widget-content nopadding">
                     <form method="post" class="form-horizontal">
                         <div class="control-group">
+                            <label class="control-label">类目:</label>
+                            <div class="controls">
+                                <input type="text" class="span11" id="categroyShow" disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label">商品名:</label>
                             <div class="controls">
-                                <input type="text" class="span11"/>
+                                <input type="text" class="span11" name="item_name"/>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">一句话介绍:</label>
                             <div class="controls">
-                                <textarea class="span11"></textarea>
+                                <input type="text" class="span11" name="item_desp"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">原价:</label>
+                            <div class="controls">
+                                <input type="text" class="span11" name="item_oprice"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">拼团价:</label>
+                            <div class="controls">
+                                <input type="text" class="span11" name="item_price"/>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">主图链接:</label>
                             <div class="controls">
-                                <input type="text" class="span11" placeholder="点击下方按钮打开图片传送门"/>
+                                <input type="text" class="span11" placeholder="点击下方按钮打开图片传送门" name="item_img"/>
+                                <button class="btn btn-info" type="button" onclick="uploadImg()">打开图片上传页面</button>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">状态:</label>
                             <div class="controls">
                                 <label>
-                                    <input type="radio" name="online_status" value="true"/>
+                                    <input type="radio" name="item_online_status" value="true"/>
                                     上线</label>
                                 <label>
-                                    <input type="radio" name="online_status" value="false"/>
+                                    <input type="radio" name="item_online_status" value="false"/>
                                     下线</label>
                             </div>
                         </div>
@@ -46,20 +65,10 @@
             <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                 <h5>富文本编辑器</h5>
             </div>
-            <div class="widget-content">
-                <div class="control-group">
-                    <form>
-                        <div class="controls">
-                            <textarea class="textarea_editor span12" rows="6" placeholder="暂不支持站内编辑，点击下方按钮跳转到第三方"></textarea>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <div id="editor"></div>
         </div>
     </div>
     <div class="form-actions">
-        <button type="submit" class="btn btn-success">保存</button>
-        <button class="btn btn-info" type="button" onclick="uploadImg()">打开图片上传页面</button>
-        <button class="btn btn-info" type="button" onclick="redirectPageTo('')">第三方富文本编辑器</button>
+        <button onclick="saveNewItem()" class="btn btn-success">保存</button>
     </div>
 </div>

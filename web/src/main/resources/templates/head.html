@@ -1,0 +1,191 @@
+<title>Matrix Admin</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/css/matrix-style.css"/>
+<link rel="stylesheet" href="/css/matrix-media.css"/>
+<link rel="stylesheet" href="/font-awesome/css/font-awesome.css"/>
+
+<script>
+    var cssBlackList = new Array();
+    var jsBlackList = new Array();
+
+    function addCssBlackList(name) {
+        cssBlackList.push(name);
+    }
+
+    function addJsBlackList(name) {
+        jsBlackList.push(name);
+    }
+
+    function dynaLoadJs(path) {
+        var shortName = path.substr(path.lastIndexOf("/") + 1);
+        if ($.inArray(shortName, jsBlackList) != -1) {
+//            console.log(shortName + ' is in black list');
+            return;
+        }
+
+        jQuery.getScript(path, function (data, status, jqxhr) {
+        });
+    }
+
+    function dynaLoadCss(path) {
+        var shortName = path.substr(path.lastIndexOf("/") + 1);
+        if ($.inArray(shortName, cssBlackList) != -1) {
+//            console.log(shortName + ' is in black list');
+            return;
+        }
+
+        $("head").append("<link>");
+        css = $("head").children(":last");
+        css.attr({
+            rel: "stylesheet",
+            type: "text/css",
+            href: path
+        });
+    }
+    function ifConfirmThenAjax(content, requestUrl) {
+        swal({
+            title: '确认警告',
+            text: content,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: "取消",
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.getJSON(requestUrl, "", function (data, status) {
+                        resolve(data);
+                    });
+                });
+            }
+        }).then(function (queryResult) {
+            console.log(queryResult);
+            if (queryResult['result']) {
+                success("操作完成", queryResult['msg'], true);
+            } else {
+                error("操作失败", queryResult['msg'], true);
+            }
+        });
+    }
+
+
+    function ifConfirmThenRedirect(content, jumpUrl) {
+        swal({
+            title: '确认警告',
+            text: content,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确认',
+            cancelButtonText: "取消"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                swal(
+                    '完成',
+                    '操作已完成',
+                    'success'
+                );
+                setTimeout(redirectPageTo, 500, jumpUrl);
+            }
+        });
+    }
+
+    function redirectPageTo(url) {
+        window.location.href = url;
+    }
+
+    /**
+     * 加载面包屑金句
+     * */
+    function loadGoldBreadcrumb() {
+        $.get("/openApi/goldBreadcrumb", function (data, status) {
+            $("#breadcrumb").html('<a class=\"tip-bottom\"><i class=\"icon-home\"></i>' + data + '</a>');
+        })
+    }
+
+    function info(title, content) {
+        swal(
+            title,
+            content,
+            'info'
+        )
+    }
+
+    function success(title, content, needReload) {
+        swal(
+            title,
+            content,
+            'success'
+        ).then(function () {
+            if (needReload) {
+                setTimeout(reload, 300);
+            }
+        });
+    }
+
+    function error(title, content, needReload) {
+        swal(
+            title,
+            content,
+            'error'
+        ).then(function () {
+            if (needReload) {
+                setTimeout(reload, 300);
+            }
+        });
+    }
+    function innerWeb(_title, url) {
+        swal({
+            title: _title,
+            html: '<div width="100%"><iframe src="' + url + '" width="100%" height="400"></iframe> </div>',
+            showCloseButton: true,
+            width: 500,
+            padding: 10,
+            showCancelButton: false,
+            showConfirmButton: false,
+            cancelButtonText: '关闭'
+        });
+    }
+
+    function uploadImg() {
+        innerWeb("请上传图片并复制url", "http://image.binghai.site/")
+    }
+
+    function showImg(imgUrl) {
+        swal({
+            html: '<div width="100%"><img src="' + imgUrl + '" width="100%"/></div>',
+            showCloseButton: true,
+            width: 500,
+            padding: 10,
+            showCancelButton: false,
+            showConfirmButton: false,
+            cancelButtonText: '关闭'
+        });
+    }
+
+    function reload() {
+        window.location.reload();
+    }
+
+    function slideErrorMsg(title, msg) {
+        $.gritter.add({
+            title: title,
+            text: msg,
+            sticky: false
+        });
+    }
+
+    function isJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+</script>

@@ -25,10 +25,10 @@
             </ul>
         </div>
 
-        <button class="btn btn-info" onclick="previewItems()" id="preview_btn">预览此类目</button>
-        <input type="text" placeholder="商品Id" style="margin-bottom: 0">
-        <button class="btn btn-info" id="search_btn">搜索Id</button>
-        <button class="btn btn-success" onclick="addItemPage()">添加商品</button>
+        <button class="btn btn-info" onclick="previewItems(0)" id="preview_btn">预览此类目</button>
+        <input type="text" id="search_id_input" placeholder="商品Id" style="margin-bottom: 0">
+        <button class="btn btn-info" onclick="searchById()">搜索Id</button>
+        <button class="btn btn-success" onclick="addItemPage()" id="fun_btn">添加商品</button>
     </div>
 
     <!-- 添加页面 -->
@@ -47,15 +47,7 @@
                     </div>
 
                     <div class="widget-content">
-                        <ul class="thumbnails">
-                            <li class="span2"><a> <img src="/img/gallery/imgbox3.jpg" alt=""> </a>
-                                <div align="center">
-                                    <span class="label label-success">Id</span>&nbsp<span
-                                        class="label label-info">商品名</span><br/>
-                                    <span class="label label-inverse">父类目/子类目</span><br/>
-                                    <span class="badge">原价</span>&nbsp<span class="badge badge-important">现价</span>
-                                </div>
-                            </li>
+                        <ul class="thumbnails" id="itemPreviewArea">
 
                         </ul>
                     </div>
@@ -73,6 +65,19 @@
         <li><a href="javascript:changeCate(1,{{:id}},'{{:cname}}')">{{:cname}}</a></li>
 
 </script>
+
+<script type="text/x-jsrender" id="itemPreviewTmpl">
+    <li class="span2">
+        <a> <img src="{{:imgUrl}}" alt=""> </a>
+             <div align="center">
+                 <span class="label label-success">{{:id}}</span>&nbsp<span
+                     class="label label-info">{{:name}}</span><br/>
+                 <span class="label label-inverse">{{:fatherCategory.cname}}/{{:childCategory.cname}}</span><br/>
+                 <span class="badge">￥{{:oprice/100}}</span>&nbsp<span class="badge badge-important">￥{{:price/100}}</span>
+             </div>
+    </li>
+
+</script>
 <script>
     var superCateIndex = -1;
     var childCateIndex = -1;
@@ -85,26 +90,26 @@
 
             if (data.length > 0) {
                 changeCate(0, data[0]['id'], data[0]['cname']);
-            }else{
-                slideErrorMsg('类目错误','不存在任何类目!');
+            } else {
+                slideErrorMsg('类目错误', '不存在任何类目!');
             }
         });
     }
 
     function listChildCategory(index) {
-        if(index == -1){
-            slideErrorMsg('类目错误','父级类目不正确或没有子类目!');
+        if (index == -1) {
+            slideErrorMsg('类目错误', '父级类目不正确或没有子类目!');
             return;
         }
-        $.getJSON("/admin/category/list?sc="+index, "", function (data, status) {
+        $.getJSON("/admin/category/list?sc=" + index, "", function (data, status) {
             var template = $.templates("#childCateTmpl");
             var html = template.render(data);
             $("#childCate").html(html);
 
             if (data.length > 0) {
                 changeCate(1, data[0]['id'], data[0]['cname']);
-            }else{
-                slideErrorMsg('类目错误','父级类目不正确或没有子类目!');
+            } else {
+                slideErrorMsg('类目错误', '父级类目不正确或没有子类目!');
                 changeCate(1, -1, '错误类目');
             }
         });
@@ -119,36 +124,67 @@
             $("#childCateFace").text(cname);
             childCateIndex = id;
         }
+
+        $("#categroyShow").val($("#superCateFace").text() + ' / ' + $("#childCateFace").text());
     }
 
-    function previewItems() {
-        if(superCateIndex == -1 || childCateIndex == -1){
-            slideErrorMsg('搜索错误','搜索类目不正确');
+    function previewItems(page) {
+        if (superCateIndex == -1 || childCateIndex == -1) {
+            slideErrorMsg('搜索错误', '搜索类目不正确');
             return;
         }
-
-
+        $.getJSON('/admin/tradeItem/listByCategory?fa=' + superCateIndex + '&ch=' + childCateIndex + '&page=' + page, '', function (data, status) {
+            if (data['result']) {
+                var items = data['data'];
+                if(items.length < 1){
+                    slideErrorMsg('查询成功','没有查到结果');
+                }
+                var template = $.templates("#itemPreviewTmpl");
+                var html = template.render(items);
+                $("#itemPreviewArea").html(html);
+            } else {
+                slideErrorMsg('查询出错', data['msg']);
+            }
+        }).error(function () {
+            slideErrorMsg('查询出错', '服务器错误');
+        });
     }
 
     var preview_frame_switch = false;
     function addItemPage() {
-        if(preview_frame_switch){
+        if (preview_frame_switch) {
+            $("#fun_btn").text('添加商品');
             $("#preview_frame").fadeIn();
             $("#addItem_frame").fadeOut();
-        }else{
+        } else {
+            $("#fun_btn").text('返回预览');
             $("#addItem_frame").fadeIn();
             $("#preview_frame").fadeOut();
         }
         preview_frame_switch = !preview_frame_switch;
-        $("#preview_btn").attr('disabled',preview_frame_switch);
-        $("#search_btn").attr('disabled',preview_frame_switch);
+        $("#preview_btn").attr('disabled', preview_frame_switch);
+        $("#search_btn").attr('disabled', preview_frame_switch);
     }
 
     function initPage() {
         listSuperCategory();
     }
-</script>
 
+    function searchById() {
+        $.getJSON('/admin/tradeItem/findById?id='+$("#search_id_input").val(),'',function (data, status) {
+            if(data.length > 0){
+                slideErrorMsg('查询成功','没有查到结果');
+            }
+            var template = $.templates("#itemPreviewTmpl");
+            var html = template.render(data['data']);
+            $("#itemPreviewArea").html(html);
+        }).error(function () {
+            slideErrorMsg('查询出错', '服务器错误');
+        });
+    }
+
+</script>
+<script type="text/javascript" src="/js/wangEditor.min.js"></script>
 <script>
     addJsBlackList("jquery.validate.js");
     addJsBlackList("jquery.wizard.js");
@@ -161,4 +197,44 @@
     addJsBlackList("bootstrap-colorpicker.js");
     addJsBlackList("bootstrap-datepicker.js");
     addJsBlackList("masked.js");
+</script>
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.create();
+
+    function getContent() {
+        return editor.txt.html();
+    }
+
+    function setContent(detail) {
+        editor.txt.html(detail);
+    }
+
+    function saveNewItem() {
+        var data = {};
+        data['name'] = $("[name='item_name']").val();
+        data['oprice'] = $("[name='item_oprice']").val();
+        data['price'] = $("[name='item_price']").val();
+        data['imgUrl'] = $("[name='item_img']").val();
+        data['desp'] = $("[name='item_desp']").val();
+        data['available'] = $("[name='item_online_status']:checked").val();
+        data['detailDesp'] = getContent();
+        data['fatherCategory'] = superCateIndex;
+        data['childCategory'] = childCateIndex;
+
+        $.post('/admin/tradeItem/addTradeItem', data, function (resp, status) {
+            if (resp['result']) {
+                slideErrorMsg('消息', '添加成功');
+                $("#addItem_frame input").val("");
+                setContent('');
+                addItemPage();
+                previewItems(0);
+            } else {
+                slideErrorMsg('发生错误', resp['msg']);
+            }
+        }).error(function () {
+            slideErrorMsg('发生错误', '请检查输入');
+        });
+    }
 </script>

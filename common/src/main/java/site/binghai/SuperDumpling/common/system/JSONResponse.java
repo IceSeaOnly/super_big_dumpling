@@ -19,11 +19,11 @@ public class JSONResponse {
         this.msg = msg;
     }
 
-    public static JSONResponse errorResp(ErrorList error,String extraMsg,Object data){
-        return new JSONResponse(Boolean.FALSE,data,error.getErrorMsg()+";"+extraMsg);
+    public static JSONResponse errorResp(ErrorList error, String extraMsg, Object data) {
+        return new JSONResponse(Boolean.FALSE, data, extraMsg == null ? error.getErrorMsg() : error.getErrorMsg() + ";" + extraMsg);
     }
 
-    public static JSONResponse successResp(String msg,Object data){
-        return new JSONResponse(Boolean.TRUE,data,msg);
+    public static JSONResponse successResp(String msg, Object data) {
+        return new JSONResponse(Boolean.TRUE, data, msg == null ? "" : msg);
     }
 }
