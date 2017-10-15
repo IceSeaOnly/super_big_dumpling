@@ -1,5 +1,6 @@
 package site.binghai.SuperDumpling.common.definations;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,5 +16,5 @@ public interface WxHandler {
     /**
      * 上层调用处理器获取act
      * */
-    String getActHeader();
+    List<String> getActHeader();
 }

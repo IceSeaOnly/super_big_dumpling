@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by IceSea on 2017/9/25.
@@ -37,10 +38,21 @@ public class TradeItem extends AbstractEntity {
     @Min(value = 0,message = "价格不能小于0")
     private int price; // 团购价
     @Min(value = 0,message = "价格不能小于0")
+    private int mprice; // 单购价
+    @Min(value = 0,message = "价格不能小于0")
     private int oprice; // 原价
     @Column(columnDefinition = "TEXT")
     @Lob
     private String detailDesp; //富文本内容
+    @Min(value = 0,message = "已售不能小于0")
+    private int saleNum;// 已售
+    @NonNull
+    @NotEmpty(message = "单位不能为空")
+    private String unit;// 单位
+    @ElementCollection
+    private List<String> album;
+    private boolean recommend; // 父类推荐
+    private boolean indexRecommend;// 首页推荐
 
     public TradeItem() {
     }

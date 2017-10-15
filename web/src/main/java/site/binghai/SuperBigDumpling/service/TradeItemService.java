@@ -18,11 +18,29 @@ import java.util.List;
 public class TradeItemService {
     @Autowired
     TradeItemDao dao;
+    @Autowired
+    SimpleDataService simpleDataService;
 
     /**
-     * 分页查询，每页20个结果
+     * 分页查询
      * */
-    public List<TradeItem> findByCategory(Category fa,Category ch,int startPage){
-        return dao.findByFatherCategoryAndChildCategory(fa,ch,new PageRequest(startPage,20));
+    public List<TradeItem> findByCategory(Category category,int startPage){
+        if(!category.isSuperCategory()){
+            return dao.findByFatherCategoryAndChildCategory(category.getFatherCategory(),category,new PageRequest(startPage,20));
+        }
+        return dao.findByFatherCategory(category,new PageRequest(startPage,10));
+    }
+
+    /**
+     * 获取推荐商品
+     * type = 0 : 父类推荐
+     * type = 1 : 首页推荐
+     * */
+    public List<TradeItem> findRecommand(int cid, int page, int type) {
+        if(type == 0){
+            Category category = simpleDataService.findById(cid,Category.class);
+            return dao.findByFatherCategoryAndRecommend(category,true,new PageRequest(page,10));
+        }
+        return dao.findByIndexRecommend(true,new PageRequest(page,10));
     }
 }

@@ -14,5 +14,11 @@ import java.util.List;
  * GitHub: https://github.com/IceSeaOnly
  */
 public interface TradeItemDao extends JpaRepository<TradeItem,Integer>{
+    List<TradeItem> findByFatherCategory(Category fa, Pageable page);
     List<TradeItem> findByFatherCategoryAndChildCategory(Category fa, Category ch, Pageable page);
+    /**
+     * 根据父类获取被推荐的商品
+     * */
+    List<TradeItem> findByFatherCategoryAndRecommend(Category category,boolean recommand,Pageable page);
+    List<TradeItem> findByIndexRecommend(boolean recommand,Pageable page);
 }

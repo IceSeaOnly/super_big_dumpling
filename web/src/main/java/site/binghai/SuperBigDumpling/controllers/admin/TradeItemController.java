@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import site.binghai.SuperBigDumpling.controllers.wx.ApiDomain;
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
+import site.binghai.SuperBigDumpling.facades.TradeItemFacade;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.service.TradeItemService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
@@ -18,6 +20,8 @@ import site.binghai.SuperDumpling.common.system.JSONResponse;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,9 +33,10 @@ import java.util.Map;
 public class TradeItemController implements WxHandler,InitializingBean {
 
     @Autowired
-    TradeItemService service;
+    private TradeItemService service;
     @Autowired
-    SimpleDataService dataService;
+    private SimpleDataService dataService;
+    private TradeItemFacade tradeItemFacade = new TradeItemFacade();
 
     @RequestMapping(value = "addTradeItem", method = RequestMethod.POST)
     @ResponseBody
@@ -58,15 +63,13 @@ public class TradeItemController implements WxHandler,InitializingBean {
 
     @RequestMapping("listByCategory")
     @ResponseBody
-    public Object listByCategory(@RequestParam int fa, @RequestParam int ch, Integer page) {
-        Category f = dataService.findById(fa, Category.class);
+    public Object listByCategory(@RequestParam int ch, Integer page) {
         Category c = dataService.findById(ch, Category.class);
-
-        if (f == null || c == null) {
+        if (c == null) {
             return JSONResponse.errorResp(ErrorList.INVALID_PARAMETER, null, null);
         }
 
-        return JSONResponse.successResp("success", service.findByCategory(f, c, page == null ? 0 : page));
+        return JSONResponse.successResp("success", service.findByCategory(c, page == null ? 0 : page));
     }
 
     @ResponseBody
@@ -77,12 +80,28 @@ public class TradeItemController implements WxHandler,InitializingBean {
 
     @Override
     public Object handleRequest(Map params) {
-        return null;
+        String act = MapUtils.getString(params,"act");
+        int page = MapUtils.getInteger(params,"page",0);
+        int cid = MapUtils.getInteger(params,"cid",-1);
+
+        if(cid < 0){
+            return null;
+        }
+
+        if(act.equals("index")){ // 获取父类推荐
+            return tradeItemFacade.asList(service.findRecommand(cid,page,0));
+        }else{ //获取类目下的所有商品
+            Category category = dataService.findById(cid,Category.class);
+            if(category == null){
+                return null;
+            }
+            return tradeItemFacade.asList(service.findByCategory(category,page));
+        }
     }
 
     @Override
-    public String getActHeader() {
-        return null;
+    public List<String> getActHeader() {
+        return Arrays.asList("index","goods-list");
     }
 
     @Override

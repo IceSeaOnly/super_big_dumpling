@@ -217,7 +217,10 @@
         data['oprice'] = $("[name='item_oprice']").val();
         data['price'] = $("[name='item_price']").val();
         data['imgUrl'] = $("[name='item_img']").val();
+        data['unit'] = $("[name='unit']").val();
         data['desp'] = $("[name='item_desp']").val();
+        data['indexRecommand'] = $("[name='indexRecommand']").is(':checked');
+        data['recommand'] = $("[name='recommand']").is(':checked');
         data['available'] = $("[name='item_online_status']:checked").val();
         data['detailDesp'] = getContent();
         data['fatherCategory'] = superCateIndex;

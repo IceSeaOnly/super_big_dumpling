@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -102,8 +104,8 @@ public class CategoryController implements WxHandler, InitializingBean {
     }
 
     @Override
-    public String getActHeader() {
-        return "category";
+    public List<String> getActHeader() {
+        return Arrays.asList("category");
     }
 
     @Override

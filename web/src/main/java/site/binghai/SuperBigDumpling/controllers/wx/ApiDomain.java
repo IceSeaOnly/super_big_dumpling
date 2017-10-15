@@ -41,6 +41,6 @@ public class ApiDomain {
     }
 
     public static void registerHandler(WxHandler handler){
-        wxHandlerMap.put(handler.getActHeader(),handler);
+        handler.getActHeader().forEach(v -> wxHandlerMap.put(v,handler));
     }
 }

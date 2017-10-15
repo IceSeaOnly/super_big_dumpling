@@ -1,5 +1,7 @@
 package site.binghai.SuperBigDumpling.service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,11 @@ public class SimpleDataService{
     public List findAll(Class clazz){
         SimpleJpaRepository repo = getSimpleJpaRepository(clazz);
         return repo.findAll((a,b,c)->c.equal(a.get("isDeleted"),false));
+    }
+
+    public List findAll(Class clazz,int page, int pageSize){
+        SimpleJpaRepository repo = getSimpleJpaRepository(clazz);
+        return repo.findAll((a,b,c)-> c.equal(a.get("isDeleted"),false),new PageRequest(page,pageSize)).getContent();
     }
 
     /**

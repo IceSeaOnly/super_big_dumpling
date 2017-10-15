@@ -20,6 +20,12 @@
                             </div>
                         </div>
                         <div class="control-group">
+                            <label class="control-label">单位:</label>
+                            <div class="controls">
+                                <input type="text" class="span11" name="unit" placeholder="件、份、个..."/>
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label">一句话介绍:</label>
                             <div class="controls">
                                 <input type="text" class="span11" name="item_desp"/>
@@ -42,6 +48,22 @@
                             <div class="controls">
                                 <input type="text" class="span11" placeholder="点击下方按钮打开图片传送门" name="item_img"/>
                                 <button class="btn btn-info" type="button" onclick="uploadImg()">打开图片上传页面</button>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">首页推荐:</label>
+                            <div class="controls">
+                                <label>
+                                    <input type="checkbox" name="indexRecommand" value="true"/>
+                                    首页推荐</label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">类目内推荐:</label>
+                            <div class="controls">
+                                <label>
+                                    <input type="checkbox" name="recommand" value="true"/>
+                                    类目内推荐</label>
                             </div>
                         </div>
                         <div class="control-group">
