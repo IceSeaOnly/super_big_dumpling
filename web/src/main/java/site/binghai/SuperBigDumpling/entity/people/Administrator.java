@@ -1,6 +1,7 @@
 package site.binghai.SuperBigDumpling.entity.people;
 
 import lombok.Data;
+import site.binghai.SuperBigDumpling.entity.BaseUser;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
-public class Administrator extends BaseUser{
+public class Administrator extends BaseUser {
     @Id
     @GeneratedValue
     private int id;

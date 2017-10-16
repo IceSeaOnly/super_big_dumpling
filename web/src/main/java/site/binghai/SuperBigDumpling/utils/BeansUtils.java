@@ -1,10 +1,9 @@
 package site.binghai.SuperBigDumpling.utils;
 
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
-import site.binghai.SuperBigDumpling.entity.things.AbstractEntity;
+import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 import site.binghai.SuperDumpling.common.definations.DeleteAble;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

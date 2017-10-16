@@ -1,6 +1,7 @@
 package site.binghai.SuperBigDumpling.entity.things;
 
 import lombok.Data;
+import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 import site.binghai.SuperBigDumpling.entity.people.User;
 
 import javax.persistence.Entity;
@@ -14,11 +15,14 @@ import javax.persistence.Id;
  */
 @Entity(name = "groups")
 @Data
-public class Group extends AbstractEntity{
+public class Group extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
     private TradeItem tradeItem;
     private User groupMaster; //团长
     private int status;
+    private int leftNum; // 剩余人数
+    private int leftTime; //剩余时间,秒
+    private int totalNum; //总人数
 }

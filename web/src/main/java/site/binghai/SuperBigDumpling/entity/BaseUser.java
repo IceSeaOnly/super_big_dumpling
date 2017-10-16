@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.entity.things;
+package site.binghai.SuperBigDumpling.entity;
 
 import lombok.Data;
 import site.binghai.SuperDumpling.common.definations.DeleteAble;
@@ -13,13 +13,12 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 @Data
-public class AbstractEntity implements Serializable,DeleteAble {
+public class BaseUser implements Serializable,DeleteAble {
     protected long created = System.currentTimeMillis();
-    protected long updated = System.currentTimeMillis();
+    protected long lastLogin = System.currentTimeMillis();
     protected boolean isDeleted = false;
-    protected boolean available = true;
-    protected int userId;
-    protected String owner;
+    protected boolean forbidden = false;
+    protected String username;
 
     @Override
     public boolean hasDelete() {
@@ -28,7 +27,7 @@ public class AbstractEntity implements Serializable,DeleteAble {
 
     @Override
     public boolean accessAble() {
-        return isAvailable();
+        return isForbidden();
     }
 
     @Override
@@ -38,6 +37,6 @@ public class AbstractEntity implements Serializable,DeleteAble {
 
     @Override
     public void unAvailable() {
-        setAvailable(false);
+        setForbidden(true);
     }
 }

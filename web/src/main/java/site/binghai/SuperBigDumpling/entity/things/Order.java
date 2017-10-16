@@ -1,6 +1,7 @@
 package site.binghai.SuperBigDumpling.entity.things;
 
 import lombok.Data;
+import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 import site.binghai.SuperBigDumpling.entity.people.User;
 import site.binghai.SuperBigDumpling.enums.OrderStatusEnum;
 

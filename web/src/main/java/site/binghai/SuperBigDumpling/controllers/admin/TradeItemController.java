@@ -1,11 +1,9 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import site.binghai.SuperBigDumpling.controllers.wx.ApiDomain;
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
@@ -14,7 +12,6 @@ import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.service.TradeItemService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
-import site.binghai.SuperDumpling.common.definations.WxHandler;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
 
@@ -30,7 +27,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("admin/tradeItem")
-public class TradeItemController implements WxHandler,InitializingBean {
+public class TradeItemController extends MultiController {
 
     @Autowired
     private TradeItemService service;
@@ -102,10 +99,5 @@ public class TradeItemController implements WxHandler,InitializingBean {
     @Override
     public List<String> getActHeader() {
         return Arrays.asList("index","goods-list");
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        ApiDomain.registerHandler(this);
     }
 }

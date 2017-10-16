@@ -3,11 +3,13 @@ package site.binghai.SuperBigDumpling.entity.things;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.NotEmpty;
+import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IceSea on 2017/9/25.
@@ -53,6 +55,8 @@ public class TradeItem extends AbstractEntity {
     private List<String> album;
     private boolean recommend; // 父类推荐
     private boolean indexRecommend;// 首页推荐
+    @ElementCollection
+    private Map<String,List<String>> properties;
 
     public TradeItem() {
     }

@@ -1,6 +1,7 @@
 package site.binghai.SuperBigDumpling.entity.things;
 
 import lombok.Data;
+import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import javax.persistence.Id;
  */
 @Entity
 @Data
-public class BreadCrumb extends AbstractEntity{
+public class BreadCrumb extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;

@@ -1,22 +1,18 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import site.binghai.SuperBigDumpling.controllers.wx.ApiDomain;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.facades.CategoryFacade;
 import site.binghai.SuperBigDumpling.service.CategoryService;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
-import site.binghai.SuperDumpling.common.definations.WxHandler;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
 
@@ -32,7 +28,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("admin/category")
-public class CategoryController implements WxHandler, InitializingBean {
+public class CategoryController extends MultiController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -108,8 +104,4 @@ public class CategoryController implements WxHandler, InitializingBean {
         return Arrays.asList("category");
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        ApiDomain.registerHandler(this);
-    }
 }
