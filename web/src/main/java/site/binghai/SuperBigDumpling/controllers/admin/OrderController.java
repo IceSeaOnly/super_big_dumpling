@@ -2,6 +2,7 @@ package site.binghai.SuperBigDumpling.controllers.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import site.binghai.SuperBigDumpling.controllers.MultiController;
 
 import java.util.Arrays;
 import java.util.List;

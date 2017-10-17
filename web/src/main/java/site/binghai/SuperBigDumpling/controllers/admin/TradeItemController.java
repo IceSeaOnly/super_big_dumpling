@@ -1,9 +1,9 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
-import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import site.binghai.SuperBigDumpling.controllers.MultiController;
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
@@ -77,27 +77,33 @@ public class TradeItemController extends MultiController {
 
     @Override
     public Object handleRequest(Map params) {
-        String act = MapUtils.getString(params,"act");
-        int page = MapUtils.getInteger(params,"page",0);
-        int cid = MapUtils.getInteger(params,"cid",-1);
-
-        if(cid < 0){
+        if (getCid(params) < 0) {
             return null;
         }
 
-        if(act.equals("index")){ // 获取父类推荐
-            return tradeItemFacade.asList(service.findRecommand(cid,page,0));
-        }else{ //获取类目下的所有商品
-            Category category = dataService.findById(cid,Category.class);
-            if(category == null){
-                return null;
-            }
-            return tradeItemFacade.asList(service.findByCategory(category,page));
+        switch (getAct(params)) {
+            case "index":
+                return tradeItemFacade.asList(service.findRecommand(getCid(params), getPage(params), 0));
+            case "goods-list":
+                return GoodsList(params);
         }
+
+        return unkownRequest();
+    }
+
+    /**
+     * 获取类目下商品
+     * */
+    private Object GoodsList(Map params) {
+        Category category = dataService.findById(getCid(params), Category.class);
+        if (category == null) {
+            return null;
+        }
+        return tradeItemFacade.asList(service.findByCategory(category, getPage(params)));
     }
 
     @Override
     public List<String> getActHeader() {
-        return Arrays.asList("index","goods-list");
+        return Arrays.asList("index", "goods-list");
     }
 }

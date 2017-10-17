@@ -10,6 +10,7 @@ public enum  ErrorList {
     INVALID_PARAMETER(4001,"参数非法",null),
     NON_EMPTY_SUPER_CATEGORY(4002,"此父类尚有子类关联",null),
     NULL_ACT(4003,"act参数不能为空",null),
+    UNKONW_ACT(4004,"act参数无法识别",null),
     ;
     private int errorId;
     private String errorMsg;

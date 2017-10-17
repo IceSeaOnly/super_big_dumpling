@@ -23,6 +23,8 @@ public class TradeItemService {
 
     /**
      * 分页查询
+     * 如果传入的是超级类目，则发挥本超级类目下的推荐商品
+     * 否则按页返回具体子类下的商品
      * */
     public List<TradeItem> findByCategory(Category category,int startPage){
         if(!category.isSuperCategory()){
