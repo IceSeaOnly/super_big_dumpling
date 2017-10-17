@@ -2,6 +2,8 @@ package site.binghai.SuperBigDumpling.controllers.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,6 @@ public class OrderController extends MultiController {
 
     @Override
     public List<String> getActHeader() {
-        return null;
+        return Arrays.asList("orders-list");
     }
 }
