@@ -14,4 +14,13 @@ public class MapUtils {
             model.put(key,value);
         }
     }
+
+    public static int getInt(Map params, String gid) {
+        try {
+            return params.get(gid) == null ? -1 : Integer.parseInt(String.valueOf(params.get(gid)));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

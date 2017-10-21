@@ -4,10 +4,7 @@ import lombok.Data;
 import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 import site.binghai.SuperBigDumpling.entity.things.Express;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +13,7 @@ import java.util.Map;
  *
  * @ MoGuJie
  */
-@Entity
+@Entity(name = "orders")
 @Data
 public class Order extends AbstractEntity {
     @Id
@@ -25,8 +22,7 @@ public class Order extends AbstractEntity {
     private int price;
     private int goodsNum; //购买数量
     private int totalPrice;
-    @ElementCollection
-    private Map<String,List<String>> properties; //购买属性
+    private String properties; //购买属性 json
     private String img;
     private String orderNum; //订单编号
     private String orderStatus;
@@ -40,5 +36,6 @@ public class Order extends AbstractEntity {
     private long completeTimeTs; //成交时间戳
     private String createTime;
     private long createTimeTs;
+    @OneToOne
     private Express express;
 }

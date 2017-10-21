@@ -5,6 +5,7 @@ import lombok.Data;
 import site.binghai.SuperBigDumpling.entity.things.Group;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
     }
 
     @Override
-    BaseFacade asObj(TradeItem obj) {
+    public TradeItemFacade asObj(TradeItem obj) {
         return TradeItemFacade.builder()
                 .id(obj.getId())
                 .img(obj.getImgUrl())
@@ -62,11 +63,11 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
                 .saleNum(obj.getSaleNum())
                 .unit(obj.getUnit())
                 .album(obj.getAlbum())
-                .intro(obj.getDesp())
+                .intro(obj.getDetailDesp())
 
                 .groupNum(0)
                 .is_collect(false)
-                .groupList(null)
+                .groupList(Collections.EMPTY_LIST)
                 .build();
     }
 }

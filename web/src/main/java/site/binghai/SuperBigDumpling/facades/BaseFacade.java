@@ -12,7 +12,7 @@ import java.util.List;
  * @ MoGuJie
  */
 public abstract class BaseFacade<T> {
-    abstract BaseFacade asObj(T obj);
+    public abstract BaseFacade asObj(T obj);
 
     public List asList(List<T> ls){
         if(ls == null) return Collections.EMPTY_LIST;

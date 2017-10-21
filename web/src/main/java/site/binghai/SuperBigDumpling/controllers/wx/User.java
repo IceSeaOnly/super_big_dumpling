@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import site.binghai.SuperBigDumpling.controllers.MultiController;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,8 @@ public class User extends MultiController {
     }
 
     private Object login(Map params) {
-        return null;
+        String access_token = "ABCDEFG123456789";
+        return access_token;
     }
 
     @Override

@@ -19,28 +19,29 @@ import java.util.Map;
 @RestController
 @RequestMapping("wx")
 public class ApiDomain {
-    private static Map<String,WxHandler> wxHandlerMap = new HashMap<>();
+    private static Map<String, WxHandler> wxHandlerMap = new HashMap<>();
 
     @RequestMapping("api")
-    public Object api(HttpServletRequest request){
+    public Object api(HttpServletRequest request) {
         Map req = HttpRequestUtils.getRequestParamMap(request);
         Object act = req.get("act");
 
-        if(act == null){
-            return JSONResponse.errorResp(ErrorList.NULL_ACT,null,null);
+        if (act == null) {
+            return JSONResponse.errorResp(ErrorList.NULL_ACT, null, null);
         }
 
-        return route(String.valueOf(act),req);
+        return route(String.valueOf(act), req);
     }
 
     /**
      * 请求路由
-     * */
+     */
     private Object route(String act, Map req) {
-        return JSONResponse.successResp("",wxHandlerMap.get(act).handleRequest(req));
+        Object obj = wxHandlerMap.get(act).handleRequest(req);
+        return obj instanceof JSONResponse ? obj : JSONResponse.successResp("", obj);
     }
 
-    public static void registerHandler(WxHandler handler){
-        handler.getActHeader().forEach(v -> wxHandlerMap.put(v,handler));
+    public static void registerHandler(WxHandler handler) {
+        handler.getActHeader().forEach(v -> wxHandlerMap.put(v, handler));
     }
 }

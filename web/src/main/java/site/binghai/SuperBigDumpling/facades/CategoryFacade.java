@@ -25,7 +25,7 @@ public class CategoryFacade extends BaseFacade<Category> {
     }
 
     @Override
-    BaseFacade asObj(Category obj) {
+    public BaseFacade asObj(Category obj) {
         return new CategoryFacade(obj.getId(),obj.getCname(),obj.getImgUrl());
     }
 }

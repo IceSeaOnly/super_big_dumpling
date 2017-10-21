@@ -14,6 +14,7 @@ import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
+import site.binghai.SuperDumpling.common.utils.MapUtils;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -77,24 +78,40 @@ public class TradeItemController extends MultiController {
 
     @Override
     public Object handleRequest(Map params) {
-        if (getCid(params) < 0) {
-            return null;
-        }
-
         switch (getAct(params)) {
             case "index":
-                return tradeItemFacade.asList(service.findRecommand(getCid(params), getPage(params), 0));
+                return GoodIndex(params);
             case "goods-list":
                 return GoodsList(params);
+            case "goods-detail":
+                return GoodsDetail(params);
         }
 
         return unkownRequest();
+    }
+
+    private Object GoodIndex(Map params) {
+        if (getCid(params) < 0) {
+            return null;
+        }
+        return tradeItemFacade.asList(service.findRecommand(getCid(params), getPage(params), 0));
+    }
+
+    private Object GoodsDetail(Map params) {
+        int gid = MapUtils.getInt(params,"gid");
+        TradeItem item = dataService.findById(gid,TradeItem.class);
+        TradeItemFacade facade = tradeItemFacade.asObj(item);
+        return facade;
     }
 
     /**
      * 获取类目下商品
      * */
     private Object GoodsList(Map params) {
+        if (getCid(params) < 0) {
+            return null;
+        }
+
         Category category = dataService.findById(getCid(params), Category.class);
         if (category == null) {
             return null;
@@ -104,6 +121,6 @@ public class TradeItemController extends MultiController {
 
     @Override
     public List<String> getActHeader() {
-        return Arrays.asList("index", "goods-list");
+        return Arrays.asList("index", "goods-list","goods-detail");
     }
 }

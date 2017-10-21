@@ -55,8 +55,7 @@ public class TradeItem extends AbstractEntity {
     private List<String> album;
     private boolean recommend; // 父类推荐
     private boolean indexRecommend;// 首页推荐
-    @ElementCollection
-    private Map<String,List<String>> properties;
+    private String properties; // 商品属性 json
 
     public TradeItem() {
     }
