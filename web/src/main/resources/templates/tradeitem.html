@@ -59,28 +59,65 @@
 <script type="text/x-jsrender" id="superCateTmpl">
         <li><a href="javascript:changeCate(0,{{:id}},'{{:cname}}')">{{:cname}}</a></li>
 
+
+
 </script>
 
 <script type="text/x-jsrender" id="childCateTmpl">
         <li><a href="javascript:changeCate(1,{{:id}},'{{:cname}}')">{{:cname}}</a></li>
 
+
+
+</script>
+
+<script type="text/x-jsrender" id="thumbsTpl">
+    <li class="span1"><a>
+      <img src="{{:url}}"> </a>
+      <div align="center">
+          <span class="label label-success" id="thumbs_{{:id}}">{{:weight}}</span>&nbsp<button type="button" onclick="albumWeightAdd({{:id}})"><i class="icon-thumbs-up"></i></button>
+      </div>
+    </li>
 </script>
 
 <script type="text/x-jsrender" id="itemPreviewTmpl">
     <li class="span2">
-        <a> <img src="{{:imgUrl}}" alt=""> </a>
+        <a href="edit?id={{:id}}" target="_blank"> <img src="{{:imgUrl}}" alt=""> </a>
              <div align="center">
                  <span class="label label-success">{{:id}}</span>&nbsp<span
                      class="label label-info">{{:name.substr(0,5)}}</span><br/>
-                 <span class="label label-inverse">{{:fatherCategory.cname}}/{{:childCategory.cname}}</span><br/>
+                 <span class="label label-inverse">{{:fatherCategory.cname}}/{{:childCategory.cname}}</span>
+                 <span class="badge {{:indexRecommend?'badge-warning':''}}" onclick="changeIndexRecommend({{:id}})">首</span> <span class="badge {{:recommend?'badge-warning':''}}" onclick="changeRecommend({{:id}})">荐</span><br/>
                  <span class="badge">￥{{:oprice/100}}</span>&nbsp<span class="badge badge-important">￥{{:price/100}}</span>
              </div>
     </li>
+
+
 
 </script>
 <script>
     var superCateIndex = -1;
     var childCateIndex = -1;
+    var currentPage = 0;
+    var albums = [];
+
+    function addAlbum() {
+        requireInputAndCallback('输入图片地址',function (url) {
+            if(!url){return}
+
+            $.post('addAlbum',{url:url},function (data, status) {
+                var template = $.templates("#thumbsTpl");
+                var html = template.render(data['data']);
+                $("#thumbTplArea").append(html);
+                albums.push(data['data']['id']);
+            })
+        })
+    }
+
+    function albumWeightAdd(id) {
+        $.get('albumAddWeigth?id='+id,function (data, status) {
+            $("#thumbs_"+id).text(data['data']['weight']);
+        })
+    }
 
     function listSuperCategory() {
         $.getJSON("/admin/category/list", "", function (data, status) {
@@ -133,11 +170,12 @@
             slideErrorMsg('搜索错误', '搜索类目不正确');
             return;
         }
+        currentPage = page;
         $.getJSON('/admin/tradeItem/listByCategory?fa=' + superCateIndex + '&ch=' + childCateIndex + '&page=' + page, '', function (data, status) {
             if (data['result']) {
                 var items = data['data'];
-                if(items.length < 1){
-                    slideErrorMsg('查询成功','没有查到结果');
+                if (items.length < 1) {
+                    slideErrorMsg('查询成功', '没有查到结果');
                 }
                 var template = $.templates("#itemPreviewTmpl");
                 var html = template.render(items);
@@ -152,6 +190,7 @@
 
     var preview_frame_switch = false;
     function addItemPage() {
+        albums = [];
         if (preview_frame_switch) {
             $("#fun_btn").text('添加商品');
             $("#preview_frame").fadeIn();
@@ -171,9 +210,9 @@
     }
 
     function searchById() {
-        $.getJSON('/admin/tradeItem/findById?id='+$("#search_id_input").val(),'',function (data, status) {
-            if(data.length > 0){
-                slideErrorMsg('查询成功','没有查到结果');
+        $.getJSON('/admin/tradeItem/findById?id=' + $("#search_id_input").val(), '', function (data, status) {
+            if (data.length > 0) {
+                slideErrorMsg('查询成功', '没有查到结果');
             }
             var template = $.templates("#itemPreviewTmpl");
             var html = template.render(data['data']);
@@ -181,6 +220,24 @@
         }).error(function () {
             slideErrorMsg('查询出错', '服务器错误');
         });
+    }
+
+    function changeRecommend(id) {
+        $.get('changeRecommend?id=' + id, function (data, status) {
+            if (data.result) {
+                slideErrorMsg('更新成功', '');
+                previewItems(currentPage);
+            }
+        })
+    }
+
+    function changeIndexRecommend(id) {
+        $.get('changeIndexRecommend?id=' + id, function (data, status) {
+            if (data.result) {
+                slideErrorMsg('更新成功', '');
+                previewItems(currentPage);
+            }
+        })
     }
 
 </script>
@@ -225,6 +282,7 @@
         data['detailDesp'] = getContent();
         data['fatherCategory'] = superCateIndex;
         data['childCategory'] = childCateIndex;
+        data['album'] = albums.toString();
 
         $.post('/admin/tradeItem/addTradeItem', data, function (resp, status) {
             if (resp['result']) {

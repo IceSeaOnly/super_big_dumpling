@@ -52,7 +52,7 @@ public class TradeItem extends AbstractEntity {
     @NotEmpty(message = "单位不能为空")
     private String unit;// 单位
     @ElementCollection
-    private List<String> album;
+    private List<Album> album;
     private boolean recommend; // 父类推荐
     private boolean indexRecommend;// 首页推荐
     private String properties; // 商品属性 json

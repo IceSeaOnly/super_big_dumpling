@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperDumpling.common.definations.DeleteAble;
 
 import javax.persistence.EntityManager;
@@ -96,5 +97,11 @@ public class SimpleDataService{
     private SimpleJpaRepository getRepository(Class T){
         cache.put(T,new SimpleJpaRepository(T,entityManager));
         return cache.get(T);
+    }
+
+    @Transactional
+    public void update(Object obj) {
+        SimpleJpaRepository repo = getSimpleJpaRepository(obj.getClass());
+        repo.saveAndFlush(obj);
     }
 }

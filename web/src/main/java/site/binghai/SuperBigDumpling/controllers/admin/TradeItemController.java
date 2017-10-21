@@ -1,10 +1,14 @@
 package site.binghai.SuperBigDumpling.controllers.admin;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import site.binghai.SuperBigDumpling.controllers.MultiController;
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
+import site.binghai.SuperBigDumpling.entity.things.Album;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.facades.TradeItemFacade;
@@ -47,6 +51,20 @@ public class TradeItemController extends MultiController {
         return JSONResponse.successResp("success", null);
     }
 
+    @RequestMapping("edit")
+    public String editTradeItem(@RequestParam int id, ModelMap map){
+        TradeItem item = getTradeItem(id);
+        if(item == null){
+            new NotFoundException("商品不存在");
+        }
+        map.put("item",item);
+        return "editTradeItem";
+    }
+
+    private TradeItem getTradeItem(int id) {
+        return dataService.findById(id,TradeItem.class);
+    }
+
     @RequestMapping("delTradeItem")
     @ResponseBody
     public String delTradeItem(@RequestParam Integer tradeItemId, HttpSession session) {
@@ -64,16 +82,58 @@ public class TradeItemController extends MultiController {
     public Object listByCategory(@RequestParam int ch, Integer page) {
         Category c = dataService.findById(ch, Category.class);
         if (c == null) {
-            return JSONResponse.errorResp(ErrorList.INVALID_PARAMETER, null, null);
+            return error(ErrorList.INVALID_PARAMETER, null, null);
         }
 
-        return JSONResponse.successResp("success", service.findByCategory(c, page == null ? 0 : page));
+        return success("success", service.findByCategory(c, page == null ? 0 : page));
+    }
+
+    @ResponseBody
+    @RequestMapping("changeRecommend")
+    public Object changeRecommend(@RequestParam int id){
+        TradeItem item = dataService.findById(id,TradeItem.class);
+        item.setRecommend(!item.isRecommend());
+        dataService.update(item);
+        return success("",null);
+    }
+
+    @ResponseBody
+    @RequestMapping("changeIndexRecommend")
+    public Object changeIndexRecommend(@RequestParam int id){
+        TradeItem item = dataService.findById(id,TradeItem.class);
+        item.setIndexRecommend(!item.isIndexRecommend());
+        dataService.update(item);
+        return success("",null);
+    }
+
+
+    @RequestMapping(value = "addAlbum",method = RequestMethod.POST)
+    @ResponseBody
+    public Object addAlbum(@RequestParam String url,HttpSession session){
+        Album album = new Album();
+        album.setUrl(url);
+        album.setWeight(0);
+        BeansUtils.initThings(album,UserUtils.getAdministrator(session));
+        album = dataService.save(album);
+        return success("",album);
+    }
+
+    @RequestMapping("albumAddWeigth")
+    @ResponseBody
+    public Object albumAddWeigth(@RequestParam int id){
+        Album album = dataService.findById(id,Album.class);
+        if(album == null){
+            return error(ErrorList.NOT_FOUND,"404",null);
+        }
+        album.setWeight(album.getWeight()+1);
+        dataService.update(album);
+        return success("",album);
     }
 
     @ResponseBody
     @RequestMapping("findById")
     public Object findById(@RequestParam int id) {
-        return JSONResponse.successResp(null, dataService.findById(id, TradeItem.class));
+        return success(null, dataService.findById(id, TradeItem.class));
     }
 
     @Override
@@ -118,6 +178,7 @@ public class TradeItemController extends MultiController {
         }
         return tradeItemFacade.asList(service.findByCategory(category, getPage(params)));
     }
+
 
     @Override
     public List<String> getActHeader() {

@@ -10,6 +10,18 @@
     var cssBlackList = new Array();
     var jsBlackList = new Array();
 
+    function requireInputAndCallback(title,callBack) {
+        var ctn = "";
+
+        swal({
+            title: title,
+            input: 'text',
+            showCancelButton: true
+        }).then(function(result) {
+            callBack.call(this,result);
+        })
+    }
+
     function addCssBlackList(name) {
         cssBlackList.push(name);
     }

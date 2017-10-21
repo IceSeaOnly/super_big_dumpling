@@ -2,9 +2,11 @@ package site.binghai.SuperBigDumpling.facades;
 
 import lombok.Builder;
 import lombok.Data;
+import site.binghai.SuperBigDumpling.entity.things.Album;
 import site.binghai.SuperBigDumpling.entity.things.Group;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,12 +64,19 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
                 .price(obj.getOprice() / 100.0)
                 .saleNum(obj.getSaleNum())
                 .unit(obj.getUnit())
-                .album(obj.getAlbum())
+                .album(album2String(obj.getAlbum()))
                 .intro(obj.getDetailDesp())
 
                 .groupNum(0)
                 .is_collect(false)
                 .groupList(Collections.EMPTY_LIST)
                 .build();
+    }
+
+    private List<String> album2String(List<Album> album) {
+        List<String> rs = new ArrayList<>();
+        Collections.sort(album);
+        album.forEach(v -> rs.add(v.getUrl()));
+        return rs;
     }
 }
