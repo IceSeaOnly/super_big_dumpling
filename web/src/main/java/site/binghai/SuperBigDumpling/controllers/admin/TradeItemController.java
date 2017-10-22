@@ -10,6 +10,7 @@ import site.binghai.SuperBigDumpling.controllers.MultiController;
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
 import site.binghai.SuperBigDumpling.entity.things.Album;
 import site.binghai.SuperBigDumpling.entity.things.Category;
+import site.binghai.SuperBigDumpling.entity.things.Property;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.facades.TradeItemFacade;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
@@ -22,6 +23,7 @@ import site.binghai.SuperDumpling.common.utils.MapUtils;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +130,25 @@ public class TradeItemController extends MultiController {
         album.setWeight(album.getWeight()+1);
         dataService.update(album);
         return success("",album);
+    }
+
+    @RequestMapping("addTradeItemProperties")
+    @ResponseBody
+    public Object addTradeItemProperties(@RequestParam String properties,HttpSession session){
+        String[] arr = properties.split(" ");
+        if(arr.length < 2){
+            return error(ErrorList.INVALID_PARAMETER,"输入格式有误",null);
+        }
+        Property property = new Property();
+        property.setName(arr[0]);
+        List<String> pts = new ArrayList<>();
+        for (int i = 1; i < arr.length; i++) {
+            pts.add(arr[i]);
+        }
+        property.setValue(pts);
+        BeansUtils.initThings(property,UserUtils.getAdministrator(session));
+        property = dataService.save(property);
+        return success("ok",property);
     }
 
     @ResponseBody

@@ -50,6 +50,13 @@
                             </div>
                         </div>
                         <div class="control-group">
+                            <label class="control-label">商品属性:</label>
+                            <div class="controls">
+                                <div id="propertiesList"></div>
+                                <button class="btn btn-mini btn-danger" type="button" onclick="addTradeItemProperties()">添加属性</button>
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label">详情图册:</label>
                             <div class="controls">
                                 <ul class="thumbnails">
@@ -68,7 +75,7 @@
                             <label class="control-label">首页推荐:</label>
                             <div class="controls">
                                 <label>
-                                    <input type="checkbox" name="indexRecommand" value="true"/>
+                                    <input type="checkbox" id="indexRecommand" value="true"/>
                                     首页推荐</label>
                             </div>
                         </div>
@@ -76,7 +83,7 @@
                             <label class="control-label">类目内推荐:</label>
                             <div class="controls">
                                 <label>
-                                    <input type="checkbox" name="recommand" value="true"/>
+                                    <input type="checkbox" id="recommand" value="true"/>
                                     类目内推荐</label>
                             </div>
                         </div>

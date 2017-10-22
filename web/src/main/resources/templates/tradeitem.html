@@ -79,6 +79,9 @@
     </li>
 </script>
 
+<script type="text/x-jsrender" id="propertiesTpl">
+    <span class="label label-info">{{:name}}</span>&nbsp
+</script>
 <script type="text/x-jsrender" id="itemPreviewTmpl">
     <li class="span2">
         <a href="edit?id={{:id}}" target="_blank"> <img src="{{:imgUrl}}" alt=""> </a>
@@ -99,7 +102,24 @@
     var childCateIndex = -1;
     var currentPage = 0;
     var albums = [];
+    var property = [];
 
+    function addTradeItemProperties() {
+        requireInputAndCallback('先属性名再属性项,全都以空格分割',function (properties) {
+            if(!properties){return}
+
+            $.post('addTradeItemProperties',{properties:properties},function (data, status) {
+                if(!data['result']){
+                    error('错误',data['msg'],false);
+                }else{
+                    var template = $.templates("#propertiesTpl");
+                    var html = template.render(data['data']);
+                    $("#propertiesList").append(html);
+                    property.push(data['data']['id']);
+                }
+            })
+        })
+    }
     function addAlbum() {
         requireInputAndCallback('输入图片地址',function (url) {
             if(!url){return}
@@ -190,7 +210,6 @@
 
     var preview_frame_switch = false;
     function addItemPage() {
-        albums = [];
         if (preview_frame_switch) {
             $("#fun_btn").text('添加商品');
             $("#preview_frame").fadeIn();
@@ -276,13 +295,14 @@
         data['imgUrl'] = $("[name='item_img']").val();
         data['unit'] = $("[name='unit']").val();
         data['desp'] = $("[name='item_desp']").val();
-        data['indexRecommand'] = $("[name='indexRecommand']").is(':checked');
-        data['recommand'] = $("[name='recommand']").is(':checked');
+        data['indexRecommand'] = $("#indexRecommand").is(':checked');
+        data['recommand'] = $("#recommand").is(':checked');
         data['available'] = $("[name='item_online_status']:checked").val();
         data['detailDesp'] = getContent();
         data['fatherCategory'] = superCateIndex;
         data['childCategory'] = childCateIndex;
         data['album'] = albums.toString();
+        data['properties'] = property.toString();
 
         $.post('/admin/tradeItem/addTradeItem', data, function (resp, status) {
             if (resp['result']) {
@@ -291,6 +311,8 @@
                 setContent('');
                 addItemPage();
                 previewItems(0);
+                albums.length = 0;
+                property.length = 0;
             } else {
                 slideErrorMsg('发生错误', resp['msg']);
             }

@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import site.binghai.SuperBigDumpling.entity.things.Album;
 import site.binghai.SuperBigDumpling.entity.things.Group;
+import site.binghai.SuperBigDumpling.entity.things.Property;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
     private String unit;
     private List<String> album;
     private String intro;
+    private List<Property> property;
 
     // 以下为拼装数据
     private int groupNum;
@@ -37,7 +39,7 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
     public TradeItemFacade() {
     }
 
-    public TradeItemFacade(int id, String img, String name, double gprice, double mprice, double price, int saleNum, String unit, List<String> album, String intro, int groupNum, boolean is_collect, List<Group> groupList) {
+    public TradeItemFacade(int id, String img, String name, double gprice, double mprice, double price, int saleNum, String unit, List<String> album, String intro, List<Property> property, int groupNum, boolean is_collect, List<Group> groupList) {
         this.id = id;
         this.img = img;
         this.name = name;
@@ -48,6 +50,7 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
         this.unit = unit;
         this.album = album;
         this.intro = intro;
+        this.property = property;
         this.groupNum = groupNum;
         this.is_collect = is_collect;
         this.groupList = groupList;
@@ -66,6 +69,7 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
                 .unit(obj.getUnit())
                 .album(album2String(obj.getAlbum()))
                 .intro(obj.getDetailDesp())
+                .property(obj.getProperties())
 
                 .groupNum(0)
                 .is_collect(false)
