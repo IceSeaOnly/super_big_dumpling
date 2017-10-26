@@ -1,37 +1,34 @@
 package site.binghai.SuperBigDumpling.controllers.wx;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import site.binghai.SuperBigDumpling.controllers.MultiController;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by binghai on 2017/10/17.
- *
- * @ MoGuJie
+ * Created by IceSea on 2017/10/26.
+ * GitHub: https://github.com/IceSeaOnly
  */
-@Component
-public class User extends MultiController {
+@Controller
+public class WxPay extends MultiController {
+
     @Override
     public Object handleRequest(Map params) {
         switch (getAct(params)){
-            case "login":
-                return login(params);
+            case "wx-pay":
+                return wxPay(params);
         }
-
         return unkownRequest();
     }
 
-    private Object login(Map params) {
-        String access_token = "ABCDEFG123456789";
-        return access_token;
+    private Object wxPay(Map params) {
+        return null;
     }
 
     @Override
     public List<String> getActHeader() {
-        return Arrays.asList("login");
+        return Arrays.asList("wx-pay");
     }
 }

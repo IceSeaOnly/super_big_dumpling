@@ -2,7 +2,6 @@ package site.binghai.SuperBigDumpling.controllers.admin;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +15,13 @@ import site.binghai.SuperBigDumpling.facades.TradeItemFacade;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.service.TradeItemService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
+import site.binghai.SuperBigDumpling.utils.HttpRequestUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
-import site.binghai.SuperDumpling.common.utils.MapUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,9 +43,12 @@ public class TradeItemController extends MultiController {
 
     @RequestMapping(value = "addTradeItem", method = RequestMethod.POST)
     @ResponseBody
-    public Object addTradeItem(@NotNull TradeItem tradeItem, HttpSession session) {
-        Administrator administrator = UserUtils.getAdministrator(session);
+    public Object addTradeItem(TradeItem tradeItem, HttpServletRequest req, HttpSession session) {
+        Map<String,String> maps = HttpRequestUtils.getRequestParamMap(req);
+        tradeItem.setIndexRecommend(Boolean.parseBoolean(maps.get("indexRecommand")));
+        tradeItem.setRecommend(Boolean.parseBoolean(maps.get("recommand")));
 
+        Administrator administrator = UserUtils.getAdministrator(session);
         BeansUtils.initThings(tradeItem, administrator);
         dataService.save(tradeItem);
 
@@ -179,7 +181,7 @@ public class TradeItemController extends MultiController {
     }
 
     private Object GoodsDetail(Map params) {
-        int gid = MapUtils.getInt(params,"gid");
+        int gid = getInt(params,"gid");
         TradeItem item = dataService.findById(gid,TradeItem.class);
         TradeItemFacade facade = tradeItemFacade.asObj(item);
         return facade;

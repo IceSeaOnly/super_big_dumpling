@@ -61,10 +61,12 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="childCateTmpl">
         <li><a href="javascript:changeCate(1,{{:id}},'{{:cname}}')">{{:cname}}</a></li>
+
 
 
 
@@ -77,10 +79,12 @@
           <span class="label label-success" id="thumbs_{{:id}}">{{:weight}}</span>&nbsp<button type="button" onclick="albumWeightAdd({{:id}})"><i class="icon-thumbs-up"></i></button>
       </div>
     </li>
+
 </script>
 
 <script type="text/x-jsrender" id="propertiesTpl">
     <span class="label label-info">{{:name}}</span>&nbsp
+
 </script>
 <script type="text/x-jsrender" id="itemPreviewTmpl">
     <li class="span2">
@@ -96,6 +100,7 @@
 
 
 
+
 </script>
 <script>
     var superCateIndex = -1;
@@ -105,13 +110,15 @@
     var property = [];
 
     function addTradeItemProperties() {
-        requireInputAndCallback('先属性名再属性项,全都以空格分割',function (properties) {
-            if(!properties){return}
+        requireInputAndCallback('先属性名再属性项,全都以空格分割', function (properties) {
+            if (!properties) {
+                return
+            }
 
-            $.post('addTradeItemProperties',{properties:properties},function (data, status) {
-                if(!data['result']){
-                    error('错误',data['msg'],false);
-                }else{
+            $.post('addTradeItemProperties', {properties: properties}, function (data, status) {
+                if (!data['result']) {
+                    error('错误', data['msg'], false);
+                } else {
                     var template = $.templates("#propertiesTpl");
                     var html = template.render(data['data']);
                     $("#propertiesList").append(html);
@@ -121,10 +128,12 @@
         })
     }
     function addAlbum() {
-        requireInputAndCallback('输入图片地址',function (url) {
-            if(!url){return}
+        requireInputAndCallback('输入图片地址', function (url) {
+            if (!url) {
+                return
+            }
 
-            $.post('addAlbum',{url:url},function (data, status) {
+            $.post('addAlbum', {url: url}, function (data, status) {
                 var template = $.templates("#thumbsTpl");
                 var html = template.render(data['data']);
                 $("#thumbTplArea").append(html);
@@ -134,8 +143,8 @@
     }
 
     function albumWeightAdd(id) {
-        $.get('albumAddWeigth?id='+id,function (data, status) {
-            $("#thumbs_"+id).text(data['data']['weight']);
+        $.get('albumAddWeigth?id=' + id, function (data, status) {
+            $("#thumbs_" + id).text(data['data']['weight']);
         })
     }
 

@@ -1,6 +1,9 @@
 package site.binghai.SuperBigDumpling.utils;
 
+import site.binghai.SuperBigDumpling.controllers.wx.UserController;
+import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 import site.binghai.SuperBigDumpling.entity.people.Administrator;
+import site.binghai.SuperBigDumpling.entity.people.User;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +12,11 @@ import javax.servlet.http.HttpSession;
  * GitHub: https://github.com/IceSeaOnly
  */
 public class UserUtils {
+
+    public static void userInit(AbstractEntity entity, User user){
+        entity.setOwner(user.getUsername());
+        entity.setUserId(user.getId());
+    }
 
     public static Administrator getAdministrator(HttpSession session) {
         Administrator admin = new Administrator();

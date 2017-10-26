@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.entity.people;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import site.binghai.SuperBigDumpling.entity.AbstractEntity;
 
@@ -30,5 +31,9 @@ public class OrderAddress extends AbstractEntity {
 
     public OrderAddress(UserAddress userAddress) {
 
+    }
+
+    public static OrderAddress ofJson(String json){
+        return JSONObject.parseObject(json,OrderAddress.class);
     }
 }

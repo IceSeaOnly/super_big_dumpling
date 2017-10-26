@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.facades;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import site.binghai.SuperBigDumpling.entity.things.Album;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Data
 @Builder
+@AllArgsConstructor
 public class TradeItemFacade extends BaseFacade<TradeItem> {
     private int id;
     private String img;
@@ -37,23 +39,6 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
     private List<Group> groupList;
 
     public TradeItemFacade() {
-    }
-
-    public TradeItemFacade(int id, String img, String name, double gprice, double mprice, double price, int saleNum, String unit, List<String> album, String intro, List<Property> property, int groupNum, boolean is_collect, List<Group> groupList) {
-        this.id = id;
-        this.img = img;
-        this.name = name;
-        this.gprice = gprice;
-        this.mprice = mprice;
-        this.price = price;
-        this.saleNum = saleNum;
-        this.unit = unit;
-        this.album = album;
-        this.intro = intro;
-        this.property = property;
-        this.groupNum = groupNum;
-        this.is_collect = is_collect;
-        this.groupList = groupList;
     }
 
     @Override

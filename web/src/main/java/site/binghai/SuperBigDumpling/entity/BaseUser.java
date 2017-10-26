@@ -27,7 +27,7 @@ public class BaseUser implements Serializable,DeleteAble {
 
     @Override
     public boolean accessAble() {
-        return isForbidden();
+        return !isForbidden();
     }
 
     @Override
