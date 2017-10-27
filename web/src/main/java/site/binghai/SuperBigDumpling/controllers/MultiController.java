@@ -23,14 +23,26 @@ public abstract class MultiController implements WxHandler, InitializingBean {
     @Autowired
     protected SimpleDataService simpleDataService;
 
+    /**
+     * 此方法为父类使用，子类不可重写
+     * 如需获得监听初始化能力
+     * 只需重写afterBeanInitialized方法
+     * */
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public final void afterPropertiesSet() throws Exception {
         ApiDomain.registerHandler(this);
+        afterBeanInitialized();
     }
+
+    protected void afterBeanInitialized(){/** 空方法，按需重写以获得监听初始化能力 */}
 
     public User getUserByWxCode(Map params) {
         // todo
         return simpleDataService.findById(1, User.class);
+    }
+
+    public String getUserCode(Map params){
+        return getString(params,"code");
     }
 
     public String getAct(Map params) {
