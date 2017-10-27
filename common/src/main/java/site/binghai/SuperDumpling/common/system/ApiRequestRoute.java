@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import site.binghai.SuperDumpling.common.definations.WxHandler;
 
+import java.lang.reflect.Method;
+
 /**
  * Created by binghai on 2017/10/27.
  *
@@ -12,7 +14,7 @@ import site.binghai.SuperDumpling.common.definations.WxHandler;
 @Data
 @AllArgsConstructor
 public class ApiRequestRoute {
-    private String apiName;
-    private String methodName;
+    private Method method;
+    private Object instance;
     private Class clazz;
 }

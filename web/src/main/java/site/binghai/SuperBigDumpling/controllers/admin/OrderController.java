@@ -9,6 +9,7 @@ import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.utils.OrderNoUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
+import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,18 +23,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("admin/order")
 public class OrderController extends MultiController {
-    @Override
-    public Object handleRequest(Map params) {
-        switch (getAct(params)) {
-            case "create-orders":
-                return createOrder(params);
-            case "orders-list":
-                return orderList(params);
-        }
-        return unkownRequest();
-    }
-
-    private Object createOrder(Map params) {
+    @ApiRequestMapping("create-orders")
+    public Object createOrder(Map params) {
         TradeItem tradeItem = simpleDataService.findById(getInt(params, "gid"), TradeItem.class);
         OrderAddress orderAddress = simpleDataService.save(OrderAddress.ofJson(getString(params, "address")));
 
@@ -59,12 +50,8 @@ public class OrderController extends MultiController {
         return order.getOrderNum();
     }
 
-    private Object orderList(Map params) {
+    @ApiRequestMapping("orders-list")
+    public Object orderList(Map params) {
         return null;
-    }
-
-    @Override
-    public List<String> getActHeader() {
-        return Arrays.asList("orders-list", "create-orders");
     }
 }

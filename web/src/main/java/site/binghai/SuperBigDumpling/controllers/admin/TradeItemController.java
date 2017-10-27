@@ -17,6 +17,7 @@ import site.binghai.SuperBigDumpling.service.TradeItemService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.HttpRequestUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
+import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
 
@@ -159,28 +160,16 @@ public class TradeItemController extends MultiController {
         return success(null, dataService.findById(id, TradeItem.class));
     }
 
-    @Override
-    public Object handleRequest(Map params) {
-        switch (getAct(params)) {
-            case "index":
-                return GoodIndex(params);
-            case "goods-list":
-                return GoodsList(params);
-            case "goods-detail":
-                return GoodsDetail(params);
-        }
-
-        return unkownRequest();
-    }
-
-    private Object GoodIndex(Map params) {
+    @ApiRequestMapping("index")
+    public Object GoodIndex(Map params) {
         if (getCid(params) < 0) {
             return null;
         }
         return tradeItemFacade.asList(service.findRecommand(getCid(params), getPage(params), 0));
     }
 
-    private Object GoodsDetail(Map params) {
+    @ApiRequestMapping("goods-detail")
+    public Object GoodsDetail(Map params) {
         int gid = getInt(params,"gid");
         TradeItem item = dataService.findById(gid,TradeItem.class);
         TradeItemFacade facade = tradeItemFacade.asObj(item);
@@ -190,7 +179,8 @@ public class TradeItemController extends MultiController {
     /**
      * 获取类目下商品
      * */
-    private Object GoodsList(Map params) {
+    @ApiRequestMapping("goods-list")
+    public Object GoodsList(Map params) {
         if (getCid(params) < 0) {
             return null;
         }
@@ -200,11 +190,5 @@ public class TradeItemController extends MultiController {
             return null;
         }
         return tradeItemFacade.asList(service.findByCategory(category, getPage(params)));
-    }
-
-
-    @Override
-    public List<String> getActHeader() {
-        return Arrays.asList("index", "goods-list","goods-detail");
     }
 }

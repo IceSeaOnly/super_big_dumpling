@@ -14,11 +14,11 @@ import site.binghai.SuperBigDumpling.service.CategoryService;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
+import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
 
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +90,7 @@ public class CategoryController extends MultiController {
         }
     }
 
-    @Override
+    @ApiRequestMapping("category")
     public Object handleRequest(Map params) {
         int cid = MapUtils.getInteger(params, "cid");
         Category root = null;
@@ -98,11 +98,6 @@ public class CategoryController extends MultiController {
             root = service.findById(cid, Category.class);
         }
         return categoryFacade.asList(categoryService.findByFatherCategory(root));
-    }
-
-    @Override
-    public List<String> getActHeader() {
-        return Arrays.asList("category");
     }
 
 }
