@@ -2,6 +2,7 @@ package site.binghai.SuperBigDumpling.controllers.wx;
 
 import org.springframework.stereotype.Controller;
 import site.binghai.SuperBigDumpling.controllers.MultiController;
+import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,4 +32,7 @@ public class WxPay extends MultiController {
     public List<String> getActHeader() {
         return Arrays.asList("wx-pay");
     }
+
+    @ApiRequestMapping("hello")
+    public void test(){}
 }
