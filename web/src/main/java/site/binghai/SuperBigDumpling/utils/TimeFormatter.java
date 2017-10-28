@@ -116,4 +116,8 @@ public class TimeFormatter {
         cal.set(Calendar.HOUR_OF_DAY, 24);
         return cal.getTimeInMillis();
     }
+
+    public static String now() {
+        return format(System.currentTimeMillis());
+    }
 }

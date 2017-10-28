@@ -1,5 +1,7 @@
 package site.binghai.SuperBigDumpling.controllers.wx;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("wx")
 public class ApiDomain extends ApplicationObjectSupport {
+    private final Logger mlogger = LoggerFactory.getLogger(ApiDomain.class);
+
     private static Map<String, ApiRequestRoute> wxHandlerMap = new HashMap<>();
 
     @RequestMapping("api")
@@ -61,9 +65,9 @@ public class ApiDomain extends ApplicationObjectSupport {
             obj = route.getMethod().invoke(instance, req);
             return obj instanceof JSONResponse ? obj : JSONResponse.successResp("", obj);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            mlogger.error("error at apiDomain:",e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            mlogger.error("error at apiDomain:",e);
         }
         return JSONResponse.errorResp(ErrorList.INNER_ERROR, null, null);
     }

@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import site.binghai.SuperBigDumpling.controllers.MultiController;
 import site.binghai.SuperBigDumpling.entity.people.Order;
 import site.binghai.SuperBigDumpling.entity.people.OrderAddress;
+import site.binghai.SuperBigDumpling.entity.people.User;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.enums.OrderStatusEnum;
-import site.binghai.SuperBigDumpling.utils.OrderNoUtils;
+import site.binghai.SuperBigDumpling.utils.OrderUtils;
+import site.binghai.SuperBigDumpling.utils.TimeFormatter;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
 import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,9 +24,12 @@ import java.util.Map;
 @RequestMapping("admin/order")
 public class OrderController extends MultiController {
     @ApiRequestMapping("create-orders")
-    public Object createOrder(Map params) {
+    public Object createOrder(Map params) throws Exception {
         TradeItem tradeItem = simpleDataService.findById(getInt(params, "gid"), TradeItem.class);
+        User user = getUserByWxCode(params);
+
         OrderAddress orderAddress = simpleDataService.save(OrderAddress.ofJson(getString(params, "address")));
+        UserUtils.userInit(orderAddress, user);
 
         Order order = Order.builder()
                 .goodsNum(getInt(params, "goodsNum"))
@@ -37,16 +40,16 @@ public class OrderController extends MultiController {
                 .tradeItem(tradeItem)
                 .img(tradeItem.getImgUrl())
                 .name(tradeItem.getName())
+                .createTime(TimeFormatter.now())
                 .build();
         if (!order.isGroupOrder()) {
             order.groupSuccess();
         }
-        UserUtils.userInit(order, getUserByWxCode(params));
-        order.setOrderStatus(OrderStatusEnum.WAITING_PAY.getStatus());
+
+        UserUtils.userInit(order, user);
+        OrderUtils.orderStatusUpdate(order,OrderStatusEnum.WAITING_PAY);
+        OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
-
-        OrderNoUtils.makeOrderNo(order);
-
         return order.getOrderNum();
     }
 

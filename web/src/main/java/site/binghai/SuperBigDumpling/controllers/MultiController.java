@@ -3,9 +3,11 @@ package site.binghai.SuperBigDumpling.controllers;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import site.binghai.SuperBigDumpling.controllers.wx.ApiDomain;
 import site.binghai.SuperBigDumpling.entity.people.User;
 import site.binghai.SuperBigDumpling.service.SimpleDataService;
+import site.binghai.SuperBigDumpling.service.UserService;
 import site.binghai.SuperDumpling.common.definations.WxHandler;
 import site.binghai.SuperDumpling.common.system.ErrorList;
 import site.binghai.SuperDumpling.common.system.JSONResponse;
@@ -22,6 +24,8 @@ public abstract class MultiController implements WxHandler, InitializingBean {
     private Map params = null;
     @Autowired
     protected SimpleDataService simpleDataService;
+    @Autowired
+    protected UserService userService;
 
     /**
      * 此方法为父类使用，子类不可重写
@@ -36,13 +40,23 @@ public abstract class MultiController implements WxHandler, InitializingBean {
 
     protected void afterBeanInitialized(){/** 空方法，按需重写以获得监听初始化能力 */}
 
-    public User getUserByWxCode(Map params) {
-        // todo
-        return simpleDataService.findById(1, User.class);
+    /**
+     * 通过用户传递过来的uuid（code）获取用户
+     * */
+    public User getUserByWxCode(Map params) throws Exception {
+        return getUserByWxUuid(getUserCode(params));
     }
 
-    public String getUserCode(Map params){
-        return getString(params,"code");
+    public User getUserByWxUuid(String uuid){
+        return userService.findByUuid(uuid);
+    }
+
+    public String getUserCode(Map params) throws Exception {
+        String code = getString(params,"code");
+        if(StringUtils.isEmpty(code)){
+            throw new Exception("code can't be empty!");
+        }
+        return code;
     }
 
     public String getAct(Map params) {

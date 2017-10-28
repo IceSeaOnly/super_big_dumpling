@@ -33,6 +33,7 @@ public class Order extends AbstractEntity {
     private String properties; //购买属性 json
     private String img;
     private String orderNum; //订单编号
+    private int status;
     private String orderStatus;
     private String name;
     @OneToOne
@@ -55,6 +56,6 @@ public class Order extends AbstractEntity {
     }
 
     public Order() {
-        createTime = TimeFormatter.format(created);
+        createTime = TimeFormatter.format(System.currentTimeMillis());
     }
 }

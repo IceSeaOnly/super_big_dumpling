@@ -18,6 +18,10 @@ public class UserUtils {
         entity.setUserId(user.getId());
     }
 
+    public static String diyUUID(String openId){
+        return MD5.encryption(openId+System.currentTimeMillis()).substring(16);
+    }
+
     public static Administrator getAdministrator(HttpSession session) {
         Administrator admin = new Administrator();
         admin.setId(1);

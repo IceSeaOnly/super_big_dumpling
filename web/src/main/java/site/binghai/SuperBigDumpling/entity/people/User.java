@@ -25,6 +25,9 @@ public class User extends BaseUser {
     private String phone;
     private int cps;//积分
     private int money; //余额，单位分
+    private String openId;
+    private String uuid;
+    private String sessionKey;
     @ElementCollection
     private List<TradeItem> collections; //收藏
 }
