@@ -18,7 +18,9 @@ public enum OrderStatusEnum {
     CANCLED(6,"已取消"),
     WAITING_RETURN_GOODS(7,"待退货"),
     RE_DISTRIBUTOIN(8,"重新配送中"),
-    REQ_CANCLE(9,"申请退款中")
+    REQ_CANCLE(9,"申请退款中"),
+    GROUP_FAILED(10,"拼团失败"),
+    REFUNDED(11,"已退款"),
     ;
 
     private int index;
