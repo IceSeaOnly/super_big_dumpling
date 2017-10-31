@@ -47,6 +47,8 @@ public class TradeItem extends AbstractEntity {
     private String detailDesp; //富文本内容
     @Min(value = 0,message = "已售不能小于0")
     private int saleNum;// 已售
+    @Min(value = 0,message = "库存不能小于0")
+    private int stock; //库存
     @NonNull
     @NotEmpty(message = "单位不能为空")
     private String unit;// 单位

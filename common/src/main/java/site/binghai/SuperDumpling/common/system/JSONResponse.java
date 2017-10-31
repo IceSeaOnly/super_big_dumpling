@@ -22,7 +22,7 @@ public class JSONResponse {
     }
 
     public static JSONResponse errorResp(ErrorList error, String extraMsg, Object data) {
-        return new JSONResponse(Boolean.FALSE, data, extraMsg == null ? error.getErrorMsg() : error.getErrorMsg() + ";" + extraMsg, "success");
+        return new JSONResponse(Boolean.FALSE, data, extraMsg == null ? error.getErrorMsg() : error.getErrorMsg() + ";" + extraMsg, "failed");
     }
 
     public static JSONResponse successResp(String msg, Object data) {

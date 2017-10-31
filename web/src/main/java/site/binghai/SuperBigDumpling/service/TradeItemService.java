@@ -45,4 +45,12 @@ public class TradeItemService {
         }
         return dao.findByIndexRecommend(true,new PageRequest(page,10));
     }
+
+    /**
+     * 减库存
+     * */
+    public TradeItem getOneStock(TradeItem tradeItem) {
+        int effectd = dao.consumeOneStock(tradeItem.getId());
+        return null;
+    }
 }

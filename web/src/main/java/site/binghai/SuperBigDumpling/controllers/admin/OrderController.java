@@ -11,10 +11,12 @@ import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.facades.OrderFacade;
 import site.binghai.SuperBigDumpling.service.OrderService;
+import site.binghai.SuperBigDumpling.service.TradeItemService;
 import site.binghai.SuperBigDumpling.utils.OrderUtils;
 import site.binghai.SuperBigDumpling.utils.TimeFormatter;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
 import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
+import site.binghai.SuperDumpling.common.system.ErrorList;
 
 import java.util.List;
 import java.util.Map;
@@ -29,11 +31,14 @@ import java.util.Map;
 public class OrderController extends MultiController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private TradeItemService tradeItemService;
     private OrderFacade facade = new OrderFacade();
 
     @ApiRequestMapping("create-orders")
     public Object createOrder(Map params) throws Exception {
         TradeItem tradeItem = simpleDataService.findById(getInt(params, "gid"), TradeItem.class);
+        tradeItem = tradeItemService.getOneStock(tradeItem);
         User user = getUserByWxCode(params);
 
         OrderAddress orderAddress = simpleDataService.save(OrderAddress.ofJson(getString(params, "address")));
@@ -59,7 +64,8 @@ public class OrderController extends MultiController {
         OrderUtils.orderStatusUpdate(order, OrderStatusEnum.WAITING_PAY);
         OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
-        return order.getOrderNum();
+//        return order.getOrderNum();
+        return error(ErrorList.EMPTY_STOCK,null,null);
     }
 
     @ApiRequestMapping("orders-list")

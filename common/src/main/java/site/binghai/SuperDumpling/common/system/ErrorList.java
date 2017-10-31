@@ -11,7 +11,9 @@ public enum ErrorList {
     UNKONW_ACT(4004, "act参数无法识别", null),
     NOT_FOUND(4005, "记录不存在404", null),
     INNER_ERROR(4006, "500内部错误", null),
-    ILLEGAL_REQUEST(4007, "非法访问", null);
+    ILLEGAL_REQUEST(4007, "非法访问", null),
+    EMPTY_STOCK(4008, "库存不足下单失败", null),
+    ;
     private int errorId;
     private String errorMsg;
     private Object extra;

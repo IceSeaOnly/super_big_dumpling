@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
 
@@ -21,4 +22,8 @@ public interface TradeItemDao extends JpaRepository<TradeItem,Integer>{
      * */
     List<TradeItem> findByFatherCategoryAndRecommend(Category category,boolean recommand,Pageable page);
     List<TradeItem> findByIndexRecommend(boolean recommand,Pageable page);
+
+    @Query("update TradeItem t set t.stock = t.stock-1 where id= :id")
+    @Transactional
+    int consumeOneStock(@Param("id") int id);
 }
