@@ -13,6 +13,7 @@ public enum ErrorList {
     INNER_ERROR(4006, "500内部错误", null),
     ILLEGAL_REQUEST(4007, "非法访问", null),
     EMPTY_STOCK(4008, "库存不足下单失败", null),
+    ORDER_EXCEPTION(4009, "订单异常", null),
     ;
     private int errorId;
     private String errorMsg;

@@ -39,6 +39,9 @@ public class OrderController extends MultiController {
     public Object createOrder(Map params) throws Exception {
         TradeItem tradeItem = simpleDataService.findById(getInt(params, "gid"), TradeItem.class);
         tradeItem = tradeItemService.getOneStock(tradeItem);
+        if(tradeItem == null){
+            return error(ErrorList.EMPTY_STOCK,null,null);
+        }
         User user = getUserByWxCode(params);
 
         OrderAddress orderAddress = simpleDataService.save(OrderAddress.ofJson(getString(params, "address")));
@@ -55,8 +58,9 @@ public class OrderController extends MultiController {
                 .img(tradeItem.getImgUrl())
                 .name(tradeItem.getName())
                 .createTime(TimeFormatter.now())
+                .openId(user.getOpenId())
                 .build();
-        if (!order.isGroupOrder()) {
+        if (!order.isGroupOrder()) { // 非拼团订单立即成团
             order.groupSuccess();
         }
 
@@ -64,8 +68,7 @@ public class OrderController extends MultiController {
         OrderUtils.orderStatusUpdate(order, OrderStatusEnum.WAITING_PAY);
         OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
-//        return order.getOrderNum();
-        return error(ErrorList.EMPTY_STOCK,null,null);
+        return order.getOrderNum();
     }
 
     @ApiRequestMapping("orders-list")

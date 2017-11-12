@@ -1,10 +1,14 @@
 package site.binghai.SuperBigDumpling.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
@@ -15,6 +19,8 @@ import java.util.*;
  * @ MoGuJie
  */
 public class HttpRequestUtils {
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequestUtils.class);
+
     public static String getRequestParams(HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
         Map<String, String> map = getRequestParamMap(request);
@@ -49,12 +55,12 @@ public class HttpRequestUtils {
         return full.substring(full.lastIndexOf("/"), full.length());
     }
 
-    public static JSONObject getJson(String url){
+    public static JSONObject getJson(String url) {
         return JSONObject.parseObject(sendGetRequest(url));
     }
 
     public static String sendGetRequest(String url) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         BufferedReader in = null;
         try {
             URL realUrl = new URL(url);
@@ -68,18 +74,59 @@ public class HttpRequestUtils {
                     connection.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
         } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+            logger.error("sendGetRequest error-1!", e);
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
             } catch (Exception e2) {
-                e2.printStackTrace();
+                logger.error("sendGetRequest error-2!", e2);
+            }
+        }
+        return result.toString();
+    }
+
+    public static String sendPost(String url, String param) {
+        PrintWriter out = null;
+        BufferedReader in = null;
+        String result = "";
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            URLConnection conn = realUrl.openConnection();
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            out = new PrintWriter(conn.getOutputStream());
+            out.print(param);
+            out.flush();
+            in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+        } catch (Exception e) {
+            System.out.println("发送 POST 请求出现异常！" + e);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
         return result;

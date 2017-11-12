@@ -30,9 +30,10 @@ public class Order extends AbstractEntity {
     private int price;
     private int goodsNum; //购买数量
     private int totalPrice;
+    private String openId;
     private String properties; //购买属性 json
     private String img;
-    private String orderNum; //订单编号
+    private String orderNum; //商户订单号
     private int status;
     private String orderStatus;
     private String name;

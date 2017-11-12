@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import services.StockServiceApi;
 import site.binghai.SuperBigDumpling.dao.TradeItemDao;
 import site.binghai.SuperBigDumpling.entity.things.Category;
 import site.binghai.SuperBigDumpling.entity.things.TradeItem;
@@ -17,9 +18,11 @@ import java.util.List;
 @Service
 public class TradeItemService {
     @Autowired
-    TradeItemDao dao;
+    private TradeItemDao dao;
     @Autowired
-    SimpleDataService simpleDataService;
+    private SimpleDataService simpleDataService;
+    @Autowired
+    private StockServiceApi stockServiceApi;
 
     /**
      * 分页查询
@@ -47,10 +50,10 @@ public class TradeItemService {
     }
 
     /**
-     * 减库存
+     * 减库存 todo 分布式应用从这里修改减库存逻辑
      * */
     public TradeItem getOneStock(TradeItem tradeItem) {
-        int effectd = dao.consumeOneStock(tradeItem.getId());
-        return null;
+        int effect = stockServiceApi.getOneStock(tradeItem.getId());
+        return effect > 0 ? tradeItem : null;
     }
 }
