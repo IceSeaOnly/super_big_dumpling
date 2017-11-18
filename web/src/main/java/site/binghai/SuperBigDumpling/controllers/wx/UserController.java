@@ -9,6 +9,7 @@ import site.binghai.SuperBigDumpling.controllers.MultiController;
 import site.binghai.SuperBigDumpling.entity.people.User;
 import site.binghai.SuperBigDumpling.enums.WxParams;
 import site.binghai.SuperBigDumpling.utils.HttpRequestUtils;
+import site.binghai.SuperBigDumpling.utils.MD5;
 import site.binghai.SuperBigDumpling.utils.UserUtils;
 import site.binghai.SuperDumpling.common.definations.ApiRequestMapping;
 import java.util.Map;
@@ -68,6 +69,9 @@ public class UserController extends MultiController {
      * */
     private User regAuto(String openid, String unionid, String session_key) {
         User user = new User();
+        user.setUsername("请设置用户名");
+        user.setPassword(MD5.encryption("123456"));
+        user.setPhone("10000000000");
         user.setUuid(unionid);
         user.setOpenId(openid);
         user.setMoney(0);

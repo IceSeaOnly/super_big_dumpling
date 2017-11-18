@@ -14,11 +14,12 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:wxpay.properties")
 @Data
 public class WxParams {
-    private String appId;
-    private String secret; // appSecret
+    private String appId; // 小程序 appId
+    private String secret; // 小程序appSecret
+    private String payAppId; // 微信支付appId
+    private String payAppSecret; // 微信支付appSecret 商户支付密钥
     private String mch_id;
     private String baseNonceStr;
-    private String paySecret; // 商户支付密钥
     private String notify_url; // 微信支付回调
 
 }

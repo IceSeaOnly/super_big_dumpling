@@ -35,10 +35,14 @@ public class OrderService {
 
     public Order getByOutTradeNo(String outTradeNo) {
         List<Order> rs = orderDao.findByOrderNum(outTradeNo);
-        if (rs == null || rs.size() > 1) {
+        if (rs == null || rs.size() != 1) {
             logger.error("根据商户订单号查询异常!rs={}", JSONObject.toJSONString(rs));
             return null;
         }
         return rs.get(0);
+    }
+
+    public Order findById(int id) {
+        return orderDao.findOne(id);
     }
 }

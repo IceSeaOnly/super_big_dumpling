@@ -1,9 +1,11 @@
 package site.binghai.SuperBigDumpling.utils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dom4j.Document;
@@ -59,7 +61,7 @@ public class MessageUtil {
 
                 protected void writeText(QuickWriter writer, String text) {
                     if (cdata) {
-                        writer.write("]]>");
+                        writer.write("<![CDATA[" + text + "]]>");
                     } else {
                         writer.write(text);
                     }
