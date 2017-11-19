@@ -9,7 +9,7 @@
 
     <parent>
         <artifactId>super_big_dumpling</artifactId>
-        <groupId>site.binghai</groupId>
+        <groupId>site.binghai.SuperBigDumpling</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 </project>
