@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- file pattern -->
+    <property name="FILE_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %6.6level %6.6relative --- [%25.25thread] [%65.65logger:%line] : %msg%n"/>
+
+    <appender name="INFO" class="ch.qos.logback.core.FileAppender">
+        <file>pay_info.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>pay_info-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <maxHistory>500</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="WARN" class="ch.qos.logback.core.FileAppender">
+        <file>pay_warn.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>pay_warn-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <maxHistory>500</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="ERROR" class="ch.qos.logback.core.FileAppender">
+        <file>pay_error.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>pay_error-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <maxHistory>500</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="INFO"/>
+    </root>
+    <root level="WARN">
+        <appender-ref ref="WARN"/>
+    </root>
+    <root level="ERROR">
+        <appender-ref ref="ERROR"/>
+    </root>
+</configuration>

@@ -6,7 +6,6 @@
 	<artifactId>pay</artifactId>
 
 	<name>pay</name>
-	<description>Demo project for Spring Boot</description>
 
 	<parent>
 		<artifactId>super_big_dumpling</artifactId>
@@ -32,6 +31,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>site.binghai.SuperBigDumpling</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.aliyun.mns</groupId>
 			<artifactId>aliyun-sdk-mns</artifactId>
