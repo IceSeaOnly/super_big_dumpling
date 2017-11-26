@@ -32,10 +32,7 @@ public class PayMsgListenService implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         account = new CloudAccount(topicParam.getAccessId(), topicParam.getAccessKey(), topicParam.getEndPoint());
         client = account.getMNSClient();
-
-        QueueMeta queueMeta = new QueueMeta();
-        queueMeta.setQueueName(topicParam.getQueueName());
-        queue = client.createQueue(queueMeta);
+        queue = client.getQueueRef(topicParam.getQueueName());
 
         new Thread() {
             @Override

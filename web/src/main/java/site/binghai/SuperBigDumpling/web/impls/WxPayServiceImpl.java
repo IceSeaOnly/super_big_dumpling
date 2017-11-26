@@ -118,7 +118,7 @@ public class WxPayServiceImpl implements WxPayApi, InitializingBean {
         String return_code = MapUtils.getString(map, "return_code");//返回状态码
         String return_msg = MapUtils.getString(map, "return_msg");//返回信息
 
-        logger.warn("微信支付返回信息,order:{},code:{},msg:{}", JSONObject.toJSONString(paymentPo), return_code, return_msg);
+        logger.warn("微信支付创建订单,order:{},code:{},msg:{}", JSONObject.toJSONString(paymentPo), return_code, return_msg);
 
         JSONObject resp = new JSONObject();
         if (return_code == "SUCCESS" || return_code.equals(return_code)) {
