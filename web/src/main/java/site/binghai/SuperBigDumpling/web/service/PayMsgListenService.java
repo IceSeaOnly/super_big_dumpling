@@ -127,6 +127,7 @@ public class PayMsgListenService implements ApplicationListener<ContextRefreshed
                 // 非团订单发送成团通知
             }
         }
+        tuaninfoQueue.deleteMessage(msg.getReceiptHandle());
     }
 
     @Override

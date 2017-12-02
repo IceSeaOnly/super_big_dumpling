@@ -5,17 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import site.binghai.SuperBigDumpling.common.entity.things.Category;
-import site.binghai.SuperBigDumpling.common.entity.things.Property;
+import site.binghai.SuperBigDumpling.api.enums.GroupStatusEnum;
+import site.binghai.SuperBigDumpling.common.entity.things.*;
 import site.binghai.SuperBigDumpling.common.facades.TradeItemFacade;
+import site.binghai.SuperBigDumpling.web.service.GroupService;
 import site.binghai.SuperBigDumpling.web.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.web.service.TradeItemService;
 import site.binghai.SuperBigDumpling.common.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.common.utils.HttpRequestUtils;
 import site.binghai.SuperBigDumpling.web.controllers.MultiController;
 import site.binghai.SuperBigDumpling.common.entity.people.Administrator;
-import site.binghai.SuperBigDumpling.common.entity.things.Album;
-import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.common.utils.UserUtils;
 import site.binghai.SuperBigDumpling.common.definations.ApiRequestMapping;
 import site.binghai.SuperBigDumpling.common.system.ErrorList;
@@ -39,6 +38,8 @@ public class TradeItemController extends MultiController {
     private TradeItemService service;
     @Autowired
     private SimpleDataService dataService;
+    @Autowired
+    private GroupService groupService;
     private TradeItemFacade tradeItemFacade = new TradeItemFacade();
 
     @RequestMapping(value = "addTradeItem", method = RequestMethod.POST)
@@ -172,6 +173,7 @@ public class TradeItemController extends MultiController {
         int gid = getInt(params,"gid");
         TradeItem item = dataService.findById(gid,TradeItem.class);
         TradeItemFacade facade = tradeItemFacade.asObj(item);
+        facade.getGroupList().addAll(groupService.findByTradeItemIdAndStatus(item, GroupStatusEnum.GROUPING,1));
         return facade;
     }
 

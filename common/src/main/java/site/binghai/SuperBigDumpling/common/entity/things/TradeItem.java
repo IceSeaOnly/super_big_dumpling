@@ -58,6 +58,8 @@ public class TradeItem extends AbstractEntity {
     private boolean indexRecommend;// 首页推荐
     @ElementCollection
     private List<Property> properties; // 商品属性 json
+    private int groupSize; // 成团人数
+    private int groupMaxTime; // 成团最大时间
 
     public TradeItem() {
     }

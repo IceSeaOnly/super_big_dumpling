@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import site.binghai.SuperBigDumpling.web.dao.OrderDao;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
@@ -19,7 +20,7 @@ import java.util.List;
  * GitHub: https://github.com/IceSeaOnly
  */
 @Service
-public class OrderService {
+public class OrderService extends BaseService<Order> {
     private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
@@ -42,15 +43,8 @@ public class OrderService {
         return rs.get(0);
     }
 
-    public Order findById(int id) {
-        return orderDao.findOne(id);
-    }
-
-    @Transactional
-    public Order update(Order order) {
-        if(order.getId() > 0){
-           orderDao.save(order);
-        }
-        return order;
+    @Override
+    JpaRepository<Order, Integer> getDao() {
+        return orderDao;
     }
 }

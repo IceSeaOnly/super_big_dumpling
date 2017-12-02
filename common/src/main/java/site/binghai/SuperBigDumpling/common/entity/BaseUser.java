@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 @Data
-public class BaseUser implements Serializable,DeleteAble {
+public abstract class BaseUser implements Serializable,DeleteAble {
     protected long created = System.currentTimeMillis();
     protected long lastLogin = System.currentTimeMillis();
     protected boolean isDeleted = false;

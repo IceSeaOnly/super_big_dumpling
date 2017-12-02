@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 @Data
-public class AbstractEntity implements Serializable,DeleteAble {
+public abstract class AbstractEntity implements Serializable,DeleteAble {
     protected long created = System.currentTimeMillis();
     protected long updated = System.currentTimeMillis();
     protected boolean isDeleted = false;

@@ -3,6 +3,7 @@ package site.binghai.SuperBigDumpling.web.controllers.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.web.controllers.MultiController;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.people.OrderAddress;
@@ -10,6 +11,7 @@ import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.facades.OrderFacade;
+import site.binghai.SuperBigDumpling.web.service.GroupService;
 import site.binghai.SuperBigDumpling.web.service.TradeItemService;
 import site.binghai.SuperBigDumpling.common.utils.OrderUtils;
 import site.binghai.SuperBigDumpling.common.utils.UserUtils;
@@ -33,14 +35,16 @@ public class OrderController extends MultiController {
     private OrderService orderService;
     @Autowired
     private TradeItemService tradeItemService;
+    @Autowired
+    private GroupService groupService;
     private OrderFacade facade = new OrderFacade();
 
     @ApiRequestMapping("create-orders")
     public Object createOrder(Map params) throws Exception {
         TradeItem tradeItem = simpleDataService.findById(getInt(params, "gid"), TradeItem.class);
         tradeItem = tradeItemService.getOneStock(tradeItem);
-        if(tradeItem == null){
-            return error(ErrorList.EMPTY_STOCK,null,null);
+        if (tradeItem == null) {
+            return error(ErrorList.EMPTY_STOCK, null, null);
         }
         User user = getUserByWxCode(params);
 
@@ -53,6 +57,7 @@ public class OrderController extends MultiController {
                 .totalPrice(getMoneyY2F(params, "totalPrice"))
                 .properties(getString(params, "goodsProp"))
                 .groupOrder(getInt(params, "isGroup") == 1)
+                .group(getGroup(tradeItem, user, getInt(params, "pid"), getInt(params, "isGroup")))
                 .address(orderAddress)
                 .tradeItem(tradeItem)
                 .img(tradeItem.getImgUrl())
@@ -68,7 +73,20 @@ public class OrderController extends MultiController {
         order.setStatus(OrderStatusEnum.WAITING_PAY);
         OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
+        order.getGroup().getOrders().add(order);
+        groupService.update(order.getGroup());
         return order.getOrderNum();
+    }
+
+    private Group getGroup(TradeItem tradeItem, User user, int pid, int isGroup) {
+        if (isGroup == 1) {
+            if (pid != 0) { // 加入别人团
+                return simpleDataService.findById(pid, Group.class);
+            } else {
+                return groupService.newGroup(tradeItem, user);
+            }
+        }
+        return null;
     }
 
     @ApiRequestMapping("orders-list")
@@ -105,10 +123,10 @@ public class OrderController extends MultiController {
 
     @ApiRequestMapping("orders-detail")
     public Object orderDetail(Map params) throws Exception {
-        int orderId = getInt(params,"id");
-        Order order = simpleDataService.findById(orderId,Order.class);
+        int orderId = getInt(params, "id");
+        Order order = simpleDataService.findById(orderId, Order.class);
         User user = getUserByWxCode(params);
-        if(order == null || order.getUserId() != user.getId()){
+        if (order == null || order.getUserId() != user.getId()) {
             return illegalRequest(params);
         }
 

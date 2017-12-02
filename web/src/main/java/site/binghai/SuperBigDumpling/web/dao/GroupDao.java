@@ -1,10 +1,11 @@
 package site.binghai.SuperBigDumpling.web.dao;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import site.binghai.SuperBigDumpling.api.enums.GroupStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @ MoGuJie
  */
-public interface GroupDao extends JpaRepository<Group,Integer> {
+public interface GroupDao extends JpaRepository<Group, Integer> {
     List<Group> findByTradeItem(TradeItem tradeItem, Pageable page);
+
+    List<Group> findByTradeItemAndStatus(TradeItem tradeItem, GroupStatusEnum groupStatusEnum, Pageable page);
 }

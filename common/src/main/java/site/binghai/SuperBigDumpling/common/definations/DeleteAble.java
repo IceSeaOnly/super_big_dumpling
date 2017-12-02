@@ -9,4 +9,5 @@ public interface DeleteAble {
     boolean accessAble(); //是否可用
     void delete(); // 删除
     void unAvailable(); // 置为不可用
+    int getId();
 }

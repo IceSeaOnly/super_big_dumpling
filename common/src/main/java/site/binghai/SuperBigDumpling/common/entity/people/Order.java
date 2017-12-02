@@ -6,6 +6,7 @@ import lombok.Data;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.AbstractEntity;
 import site.binghai.SuperBigDumpling.common.entity.things.Express;
+import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.common.utils.TimeFormatter;
 
@@ -29,6 +30,9 @@ public class Order extends AbstractEntity {
     private int price;
     private int goodsNum; //购买数量
     private int totalPrice;
+    @Column(name = "whichGroup")
+    @OneToOne
+    private Group group; //所属团，非拼团为null
     private String openId;
     private String properties; //购买属性 json
     private String img;
