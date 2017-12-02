@@ -18,4 +18,5 @@ public class TopicParam {
     private String accessKey;
     private String endPoint;
     private String queueName;
+    private String tuanInfoQueue; //团状态变换消息队列
 }

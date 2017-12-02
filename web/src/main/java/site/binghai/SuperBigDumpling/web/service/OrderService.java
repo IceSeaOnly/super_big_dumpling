@@ -11,6 +11,7 @@ import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -29,13 +30,13 @@ public class OrderService {
     }
 
     public List<Order> findAllByUserAndStatus(User user, OrderStatusEnum statusEnum, int page) {
-        return orderDao.findByUserIdAndStatusAndAvailableOrderByCreatedDesc(user.getId(), statusEnum.getIndex(), true, new PageRequest(page, 10));
+        return orderDao.findByUserIdAndStatusAndAvailableOrderByCreatedDesc(user.getId(), statusEnum, true, new PageRequest(page, 10));
     }
 
     public Order getByOutTradeNo(String outTradeNo) {
         List<Order> rs = orderDao.findByOrderNum(outTradeNo);
         if (rs == null || rs.size() != 1) {
-            logger.error("根据商户订单号查询异常!rs={}", JSONObject.toJSONString(rs));
+            logger.error("根据商户订单号查询异常!rs={}", outTradeNo);
             return null;
         }
         return rs.get(0);
@@ -43,5 +44,13 @@ public class OrderService {
 
     public Order findById(int id) {
         return orderDao.findOne(id);
+    }
+
+    @Transactional
+    public Order update(Order order) {
+        if(order.getId() > 0){
+           orderDao.save(order);
+        }
+        return order;
     }
 }

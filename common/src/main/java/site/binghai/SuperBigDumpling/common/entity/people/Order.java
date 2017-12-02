@@ -3,6 +3,7 @@ package site.binghai.SuperBigDumpling.common.entity.people;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.AbstractEntity;
 import site.binghai.SuperBigDumpling.common.entity.things.Express;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
@@ -23,7 +24,7 @@ public class Order extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
-    @ManyToOne
+    @OneToOne//(fetch = FetchType.EAGER)
     private TradeItem tradeItem;
     private int price;
     private int goodsNum; //购买数量
@@ -32,10 +33,10 @@ public class Order extends AbstractEntity {
     private String properties; //购买属性 json
     private String img;
     private String orderNum; //商户订单号
-    private int status;
+    private OrderStatusEnum status;
     private String orderStatus;
     private String name;
-    @OneToOne
+    @OneToOne//(fetch = FetchType.EAGER)
     private OrderAddress address;
     private String groupTime; //成团时间
     private long groupTimeTs; //成团时间
@@ -45,16 +46,21 @@ public class Order extends AbstractEntity {
     private long completeTimeTs; //成交时间戳
     private String createTime;
     private boolean groupOrder; //是否是拼团订单
-    @OneToOne
+    @OneToOne//(fetch = FetchType.EAGER)
     private Express express;
 
     // 设置成团
-    public void groupSuccess(){
+    public void groupSuccess() {
         this.groupTimeTs = System.currentTimeMillis();
         this.groupTime = TimeFormatter.format(this.groupTimeTs);
     }
 
     public Order() {
         createTime = TimeFormatter.format(System.currentTimeMillis());
+    }
+
+    public void setStatus(OrderStatusEnum status) {
+        this.status = status;
+        this.orderStatus = status.getStatus();
     }
 }

@@ -65,7 +65,7 @@ public class OrderController extends MultiController {
         }
 
         UserUtils.userInit(order, user);
-        OrderUtils.orderStatusUpdate(order, OrderStatusEnum.WAITING_PAY);
+        order.setStatus(OrderStatusEnum.WAITING_PAY);
         OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
         return order.getOrderNum();

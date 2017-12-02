@@ -88,7 +88,7 @@ public class PayMsgListener implements InitializingBean {
         PayRespPo payRespPo = JSONObject.parseObject(JSONObject.toJSONString(map), PayRespPo.class);
         if(payRespPo != null && "SUCCESS".equals(payRespPo.getResult_code())){
             postTopicMsg(JSONObject.toJSONString(map));
-            logger.info("Json Msg : {}");
+            logger.info("Json Msg : {}",JSONObject.toJSONString(map));
         }else{
             logger.error("Pay Info Error:{}",data);
         }

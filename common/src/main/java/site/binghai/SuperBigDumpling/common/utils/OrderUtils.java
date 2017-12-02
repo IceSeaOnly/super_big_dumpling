@@ -13,9 +13,4 @@ public class OrderUtils {
         long cn = System.nanoTime();
         order.setOrderNum(MD5.encryption(JSONObject.toJSONString(order)).substring(20) + cn);
     }
-
-    public static void orderStatusUpdate(Order order, OrderStatusEnum status){
-        order.setStatus(status.getIndex());
-        order.setOrderStatus(status.getStatus());
-    }
 }
