@@ -8,6 +8,7 @@ import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.people.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,6 @@ import java.util.List;
  */
 @Entity(name = "groups")
 @Data
-@Builder
 public class Group extends AbstractEntity {
     @Id
     @GeneratedValue
@@ -33,7 +33,7 @@ public class Group extends AbstractEntity {
     private int leftTime; //剩余时间,秒
     private int totalNum; //总人数
     @ElementCollection
-    private List<Order> orders;
+    private List<Integer> orders;
 
     public void setStatus(GroupStatusEnum status) {
         this.status = status;

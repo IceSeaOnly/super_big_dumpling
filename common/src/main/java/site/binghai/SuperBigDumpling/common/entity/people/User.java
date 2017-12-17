@@ -21,6 +21,7 @@ public class User extends BaseUser {
     @Id
     @GeneratedValue
     private int id;
+    private String avatarUrl;
     private String password;
     private String phone;
     private int cps;//积分

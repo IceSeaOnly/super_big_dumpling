@@ -30,9 +30,8 @@ public class Order extends AbstractEntity {
     private int price;
     private int goodsNum; //购买数量
     private int totalPrice;
-    @Column(name = "whichGroup")
     @OneToOne
-    private Group group; //所属团，非拼团为null
+    private Group whichGroup; //所属团，非拼团为null
     private String openId;
     private String properties; //购买属性 json
     private String img;
@@ -52,6 +51,13 @@ public class Order extends AbstractEntity {
     private boolean groupOrder; //是否是拼团订单
     @OneToOne//(fetch = FetchType.EAGER)
     private Express express;
+    private boolean hasPay = false; // 是否已经支付
+    private long payTime;
+
+    public void setHasPay(boolean hasPay) {
+        this.hasPay = hasPay;
+        this.payTime = System.currentTimeMillis();
+    }
 
     // 设置成团
     public void groupSuccess() {

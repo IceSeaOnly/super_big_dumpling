@@ -88,6 +88,7 @@ public class PayMsgListenService implements ApplicationListener<ContextRefreshed
             Order order = orderService.getByOutTradeNo(data.getOut_trade_no());
             if (order != null && order.getOpenId().equals(data.getOpenid())) {
                 order.setStatus(order.isGroupOrder() ? OrderStatusEnum.WAITING_GROUP_BUILED : OrderStatusEnum.GROUP_BUILED);
+                order.setHasPay(true);
                 orderService.update(order);
                 putTuanInfoMessage(order);
                 logger.info("订单已支付,orderId:{}", order.getId());

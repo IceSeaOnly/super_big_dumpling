@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.web.controllers.admin;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,8 @@ import site.binghai.SuperBigDumpling.common.utils.TimeFormatter;
 import site.binghai.SuperBigDumpling.common.definations.ApiRequestMapping;
 import site.binghai.SuperBigDumpling.common.system.ErrorList;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +60,7 @@ public class OrderController extends MultiController {
                 .totalPrice(getMoneyY2F(params, "totalPrice"))
                 .properties(getString(params, "goodsProp"))
                 .groupOrder(getInt(params, "isGroup") == 1)
-                .group(getGroup(tradeItem, user, getInt(params, "pid"), getInt(params, "isGroup")))
+                .whichGroup(getGroup(tradeItem, user, getInt(params, "pid"), getInt(params, "isGroup")))
                 .address(orderAddress)
                 .tradeItem(tradeItem)
                 .img(tradeItem.getImgUrl())
@@ -73,8 +76,13 @@ public class OrderController extends MultiController {
         order.setStatus(OrderStatusEnum.WAITING_PAY);
         OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
-        order.getGroup().getOrders().add(order);
-        groupService.update(order.getGroup());
+        if(CollectionUtils.isEmpty(order.getWhichGroup().getOrders())){
+            order.getWhichGroup().setOrders(Arrays.asList(order.getId()));
+        }else{
+            order.getWhichGroup().getOrders().add(order.getId());
+        }
+        orderService.update(order);
+//        groupService.update(order.getWhichGroup());
         return order.getOrderNum();
     }
 

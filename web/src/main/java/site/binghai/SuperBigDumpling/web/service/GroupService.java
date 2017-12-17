@@ -34,15 +34,14 @@ public class GroupService extends BaseService<Group> {
      */
     @Transactional
     public Group newGroup(TradeItem tradeItem, User user) {
-        Group group = Group.builder()
-                .totalNum(tradeItem.getGroupSize())
-                .leftNum(tradeItem.getGroupSize() - 1)
-                .groupMaster(user)
-                .status(GroupStatusEnum.GROUPING)
-                .leftTime(tradeItem.getGroupMaxTime())
-                .tradeItem(tradeItem)
-                .build();
-        UserUtils.userInit(group,user);
+        Group group = new Group();
+        group.setTotalNum(tradeItem.getGroupSize());
+        group.setLeftNum(tradeItem.getGroupSize() - 1);
+        group.setGroupMaster(user);
+        group.setStatus(GroupStatusEnum.GROUPING);
+        group.setLeftTime(tradeItem.getGroupMaxTime());
+        group.setTradeItem(tradeItem);
+        UserUtils.userInit(group, user);
         return dao.save(group);
     }
 
