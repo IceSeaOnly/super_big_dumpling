@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.dao;
+package site.binghai.SuperBigDumpling.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import site.binghai.SuperBigDumpling.common.entity.things.Category;

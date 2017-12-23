@@ -15,10 +15,10 @@ public class Banners extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Image image;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Category category; // 类目
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Region region; // 展示区域
 }

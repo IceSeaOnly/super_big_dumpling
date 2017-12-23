@@ -3,10 +3,7 @@ package site.binghai.SuperBigDumpling.common.entity.things;
 import lombok.Data;
 import site.binghai.SuperBigDumpling.common.entity.AbstractEntity;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -21,6 +18,6 @@ public class Property extends AbstractEntity {
     @GeneratedValue
     private int id;
     private String name;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> value;
 }

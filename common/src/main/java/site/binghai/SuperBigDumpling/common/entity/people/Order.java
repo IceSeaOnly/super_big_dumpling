@@ -25,13 +25,12 @@ public class Order extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne//(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)//(fetch = FetchType.EAGER)
     private TradeItem tradeItem;
     private int price;
     private int goodsNum; //购买数量
     private int totalPrice;
-    @OneToOne
-    private Group whichGroup; //所属团，非拼团为null
+    private int groupId; //所属团，非拼团为null
     private String openId;
     private String properties; //购买属性 json
     private String img;
@@ -39,7 +38,7 @@ public class Order extends AbstractEntity {
     private OrderStatusEnum status;
     private String orderStatus;
     private String name;
-    @OneToOne//(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)//(fetch = FetchType.EAGER)
     private OrderAddress address;
     private String groupTime; //成团时间
     private long groupTimeTs; //成团时间
@@ -49,7 +48,7 @@ public class Order extends AbstractEntity {
     private long completeTimeTs; //成交时间戳
     private String createTime;
     private boolean groupOrder; //是否是拼团订单
-    @OneToOne//(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)//(fetch = FetchType.EAGER)
     private Express express;
     private boolean hasPay = false; // 是否已经支付
     private long payTime;

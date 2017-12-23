@@ -1,9 +1,9 @@
-package site.binghai.SuperBigDumpling.web.service;
+package site.binghai.SuperBigDumpling.dao.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import site.binghai.SuperBigDumpling.web.dao.CategoryDao;
+import site.binghai.SuperBigDumpling.dao.CategoryDao;
 import site.binghai.SuperBigDumpling.common.entity.things.Category;
 import site.binghai.SuperBigDumpling.common.utils.BeansUtils;
 

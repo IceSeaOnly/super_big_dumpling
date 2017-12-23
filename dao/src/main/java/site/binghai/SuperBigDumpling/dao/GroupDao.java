@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.dao;
+package site.binghai.SuperBigDumpling.dao;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +14,5 @@ import java.util.List;
  * @ MoGuJie
  */
 public interface GroupDao extends JpaRepository<Group, Integer> {
-    List<Group> findByTradeItem(TradeItem tradeItem, Pageable page);
-
-    List<Group> findByTradeItemAndStatus(TradeItem tradeItem, GroupStatusEnum groupStatusEnum, Pageable page);
+    List<Group> findByTradeItemIdAndStatus(Integer tradeItemId, GroupStatusEnum groupStatusEnum, Pageable page);
 }

@@ -1,16 +1,20 @@
 package site.binghai.SuperBigDumpling.common.facades;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.Data;
 import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
+
+import java.io.Serializable;
 
 /**
  * Created by binghai on 2017/12/17.
  *
  * @ super_big_dumpling
  */
-public class GroupFacade {
+@Data
+public class GroupFacade implements Serializable{
     private int gid; //团id
     private String groupStatus;
     private boolean isSelf;
@@ -42,5 +46,8 @@ public class GroupFacade {
         this.groupMaster.put("avatarUrl",group.getGroupMaster().getAvatarUrl());
         this.createTime = new Long(group.getCreated()/1000).intValue();
         this.item = tradeItem;
+    }
+
+    public GroupFacade() {
     }
 }

@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.service;
+package site.binghai.SuperBigDumpling.dao.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import site.binghai.SuperBigDumpling.common.definations.DeleteAble;
@@ -31,5 +31,10 @@ public abstract class BaseService<T extends DeleteAble> {
 
     public T findById(Integer id){
         return getDao().findOne(id);
+    }
+
+    @Transactional
+    public void delete(Integer id){
+        getDao().delete(id);
     }
 }

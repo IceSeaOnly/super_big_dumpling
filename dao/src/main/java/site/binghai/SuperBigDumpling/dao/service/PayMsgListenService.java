@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.service;
+package site.binghai.SuperBigDumpling.dao.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.mns.client.CloudAccount;

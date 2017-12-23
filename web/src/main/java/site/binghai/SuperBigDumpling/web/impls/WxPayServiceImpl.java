@@ -16,7 +16,7 @@ import site.binghai.SuperBigDumpling.common.utils.WxPayUtil;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.WxParams;
 import site.binghai.SuperBigDumpling.common.facades.PaymentPo;
-import site.binghai.SuperBigDumpling.web.service.OrderService;
+import site.binghai.SuperBigDumpling.dao.service.OrderService;
 import site.binghai.SuperBigDumpling.common.utils.HttpRequestUtils;
 import site.binghai.SuperBigDumpling.common.utils.MD5;
 import site.binghai.SuperBigDumpling.common.utils.MessageUtil;

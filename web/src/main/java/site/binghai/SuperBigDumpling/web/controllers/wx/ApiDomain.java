@@ -64,9 +64,9 @@ public class ApiDomain extends ApplicationObjectSupport {
             obj = route.getMethod().invoke(instance, req);
             return obj instanceof JSONResponse ? obj : JSONResponse.successResp("", obj);
         } catch (IllegalAccessException e) {
-            mlogger.error("error at apiDomain:",e);
+            mlogger.error("error at apiDomain,params:{},", req, e);
         } catch (InvocationTargetException e) {
-            mlogger.error("error at apiDomain:",e);
+            mlogger.error("error at apiDomain,params:{},", req, e);
         }
         return JSONResponse.errorResp(ErrorList.INNER_ERROR, null, null);
     }

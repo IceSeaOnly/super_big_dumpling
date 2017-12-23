@@ -4,10 +4,7 @@ import lombok.Data;
 import site.binghai.SuperBigDumpling.common.entity.BaseUser;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -30,5 +27,5 @@ public class User extends BaseUser {
     private String uuid;
     private String sessionKey;
     @ElementCollection
-    private List<TradeItem> collections; //收藏
+    private List<Integer> collections; //收藏的商品id
 }

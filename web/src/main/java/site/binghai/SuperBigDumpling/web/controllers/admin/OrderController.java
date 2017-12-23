@@ -12,16 +12,15 @@ import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.facades.OrderFacade;
-import site.binghai.SuperBigDumpling.web.service.GroupService;
-import site.binghai.SuperBigDumpling.web.service.TradeItemService;
+import site.binghai.SuperBigDumpling.dao.service.GroupService;
+import site.binghai.SuperBigDumpling.dao.service.TradeItemService;
 import site.binghai.SuperBigDumpling.common.utils.OrderUtils;
 import site.binghai.SuperBigDumpling.common.utils.UserUtils;
-import site.binghai.SuperBigDumpling.web.service.OrderService;
+import site.binghai.SuperBigDumpling.dao.service.OrderService;
 import site.binghai.SuperBigDumpling.common.utils.TimeFormatter;
 import site.binghai.SuperBigDumpling.common.definations.ApiRequestMapping;
 import site.binghai.SuperBigDumpling.common.system.ErrorList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +59,7 @@ public class OrderController extends MultiController {
                 .totalPrice(getMoneyY2F(params, "totalPrice"))
                 .properties(getString(params, "goodsProp"))
                 .groupOrder(getInt(params, "isGroup") == 1)
-                .whichGroup(getGroup(tradeItem, user, getInt(params, "pid"), getInt(params, "isGroup")))
+                .groupId(getGroup(tradeItem, user, getInt(params, "pid"), getInt(params, "isGroup")))
                 .address(orderAddress)
                 .tradeItem(tradeItem)
                 .img(tradeItem.getImgUrl())
@@ -76,25 +75,29 @@ public class OrderController extends MultiController {
         order.setStatus(OrderStatusEnum.WAITING_PAY);
         OrderUtils.makeOrderNo(order);
         order = simpleDataService.save(order);
-        if(CollectionUtils.isEmpty(order.getWhichGroup().getOrders())){
-            order.getWhichGroup().setOrders(Arrays.asList(order.getId()));
-        }else{
-            order.getWhichGroup().getOrders().add(order.getId());
+
+        Group group = groupService.findById(order.getGroupId());
+        if (group != null) {
+            if (CollectionUtils.isEmpty(group.getOrders())) {
+                group.setOrders(Arrays.asList(order.getId()));
+            } else {
+                group.getOrders().add(order.getId());
+            }
+//            groupService.update(group);
         }
         orderService.update(order);
-//        groupService.update(order.getWhichGroup());
         return order.getOrderNum();
     }
 
-    private Group getGroup(TradeItem tradeItem, User user, int pid, int isGroup) {
+    private Integer getGroup(TradeItem tradeItem, User user, int pid, int isGroup) {
         if (isGroup == 1) {
             if (pid != 0) { // 加入别人团
-                return simpleDataService.findById(pid, Group.class);
+                return simpleDataService.findById(pid, Group.class).getId();
             } else {
-                return groupService.newGroup(tradeItem, user);
+                return groupService.newGroup(tradeItem, user).getId();
             }
         }
-        return null;
+        return -1;
     }
 
     @ApiRequestMapping("orders-list")

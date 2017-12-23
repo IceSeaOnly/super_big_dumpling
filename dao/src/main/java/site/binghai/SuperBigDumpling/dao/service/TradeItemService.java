@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.service;
+package site.binghai.SuperBigDumpling.dao.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import site.binghai.SuperBigDumpling.api.services.StockServiceApi;
 import site.binghai.SuperBigDumpling.common.entity.things.Category;
-import site.binghai.SuperBigDumpling.web.dao.TradeItemDao;
+import site.binghai.SuperBigDumpling.dao.TradeItemDao;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 
 import java.util.List;

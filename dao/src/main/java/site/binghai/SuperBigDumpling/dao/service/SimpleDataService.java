@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.service;
+package site.binghai.SuperBigDumpling.dao.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

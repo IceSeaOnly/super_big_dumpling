@@ -51,7 +51,7 @@
         </dependency>
         <dependency>
             <groupId>site.binghai.SuperBigDumpling</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>dao</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

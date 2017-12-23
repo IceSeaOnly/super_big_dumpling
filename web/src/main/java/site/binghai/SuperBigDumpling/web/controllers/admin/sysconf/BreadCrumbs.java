@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import site.binghai.SuperBigDumpling.common.entity.people.Administrator;
 import site.binghai.SuperBigDumpling.common.entity.things.BreadCrumb;
-import site.binghai.SuperBigDumpling.web.service.SimpleDataService;
+import site.binghai.SuperBigDumpling.dao.service.SimpleDataService;
 import site.binghai.SuperBigDumpling.common.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.common.utils.UserUtils;
 

@@ -1,4 +1,4 @@
-package site.binghai.SuperBigDumpling.web.service;
+package site.binghai.SuperBigDumpling.dao.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -9,10 +9,9 @@ import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
 import site.binghai.SuperBigDumpling.common.utils.UserUtils;
-import site.binghai.SuperBigDumpling.web.dao.GroupDao;
+import site.binghai.SuperBigDumpling.dao.GroupDao;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,8 +24,8 @@ public class GroupService extends BaseService<Group> {
     @Autowired
     private GroupDao dao;
 
-    public List<Group> findByTradeItemIdAndStatus(TradeItem item, GroupStatusEnum status, int page) {
-        return dao.findByTradeItemAndStatus(item, status, new PageRequest(page, 10));
+    public List<Group> findByTradeItemIdAndStatus(Integer tradeItemId, GroupStatusEnum status, int page) {
+        return dao.findByTradeItemIdAndStatus(tradeItemId, status, new PageRequest(page, 10));
     }
 
     /**
@@ -40,7 +39,7 @@ public class GroupService extends BaseService<Group> {
         group.setGroupMaster(user);
         group.setStatus(GroupStatusEnum.GROUPING);
         group.setLeftTime(tradeItem.getGroupMaxTime());
-        group.setTradeItem(tradeItem);
+        group.setTradeItemId(tradeItem.getId());
         UserUtils.userInit(group, user);
         return dao.save(group);
     }

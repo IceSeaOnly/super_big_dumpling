@@ -58,5 +58,6 @@
 		<module>api</module>
 		<module>web</module>
 		<module>pay</module>
-	</modules>
+        <module>dao</module>
+    </modules>
 </project>

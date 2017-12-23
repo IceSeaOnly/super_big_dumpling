@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import site.binghai.SuperBigDumpling.api.enums.GroupStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.things.*;
 import site.binghai.SuperBigDumpling.common.facades.TradeItemFacade;
-import site.binghai.SuperBigDumpling.web.service.GroupService;
-import site.binghai.SuperBigDumpling.web.service.SimpleDataService;
-import site.binghai.SuperBigDumpling.web.service.TradeItemService;
+import site.binghai.SuperBigDumpling.dao.service.*;
 import site.binghai.SuperBigDumpling.common.utils.BeansUtils;
 import site.binghai.SuperBigDumpling.common.utils.HttpRequestUtils;
 import site.binghai.SuperBigDumpling.web.controllers.MultiController;
@@ -37,46 +35,53 @@ public class TradeItemController extends MultiController {
     @Autowired
     private TradeItemService service;
     @Autowired
-    private SimpleDataService dataService;
+    private TradeItemService tradeItemService;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private AlbumService albumService;
+    @Autowired
+    private PropertyService propertyService;
+
     private TradeItemFacade tradeItemFacade = new TradeItemFacade();
 
     @RequestMapping(value = "addTradeItem", method = RequestMethod.POST)
     @ResponseBody
     public Object addTradeItem(TradeItem tradeItem, HttpServletRequest req, HttpSession session) {
-        Map<String,String> maps = HttpRequestUtils.getRequestParamMap(req);
+        Map<String, String> maps = HttpRequestUtils.getRequestParamMap(req);
         tradeItem.setIndexRecommend(Boolean.parseBoolean(maps.get("indexRecommand")));
         tradeItem.setRecommend(Boolean.parseBoolean(maps.get("recommand")));
 
         Administrator administrator = UserUtils.getAdministrator(session);
         BeansUtils.initThings(tradeItem, administrator);
-        dataService.save(tradeItem);
+        tradeItemService.save(tradeItem);
 
         return JSONResponse.successResp("success", null);
     }
 
     @RequestMapping("edit")
-    public String editTradeItem(@RequestParam int id, ModelMap map){
+    public String editTradeItem(@RequestParam int id, ModelMap map) {
         TradeItem item = getTradeItem(id);
-        if(item == null){
+        if (item == null) {
             new NotFoundException("商品不存在");
         }
-        map.put("item",item);
+        map.put("item", item);
         return "editTradeItem";
     }
 
     private TradeItem getTradeItem(int id) {
-        return dataService.findById(id,TradeItem.class);
+        return tradeItemService.findById(id);
     }
 
     @RequestMapping("delTradeItem")
     @ResponseBody
     public String delTradeItem(@RequestParam Integer tradeItemId, HttpSession session) {
-        TradeItem tradeItem = dataService.findById(tradeItemId, TradeItem.class);
+        TradeItem tradeItem = tradeItemService.findById(tradeItemId);
 
         if (tradeItem != null) {
-            dataService.deleteById(tradeItemId, TradeItem.class);
+            tradeItemService.delete(tradeItemId);
         }
 
         return "ok";
@@ -85,7 +90,7 @@ public class TradeItemController extends MultiController {
     @RequestMapping("listByCategory")
     @ResponseBody
     public Object listByCategory(@RequestParam int ch, Integer page) {
-        Category c = dataService.findById(ch, Category.class);
+        Category c = categoryService.findById(ch);
         if (c == null) {
             return error(ErrorList.INVALID_PARAMETER, null, null);
         }
@@ -95,52 +100,52 @@ public class TradeItemController extends MultiController {
 
     @ResponseBody
     @RequestMapping("changeRecommend")
-    public Object changeRecommend(@RequestParam int id){
-        TradeItem item = dataService.findById(id,TradeItem.class);
+    public Object changeRecommend(@RequestParam int id) {
+        TradeItem item = tradeItemService.findById(id);
         item.setRecommend(!item.isRecommend());
-        dataService.update(item);
-        return success("",null);
+        tradeItemService.update(item);
+        return success("", null);
     }
 
     @ResponseBody
     @RequestMapping("changeIndexRecommend")
-    public Object changeIndexRecommend(@RequestParam int id){
-        TradeItem item = dataService.findById(id,TradeItem.class);
+    public Object changeIndexRecommend(@RequestParam int id) {
+        TradeItem item = tradeItemService.findById(id);
         item.setIndexRecommend(!item.isIndexRecommend());
-        dataService.update(item);
-        return success("",null);
+        tradeItemService.update(item);
+        return success("", null);
     }
 
 
-    @RequestMapping(value = "addAlbum",method = RequestMethod.POST)
+    @RequestMapping(value = "addAlbum", method = RequestMethod.POST)
     @ResponseBody
-    public Object addAlbum(@RequestParam String url,HttpSession session){
+    public Object addAlbum(@RequestParam String url, HttpSession session) {
         Album album = new Album();
         album.setUrl(url);
         album.setWeight(0);
-        BeansUtils.initThings(album,UserUtils.getAdministrator(session));
-        album = dataService.save(album);
-        return success("",album);
+        BeansUtils.initThings(album, UserUtils.getAdministrator(session));
+        album = albumService.save(album);
+        return success("", album);
     }
 
     @RequestMapping("albumAddWeigth")
     @ResponseBody
-    public Object albumAddWeigth(@RequestParam int id){
-        Album album = dataService.findById(id,Album.class);
-        if(album == null){
-            return error(ErrorList.NOT_FOUND,"404",null);
+    public Object albumAddWeigth(@RequestParam int id) {
+        Album album = albumService.findById(id);
+        if (album == null) {
+            return error(ErrorList.NOT_FOUND, "404", null);
         }
-        album.setWeight(album.getWeight()+1);
-        dataService.update(album);
-        return success("",album);
+        album.setWeight(album.getWeight() + 1);
+        albumService.update(album);
+        return success("", album);
     }
 
     @RequestMapping("addTradeItemProperties")
     @ResponseBody
-    public Object addTradeItemProperties(@RequestParam String properties,HttpSession session){
+    public Object addTradeItemProperties(@RequestParam String properties, HttpSession session) {
         String[] arr = properties.split(" ");
-        if(arr.length < 2){
-            return error(ErrorList.INVALID_PARAMETER,"输入格式有误",null);
+        if (arr.length < 2) {
+            return error(ErrorList.INVALID_PARAMETER, "输入格式有误", null);
         }
         Property property = new Property();
         property.setName(arr[0]);
@@ -149,15 +154,15 @@ public class TradeItemController extends MultiController {
             pts.add(arr[i]);
         }
         property.setValue(pts);
-        BeansUtils.initThings(property,UserUtils.getAdministrator(session));
-        property = dataService.save(property);
-        return success("ok",property);
+        BeansUtils.initThings(property, UserUtils.getAdministrator(session));
+        property = propertyService.save(property);
+        return success("ok", property);
     }
 
     @ResponseBody
     @RequestMapping("findById")
     public Object findById(@RequestParam int id) {
-        return success(null, dataService.findById(id, TradeItem.class));
+        return success(null, tradeItemService.findById(id));
     }
 
     @ApiRequestMapping("index")
@@ -170,23 +175,23 @@ public class TradeItemController extends MultiController {
 
     @ApiRequestMapping("goods-detail")
     public Object GoodsDetail(Map params) {
-        int gid = getInt(params,"gid");
-        TradeItem item = dataService.findById(gid,TradeItem.class);
+        int gid = getInt(params, "gid");
+        TradeItem item = tradeItemService.findById(gid);
         TradeItemFacade facade = tradeItemFacade.asObj(item);
-        facade.getGroupList().addAll(groupService.findByTradeItemIdAndStatus(item, GroupStatusEnum.GROUPING,1));
+        facade.getGroupList().addAll(groupService.findByTradeItemIdAndStatus(gid, GroupStatusEnum.GROUPING, 1));
         return facade;
     }
 
     /**
      * 获取类目下商品
-     * */
+     */
     @ApiRequestMapping("goods-list")
     public Object GoodsList(Map params) {
         if (getCid(params) < 0) {
             return null;
         }
 
-        Category category = dataService.findById(getCid(params), Category.class);
+        Category category = categoryService.findById(getCid(params));
         if (category == null) {
             return null;
         }

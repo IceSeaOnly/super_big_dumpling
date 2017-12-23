@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.common.utils.HttpRequestUtils;
+import site.binghai.SuperBigDumpling.dao.service.DefaultConfigService;
 import site.binghai.SuperBigDumpling.web.controllers.MultiController;
 import site.binghai.SuperBigDumpling.common.entity.WxParams;
 import site.binghai.SuperBigDumpling.common.utils.MD5;
@@ -27,7 +28,9 @@ public class UserController extends MultiController {
     private static String WXLOGIN = "https://api.weixin.qq.com/sns/jscode2session?";
 
     @Autowired
-    WxParams wxParams;
+    private WxParams wxParams;
+    @Autowired
+    private DefaultConfigService configService;
 
     @Override
     protected void afterBeanInitialized() {
@@ -70,7 +73,8 @@ public class UserController extends MultiController {
      * */
     private User regAuto(String openid, String unionid, String session_key) {
         User user = new User();
-        user.setUsername("请设置用户名");
+        user.setUsername(configService.getDefaultConfigs().getDefaultUserNickName());
+        user.setAvatarUrl(configService.getDefaultConfigs().getDefaultAvatar());
         user.setPassword(MD5.encryption("123456"));
         user.setPhone("10000000000");
         user.setUuid(unionid);

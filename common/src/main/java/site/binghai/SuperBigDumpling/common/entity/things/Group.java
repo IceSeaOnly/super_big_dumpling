@@ -9,6 +9,7 @@ import site.binghai.SuperBigDumpling.common.entity.people.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,20 +24,23 @@ public class Group extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne
-    private TradeItem tradeItem;
-    @OneToOne
+    private Integer tradeItemId;
+    @OneToOne(fetch = FetchType.EAGER)
     private User groupMaster; //团长
     private GroupStatusEnum status;
     private String groupStatus;
     private int leftNum; // 剩余人数
     private int leftTime; //剩余时间,秒
     private int totalNum; //总人数
-    @ElementCollection
+    @ElementCollection//(fetch = FetchType.EAGER)
     private List<Integer> orders;
 
     public void setStatus(GroupStatusEnum status) {
         this.status = status;
         this.groupStatus = status.getGroupStatus();
+    }
+
+    public Group() {
+        orders = new ArrayList<>();
     }
 }

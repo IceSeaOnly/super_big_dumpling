@@ -21,10 +21,10 @@ public class TradeItem extends AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @NotNull(message = "类目信息不正确")
     private Category fatherCategory; // 父类目
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @NotNull(message = "类目信息不正确")
     private Category childCategory; // 子类目
     @NonNull
