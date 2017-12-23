@@ -34,7 +34,7 @@ public class Group extends AbstractEntity {
     private int totalNum; //总人数
     @ElementCollection
     private List<Integer> groupMemberIds;
-    @ElementCollection//(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Integer> orders;
 
     public void setStatus(GroupStatusEnum status) {

@@ -1,6 +1,7 @@
 package site.binghai.SuperBigDumpling.web.controllers.wx;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class UserController extends MultiController {
         User user = getUserByWxOpenId(resp.getString("openid"));
         if (user == null) {
 //            user = regAuto(resp.getString("openid"),resp.getString("unionid"),resp.getString("session_key")); 暂无UUID，替换为自己生产UUID机制
-            user = regAuto(resp.getString("openid"), UserUtils.diyUUID(resp.getString("openid")), resp.getString("session_key"));
+            user = regAuto(params, resp.getString("openid"), UserUtils.diyUUID(resp.getString("openid")), resp.getString("session_key"));
         }
         user.setSessionKey(resp.getString("session_key"));
         user.setLastLogin(System.currentTimeMillis());
@@ -71,9 +72,20 @@ public class UserController extends MultiController {
     /**
      * 查询用户不存在自动注册
      */
-    private User regAuto(String openid, String unionid, String session_key) {
+    private User regAuto(Map params, String openid, String unionid, String session_key) {
         User user = new User();
-        user.setUsername(configService.getDefaultConfigs().getDefaultUserNickName() + getShortfix());
+        if (StringUtils.isEmpty(getString(params, "nickName"))) {
+            user.setUsername(configService.getDefaultConfigs().getDefaultUserNickName() + getShortfix());
+        } else {
+            user.setUsername(getString(params, "nickName"));
+        }
+
+        user.setWxNickName(user.getUsername());
+        user.setWxCity(getString(params, "city"));
+        user.setWxProvince(getString(params, "province"));
+        user.setWxCountry(getString(params, "country"));
+        user.setWxGender(getString(params, "gender"));
+        user.setWxLanguage(getString(params, "language"));
         user.setAvatarUrl(configService.getDefaultConfigs().getDefaultAvatar());
         user.setPassword(MD5.encryption("123456"));
         user.setPhone("10000000000");

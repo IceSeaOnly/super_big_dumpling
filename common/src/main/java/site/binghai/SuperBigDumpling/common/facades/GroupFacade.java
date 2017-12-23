@@ -2,6 +2,7 @@ package site.binghai.SuperBigDumpling.common.facades;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.people.User;
 import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.common.entity.things.TradeItem;
@@ -37,12 +38,13 @@ public class GroupFacade implements Serializable {
     private String createTime; // 参团时间
     private TradeItem item;
     private Object property;// 商品属性
+    private Object address; // 拼团成功时显示本人的收货地址
 
-    public GroupFacade(Group group, User thisUser, List<User> groupMembers, TradeItem tradeItem) {
+    public GroupFacade(Group group, Order thisUserOrder, List<User> groupMembers, TradeItem tradeItem) {
         this.oid = group.getId();
         this.gid = tradeItem.getId();
         this.groupStatus = group.getGroupStatus();
-        this.self = group.getGroupMemberIds().contains(thisUser.getId());
+        this.self = thisUserOrder != null;
         this.img = tradeItem.getImgUrl();
         this.name = tradeItem.getName();
         this.groupNum = tradeItem.getGroupSize();
@@ -58,6 +60,9 @@ public class GroupFacade implements Serializable {
         this.item = tradeItem;
         this.groupMember = new ArrayList<>();
         this.property = tradeItem.getProperties();
+        if (self) {
+            address = thisUserOrder.getAddress();
+        }
 
         groupMembers.forEach(v -> {
             Map map = new HashMap<>();

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.dao.OrderDao;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.people.User;
@@ -45,5 +47,10 @@ public class OrderService extends BaseService<Order> {
     @Override
     JpaRepository<Order, Integer> getDao() {
         return orderDao;
+    }
+
+    public Order findByUserAndGroup(User user, Group group) {
+        List<Order> orders = orderDao.findByUserIdAndGroupId(user.getId(),group.getId());
+        return CollectionUtils.isEmpty(orders) ? null : orders.get(0);
     }
 }

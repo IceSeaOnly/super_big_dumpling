@@ -11,11 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
+import site.binghai.SuperBigDumpling.api.enums.GroupStatusEnum;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
+import site.binghai.SuperBigDumpling.common.entity.things.Group;
 import site.binghai.SuperBigDumpling.common.facades.PayRespPo;
+import site.binghai.SuperBigDumpling.dao.service.GroupService;
 import site.binghai.SuperBigDumpling.dao.service.OrderService;
 import site.binghai.SuperBigDumpling.web.entity.TopicParam;
+
+import java.util.List;
 
 /**
  * Created by IceSea on 2017/11/19.
@@ -29,10 +34,14 @@ public class PayMsgListenService implements ApplicationListener<ContextRefreshed
     private OrderService orderService;
     @Autowired
     private TopicParam topicParam;
+    @Autowired
+    private GroupService groupService;
+
     private Boolean initFlag = Boolean.FALSE;
     private MNSClient client;
     private CloudQueue queue;
     private CloudQueue tuaninfoQueue;
+
 
     private CloudAccount account = null;
 
@@ -122,12 +131,46 @@ public class PayMsgListenService implements ApplicationListener<ContextRefreshed
             logger.error("团状态变更消息查询不到订单!", msg);
         } else {
             if (order.isGroupOrder()) {
-                // 拼团订单检查团内所有订单是否都已经支付
+               checkTuanBuild(order.getGroupId());
             } else {
-                // 非团订单发送成团通知
+                singleOrderBuilded(order);
             }
         }
         tuaninfoQueue.deleteMessage(msg.getReceiptHandle());
+    }
+
+    /**
+     * 单个订单支付成功后逻辑
+     * */
+    private void singleOrderBuilded(Order order) {
+        order.setStatus(OrderStatusEnum.GINGEL_ORDER_BUILED);
+        orderService.update(order);
+        // todo 推送通知
+    }
+
+    /**
+     * 检查团内所有订单完成
+     * */
+    private void checkTuanBuild(int groupId) {
+        Group group = groupService.findById(groupId);
+        List<Order> orders = orderService.findByIds(group.getOrders());
+        boolean allHasPay = true;
+        for (Order o : orders){
+            if(!o.isHasPay()){
+                allHasPay = false;
+                break;
+            }
+        }
+
+        if(allHasPay){
+            for (Order o : orders){
+                o.setStatus(OrderStatusEnum.GROUP_BUILED);
+                // todo 推送通知
+                orderService.update(o);
+            }
+            group.setStatus(GroupStatusEnum.GROUP_SUCCESS);
+            groupService.update(group);
+        }
     }
 
     @Override

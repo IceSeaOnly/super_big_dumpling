@@ -85,6 +85,7 @@ public class OrderController extends MultiController {
                 group.getOrders().add(order.getId());
                 group.getGroupMemberIds().add(user.getId());
             }
+            group.setLeftNum(group.getLeftNum() - 1);
 //            groupService.update(group);
         }
         orderService.update(order);

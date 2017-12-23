@@ -17,4 +17,6 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
     List<Order> findByUserIdAndAvailableOrderByCreatedDesc(int userId, boolean available, Pageable page);
 
     List<Order> findByOrderNum(String outTradeNo);
+
+    List<Order> findByUserIdAndGroupId(int userId,int groupId);
 }

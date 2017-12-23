@@ -26,6 +26,12 @@ public class User extends BaseUser {
     private String openId;
     private String uuid;
     private String sessionKey;
+    private String wxGender; // 1 for man 0 for woman
+    private String wxCity; //微信个人信息中的地址
+    private String wxProvince; // 微信个人信息中的省
+    private String wxCountry; // 微信个人信息中的国家
+    private String wxNickName;
+    private String wxLanguage;
     @ElementCollection
     private List<Integer> collections; //收藏的商品id
 }

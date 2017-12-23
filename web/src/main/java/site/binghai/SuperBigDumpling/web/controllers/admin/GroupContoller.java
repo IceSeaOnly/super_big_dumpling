@@ -38,7 +38,9 @@ public class GroupContoller extends MultiController {
         }
         User thisUser = getUserByWxCode(params);
         Group group = groupService.findById(order.getGroupId());
+
+        Order thisUserOrderOfThisGroup = orderService.findByUserAndGroup(thisUser, group);
         List<User> groupMembers = userService.findByIds(group.getGroupMemberIds());
-        return new GroupFacade(group, thisUser, groupMembers, order.getTradeItem());
+        return new GroupFacade(group, thisUserOrderOfThisGroup, groupMembers, order.getTradeItem());
     }
 }
