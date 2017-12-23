@@ -35,28 +35,28 @@ public class UserController extends MultiController {
     @Override
     protected void afterBeanInitialized() {
         WXLOGIN += String.format("appid=%s&secret=%s&grant_type=authorization_code",
-                wxParams.getAppId(),wxParams.getSecret())+"&js_code=%s";
+                wxParams.getAppId(), wxParams.getSecret()) + "&js_code=%s";
     }
 
     /**
      * code -> wx server  -> openid + session_key + uuid
-     * */
+     */
     @ApiRequestMapping("login")
     public Object login(Map params) {
         String userCode = null;
         try {
             userCode = getUserCode(params);
         } catch (Exception e) {
-            logger.error("no code when user login:{}",params);
+            logger.error("no code when user login:{}", params);
             return unkownRequest();
         }
 
-        String url = String.format(WXLOGIN,userCode);
+        String url = String.format(WXLOGIN, userCode);
         JSONObject resp = HttpRequestUtils.getJson(url);
         User user = getUserByWxOpenId(resp.getString("openid"));
-        if(user == null){
+        if (user == null) {
 //            user = regAuto(resp.getString("openid"),resp.getString("unionid"),resp.getString("session_key")); 暂无UUID，替换为自己生产UUID机制
-            user = regAuto(resp.getString("openid"), UserUtils.diyUUID(resp.getString("openid")),resp.getString("session_key"));
+            user = regAuto(resp.getString("openid"), UserUtils.diyUUID(resp.getString("openid")), resp.getString("session_key"));
         }
         user.setSessionKey(resp.getString("session_key"));
         user.setLastLogin(System.currentTimeMillis());
@@ -70,10 +70,10 @@ public class UserController extends MultiController {
 
     /**
      * 查询用户不存在自动注册
-     * */
+     */
     private User regAuto(String openid, String unionid, String session_key) {
         User user = new User();
-        user.setUsername(configService.getDefaultConfigs().getDefaultUserNickName());
+        user.setUsername(configService.getDefaultConfigs().getDefaultUserNickName() + getShortfix());
         user.setAvatarUrl(configService.getDefaultConfigs().getDefaultAvatar());
         user.setPassword(MD5.encryption("123456"));
         user.setPhone("10000000000");
@@ -83,5 +83,9 @@ public class UserController extends MultiController {
         user.setCps(0);
         user.setSessionKey(session_key);
         return simpleDataService.save(user);
+    }
+
+    private String getShortfix() {
+        return String.valueOf(System.currentTimeMillis()).substring(7, 10);
     }
 }

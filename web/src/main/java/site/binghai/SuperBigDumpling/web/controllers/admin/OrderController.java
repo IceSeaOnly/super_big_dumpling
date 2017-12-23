@@ -43,7 +43,7 @@ public class OrderController extends MultiController {
 
     @ApiRequestMapping("create-orders")
     public Object createOrder(Map params) throws Exception {
-        TradeItem tradeItem = simpleDataService.findById(getInt(params, "gid"), TradeItem.class);
+        TradeItem tradeItem = tradeItemService.findById(getInt(params, "gid"));
         tradeItem = tradeItemService.getOneStock(tradeItem);
         if (tradeItem == null) {
             return error(ErrorList.EMPTY_STOCK, null, null);
@@ -80,8 +80,10 @@ public class OrderController extends MultiController {
         if (group != null) {
             if (CollectionUtils.isEmpty(group.getOrders())) {
                 group.setOrders(Arrays.asList(order.getId()));
+                group.setGroupMemberIds(Arrays.asList(user.getId()));
             } else {
                 group.getOrders().add(order.getId());
+                group.getGroupMemberIds().add(user.getId());
             }
 //            groupService.update(group);
         }
@@ -92,7 +94,7 @@ public class OrderController extends MultiController {
     private Integer getGroup(TradeItem tradeItem, User user, int pid, int isGroup) {
         if (isGroup == 1) {
             if (pid != 0) { // 加入别人团
-                return simpleDataService.findById(pid, Group.class).getId();
+                return groupService.findById(pid).getId();
             } else {
                 return groupService.newGroup(tradeItem, user).getId();
             }

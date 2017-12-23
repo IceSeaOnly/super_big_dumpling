@@ -30,8 +30,10 @@ public class Group extends AbstractEntity {
     private GroupStatusEnum status;
     private String groupStatus;
     private int leftNum; // 剩余人数
-    private int leftTime; //剩余时间,秒
+    private long outOfTime; //超时时间
     private int totalNum; //总人数
+    @ElementCollection
+    private List<Integer> groupMemberIds;
     @ElementCollection//(fetch = FetchType.EAGER)
     private List<Integer> orders;
 

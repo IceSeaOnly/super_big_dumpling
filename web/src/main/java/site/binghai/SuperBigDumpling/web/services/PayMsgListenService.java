@@ -1,14 +1,12 @@
-package site.binghai.SuperBigDumpling.dao.service;
+package site.binghai.SuperBigDumpling.web.services;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.model.Message;
-import com.aliyun.mns.model.QueueMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.facades.PayRespPo;
+import site.binghai.SuperBigDumpling.dao.service.OrderService;
 import site.binghai.SuperBigDumpling.web.entity.TopicParam;
 
 /**

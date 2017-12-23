@@ -227,6 +227,13 @@
             $("#fun_btn").text('返回预览');
             $("#addItem_frame").fadeIn();
             $("#preview_frame").fadeOut();
+
+            $.getJSON('/openApi/defaultConfigs','',function (data, status) {
+                $("[name='item_stock']").val(data['defaultStock']);
+                $("[name='unit']").val(data['defaultUnit']);
+                $("[name='item_groupSize']").val(data['defaultGroupSize']);
+                $("[name='item_groupTimeOut']").val(data['defaultGroupTimeOut']);
+            })
         }
         preview_frame_switch = !preview_frame_switch;
         $("#preview_btn").attr('disabled', preview_frame_switch);
@@ -301,6 +308,9 @@
         data['name'] = $("[name='item_name']").val();
         data['oprice'] = $("[name='item_oprice']").val();
         data['price'] = $("[name='item_price']").val();
+        data['groupSize'] = $("[name='item_groupSize']").val();
+        data['groupMaxTime'] = $("[name='item_groupTimeOut']").val();
+        data['stock'] = $("[name='item_stock']").val();
         data['imgUrl'] = $("[name='item_img']").val();
         data['unit'] = $("[name='unit']").val();
         data['desp'] = $("[name='item_desp']").val();

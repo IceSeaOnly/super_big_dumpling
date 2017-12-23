@@ -38,7 +38,7 @@ public class GroupService extends BaseService<Group> {
         group.setLeftNum(tradeItem.getGroupSize() - 1);
         group.setGroupMaster(user);
         group.setStatus(GroupStatusEnum.GROUPING);
-        group.setLeftTime(tradeItem.getGroupMaxTime());
+        group.setOutOfTime(System.currentTimeMillis() + tradeItem.getGroupMaxTime() * 1000);
         group.setTradeItemId(tradeItem.getId());
         UserUtils.userInit(group, user);
         return dao.save(group);

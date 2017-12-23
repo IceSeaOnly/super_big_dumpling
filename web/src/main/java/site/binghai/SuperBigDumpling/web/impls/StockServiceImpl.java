@@ -6,7 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.binghai.SuperBigDumpling.api.services.StockServiceApi;
-import site.binghai.SuperBigDumpling.dao.dao.TradeItemDao;
+import site.binghai.SuperBigDumpling.dao.TradeItemDao;
 
 import java.util.concurrent.*;
 

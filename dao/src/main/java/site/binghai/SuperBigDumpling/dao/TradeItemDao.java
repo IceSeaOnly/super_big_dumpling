@@ -27,7 +27,7 @@ public interface TradeItemDao extends JpaRepository<TradeItem, Integer> {
 
     List<TradeItem> findByIndexRecommend(boolean recommand, Pageable page);
 
-    @Query(value = "update trade_item set stock = stock-1 where id= :id and stock>0", nativeQuery = true)
+    @Query(value = "update trade_item set stock = stock-1,sale_num = sale_num+1 where id= :id and stock>0", nativeQuery = true)
     @Transactional
     @Modifying(clearAutomatically = true)
     int consumeOneStock(@Param("id") int id);

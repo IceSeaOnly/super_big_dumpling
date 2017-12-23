@@ -3,7 +3,6 @@ package site.binghai.SuperBigDumpling.common.entity.things;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -15,7 +14,6 @@ import javax.persistence.Id;
 @Entity
 public class Configs {
     @Id
-    @GeneratedValue
     private int id = 0;
     /**
      * 默认头像
@@ -25,6 +23,14 @@ public class Configs {
      * 默认用户名
      * */
     private String defaultUserNickName = "二狗";
+    /**
+     * 默认库存
+     * */
+    private int defaultStock = 100;
+    /**
+     * 默认单位
+     * */
+    private String defaultUnit = "件";
     /**
      * 默认成团人数
      * */
