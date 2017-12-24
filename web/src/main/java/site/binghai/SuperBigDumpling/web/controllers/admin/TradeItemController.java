@@ -33,8 +33,6 @@ import java.util.Map;
 public class TradeItemController extends MultiController {
 
     @Autowired
-    private TradeItemService service;
-    @Autowired
     private TradeItemService tradeItemService;
     @Autowired
     private CategoryService categoryService;
@@ -95,7 +93,7 @@ public class TradeItemController extends MultiController {
             return error(ErrorList.INVALID_PARAMETER, null, null);
         }
 
-        return success("success", service.findByCategory(c, page == null ? 0 : page));
+        return success("success", tradeItemService.findByCategory(c, page == null ? 0 : page));
     }
 
     @ResponseBody
@@ -167,10 +165,7 @@ public class TradeItemController extends MultiController {
 
     @ApiRequestMapping("index")
     public Object GoodIndex(Map params) {
-        if (getCid(params) < 0) {
-            return null;
-        }
-        return tradeItemFacade.asList(service.findRecommand(getCid(params), getPage(params), 0));
+        return tradeItemFacade.asList(tradeItemService.findRecommand(getCid(params), getPage(params), getCid(params) <= 0 ? 1 : 0));
     }
 
     @ApiRequestMapping("goods-detail")
@@ -195,6 +190,6 @@ public class TradeItemController extends MultiController {
         if (category == null) {
             return null;
         }
-        return tradeItemFacade.asList(service.findByCategory(category, getPage(params)));
+        return tradeItemFacade.asList(tradeItemService.findByCategory(category, getPage(params)));
     }
 }

@@ -21,4 +21,5 @@ public class Banners extends AbstractEntity {
     private Category category; // 类目
     @OneToOne(fetch = FetchType.EAGER)
     private Region region; // 展示区域
+    private int points;// 分数，越大越往前排
 }

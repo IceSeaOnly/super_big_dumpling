@@ -20,7 +20,7 @@ public class TradeItemService extends BaseService<TradeItem> {
     @Autowired
     private TradeItemDao dao;
     @Autowired
-    private SimpleDataService simpleDataService;
+    private CategoryService categoryService;
     @Autowired
     private StockServiceApi stockServiceApi;
 
@@ -43,7 +43,7 @@ public class TradeItemService extends BaseService<TradeItem> {
      */
     public List<TradeItem> findRecommand(int cid, int page, int type) {
         if (type == 0) {
-            Category category = simpleDataService.findById(cid, Category.class);
+            Category category = categoryService.findById(cid);
             return dao.findByFatherCategoryAndRecommend(category, true, new PageRequest(page, 10));
         }
         return dao.findByIndexRecommend(true, new PageRequest(page, 10));
