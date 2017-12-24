@@ -15,6 +15,7 @@ import site.binghai.SuperBigDumpling.api.enums.GroupStatusEnum;
 import site.binghai.SuperBigDumpling.api.enums.OrderStatusEnum;
 import site.binghai.SuperBigDumpling.common.entity.people.Order;
 import site.binghai.SuperBigDumpling.common.entity.things.Group;
+import site.binghai.SuperBigDumpling.common.facades.OrderFacade;
 import site.binghai.SuperBigDumpling.common.facades.PayRespPo;
 import site.binghai.SuperBigDumpling.dao.service.GroupService;
 import site.binghai.SuperBigDumpling.dao.service.OrderService;
@@ -131,7 +132,7 @@ public class PayMsgListenService implements ApplicationListener<ContextRefreshed
             logger.error("团状态变更消息查询不到订单!", msg);
         } else {
             if (order.isGroupOrder()) {
-               checkTuanBuild(order.getGroupId());
+                checkTuanBuild(order.getGroupId());
             } else {
                 singleOrderBuilded(order);
             }
@@ -141,29 +142,33 @@ public class PayMsgListenService implements ApplicationListener<ContextRefreshed
 
     /**
      * 单个订单支付成功后逻辑
-     * */
+     */
     private void singleOrderBuilded(Order order) {
-        order.setStatus(OrderStatusEnum.GINGEL_ORDER_BUILED);
+        order.setStatus(OrderStatusEnum.SINGEL_ORDER_BUILED);
         orderService.update(order);
         // todo 推送通知
     }
 
     /**
      * 检查团内所有订单完成
-     * */
+     */
     private void checkTuanBuild(int groupId) {
         Group group = groupService.findById(groupId);
         List<Order> orders = orderService.findByIds(group.getOrders());
+        if (orders.size() < group.getTotalNum()) {
+            return;
+        }
+
         boolean allHasPay = true;
-        for (Order o : orders){
-            if(!o.isHasPay()){
+        for (Order o : orders) {
+            if (!o.isHasPay()) {
                 allHasPay = false;
                 break;
             }
         }
 
-        if(allHasPay){
-            for (Order o : orders){
+        if (allHasPay) {
+            for (Order o : orders) {
                 o.setStatus(OrderStatusEnum.GROUP_BUILED);
                 // todo 推送通知
                 orderService.update(o);

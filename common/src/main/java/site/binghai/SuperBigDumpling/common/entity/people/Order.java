@@ -31,6 +31,7 @@ public class Order extends AbstractEntity {
     private int goodsNum; //购买数量
     private int totalPrice;
     private int groupId; //所属团，非拼团为null
+    private int groupNum; // 如果是拼团订单，此处为成团人数
     private String openId;
     private String properties; //购买属性 json
     private String img;
@@ -71,5 +72,26 @@ public class Order extends AbstractEntity {
     public void setStatus(OrderStatusEnum status) {
         this.status = status;
         this.orderStatus = status.getStatus();
+
+        if (status == OrderStatusEnum.GROUP_BUILED) {
+            groupSuccess();
+        }
+        if (status == OrderStatusEnum.COMPLETED) {
+            orderComplete();
+        }
+        if (status == OrderStatusEnum.DISTRIBUTOIN) {
+            orderSending();
+        }
+    }
+
+    // 发货、配送中
+    private void orderSending() {
+        this.deliveryTimeTs = System.currentTimeMillis();
+        this.deliveryTime = TimeFormatter.format(this.deliveryTimeTs);
+    }
+
+    private void orderComplete() {
+        this.completeTimeTs = System.currentTimeMillis();
+        this.completeTime = TimeFormatter.format(this.completeTimeTs);
     }
 }

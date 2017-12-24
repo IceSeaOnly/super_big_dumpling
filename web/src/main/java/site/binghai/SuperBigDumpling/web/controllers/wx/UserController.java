@@ -100,4 +100,10 @@ public class UserController extends MultiController {
     private String getShortfix() {
         return String.valueOf(System.currentTimeMillis()).substring(7, 10);
     }
+
+
+    @ApiRequestMapping("member")
+    public Object memberCenter(Map params) throws Exception {
+        return userService.getMemberData(getUserByWxCode(params));
+    }
 }

@@ -30,6 +30,7 @@ public class OrderFacade extends BaseFacade<Order> {
     private String groupTime;
     private String deliveryTime;
     private String completeTime;
+    private int groupNum;
     private Express express;
 
     public OrderFacade() {
@@ -53,6 +54,7 @@ public class OrderFacade extends BaseFacade<Order> {
                 .deliveryTime(obj.getDeliveryTime())
                 .completeTime(obj.getCompleteTime())
                 .express(obj.getExpress())
+                .groupNum(obj.getGroupNum())
                 .build();
         return orderFacade;
     }

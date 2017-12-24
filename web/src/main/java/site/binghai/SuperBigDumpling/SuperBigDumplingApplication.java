@@ -5,11 +5,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import site.binghai.SuperBigDumpling.common.entity.things.Configs;
 import site.binghai.SuperBigDumpling.dao.service.DefaultConfigService;
 
 @SpringBootApplication
 @ComponentScan("site.binghai.*")
+@EnableScheduling
 public class SuperBigDumplingApplication implements CommandLineRunner {
 
     @Autowired

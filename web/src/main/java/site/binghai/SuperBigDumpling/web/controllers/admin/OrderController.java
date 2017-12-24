@@ -66,6 +66,7 @@ public class OrderController extends MultiController {
                 .name(tradeItem.getName())
                 .createTime(TimeFormatter.now())
                 .openId(user.getOpenId())
+                .groupNum(tradeItem.getGroupSize())
                 .build();
         if (!order.isGroupOrder()) { // 非拼团订单立即成团
             order.groupSuccess();
@@ -121,6 +122,7 @@ public class OrderController extends MultiController {
                 break;
             case 3:
                 rs = orderService.findAllByUserAndStatus(user, OrderStatusEnum.GROUP_BUILED, page);
+                rs.addAll(orderService.findAllByUserAndStatus(user, OrderStatusEnum.SINGEL_ORDER_BUILED, page));
                 break;
             case 4:
                 rs = orderService.findAllByUserAndStatus(user, OrderStatusEnum.DISTRIBUTOIN, page);

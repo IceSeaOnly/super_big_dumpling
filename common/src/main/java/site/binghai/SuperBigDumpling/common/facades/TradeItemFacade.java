@@ -56,7 +56,7 @@ public class TradeItemFacade extends BaseFacade<TradeItem> {
                 .intro(obj.getDetailDesp())
                 .property(obj.getProperties())
 
-                .groupNum(0)
+                .groupNum(obj.getGroupSize())
                 .is_collect(false)
                 .groupList(Collections.EMPTY_LIST)
                 .build();

@@ -21,7 +21,7 @@ public enum OrderStatusEnum {
     REQ_CANCLE(9,"申请退款中"),
     GROUP_FAILED(10,"拼团失败"),
     REFUNDED(11,"已退款"),
-    GINGEL_ORDER_BUILED(12,"已支付待发货"), // 单购支付成功
+    SINGEL_ORDER_BUILED(12,"已支付待发货"), // 单购支付成功
     ;
 
     private int index;

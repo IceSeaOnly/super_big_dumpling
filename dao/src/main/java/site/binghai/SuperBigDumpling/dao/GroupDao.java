@@ -14,5 +14,7 @@ import java.util.List;
  * @ MoGuJie
  */
 public interface GroupDao extends JpaRepository<Group, Integer> {
-    List<Group> findByTradeItemIdAndStatus(Integer tradeItemId, GroupStatusEnum groupStatusEnum, Pageable page);
+    List<Group> findByTradeItemIdAndStatusAndAvailable(Integer tradeItemId, GroupStatusEnum groupStatusEnum, boolean available, Pageable page);
+
+    List<Group> findByStatusAndAvailable(GroupStatusEnum groupStatusEnum, boolean available, Pageable page);
 }
