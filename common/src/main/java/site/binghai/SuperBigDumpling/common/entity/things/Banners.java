@@ -22,4 +22,5 @@ public class Banners extends AbstractEntity {
     @OneToOne(fetch = FetchType.EAGER)
     private Region region; // 展示区域
     private int points;// 分数，越大越往前排
+    private int status; // 状态，0 for online ,1 for offline
 }

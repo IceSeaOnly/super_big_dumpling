@@ -14,6 +14,9 @@ public enum ErrorList {
     ILLEGAL_REQUEST(4007, "非法访问", null),
     EMPTY_STOCK(4008, "库存不足下单失败", null),
     ORDER_EXCEPTION(4009, "订单异常", null),
+
+    BANNER_ADD_EXCEPTION(4010, "banner添加异常", null),
+    EMPTY_RESULT(4011, "结果为空", null),
     ;
     private int errorId;
     private String errorMsg;

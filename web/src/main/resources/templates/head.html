@@ -200,4 +200,14 @@
         }
         return true;
     }
+
+    function jsonGet(url,params,callback) {
+        $.getJSON(url,params,function (data, status) {
+            if(data['code'] != 'success'){
+                slideErrorMsg('错误',data['msg']);
+            }else{
+                callback(data['data']);
+            }
+        })
+    }
 </script>

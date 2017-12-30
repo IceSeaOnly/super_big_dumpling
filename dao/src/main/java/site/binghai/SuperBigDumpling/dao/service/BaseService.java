@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.dao.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import site.binghai.SuperBigDumpling.common.definations.DeleteAble;
 
@@ -41,5 +42,9 @@ public abstract class BaseService<T extends DeleteAble> {
 
     public List<T> findByIds(List<Integer> ids) {
         return getDao().findAll(ids);
+    }
+
+    public List<T> findAll(int limit) {
+        return getDao().findAll(new PageRequest(0, limit)).getContent();
     }
 }

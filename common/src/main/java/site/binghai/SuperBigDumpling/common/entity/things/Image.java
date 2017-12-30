@@ -19,4 +19,11 @@ public class Image extends AbstractEntity {
     @GeneratedValue
     private int id;
     private String img; // img url
+
+    public Image(String img) {
+        this.img = img;
+    }
+
+    public Image() {
+    }
 }

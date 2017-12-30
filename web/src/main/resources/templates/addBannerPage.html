@@ -1,0 +1,69 @@
+<div class="container-fluid" xmlns:th="http://www.thymeleaf.org">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title"><span class="icon"> <i class="icon-align-justify"></i> </span>
+                    <h5>添加商品</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form method="post" class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label">父类目:</label>
+                            <div class="controls">
+                                <select id="f_c" onchange="fatherCategoryChange()">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">子类目:</label>
+                            <div class="controls">
+                                <select id="c_c">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">主图链接:</label>
+                            <div class="controls">
+                                <input type="text" class="span11" placeholder="点击下方按钮打开图片传送门" id="item_img"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图片传送门:</label>
+                            <div class="controls">
+                                <button class="btn btn-info" type="button" onclick="uploadImg()">打开图片上传页面</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button onclick="saveNewItem()" class="btn btn-success">保存</button>
+    </div>
+</div>
+
+<script>
+    function fatherCategoryChange() {
+        $.getJSON('/admin/category/list?sc=' + $("#f_c").val(), '', function (data, status) {
+            var template = $.templates("#f_c_Tpl");
+            var html = template.render(data);
+            $("#c_c").html(html);
+            $("#c_c").change();
+        })
+    }
+
+    function saveNewItem() {
+        var data = {};
+        data['category'] = $("#f_c").val();
+        data['imgUrl'] = $("#item_img").val();
+        $.post('/admin/banner/add',data,function (data, status) {
+            if(data['code'] == 'success'){
+                reload();
+            }else{
+                slideErrorMsg('保存出错',data['msg']);
+            }
+        })
+    }
+</script>

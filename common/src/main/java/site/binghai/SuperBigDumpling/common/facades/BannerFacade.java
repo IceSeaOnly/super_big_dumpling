@@ -1,5 +1,6 @@
 package site.binghai.SuperBigDumpling.common.facades;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import site.binghai.SuperBigDumpling.common.entity.AbstractEntity;
@@ -16,13 +17,14 @@ import javax.persistence.Id;
  */
 @Data
 @Builder
+@AllArgsConstructor
 public class BannerFacade extends BaseFacade<Banners>{
     private int id;
     private String img;
     private Integer typeVal; //跳转类型
 
     @Override
-    public BaseFacade asObj(Banners obj) {
+    public BannerFacade asObj(Banners obj) {
         return BannerFacade.builder()
                 .id(obj.getId())
                 .img(obj.getImage().getImg())

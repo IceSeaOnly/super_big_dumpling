@@ -53,7 +53,7 @@
                 class="icon icon-signal"></i> <span>类目管理</span></a></li>
         <li th:class="${tpl_page.startsWith('tradeitem') ? 'active':''}"><a href="/admin/tradeItem/"><i
                 class="icon icon-inbox"></i> <span>商品管理</span></a></li>
-        <li><a href="tables.html"><i class="icon icon-th"></i> <span>Tables</span></a></li>
+        <li th:class="${tpl_page.startsWith('banners') ? 'active':''}"><a href="/admin/banners/"><i class="icon icon-th"></i> <span>Banners</span></a></li>
         <li><a href="grid.html"><i class="icon icon-fullscreen"></i> <span>Full width</span></a></li>
         <li class="submenu"><a href="#"><i class="icon icon-th-list"></i> <span>Forms</span> <span
                 class="label label-important">3</span></a>
@@ -122,6 +122,7 @@
     dynaLoadCss("/css/jquery.gritter.css");
     dynaLoadCss("/css/colorpicker.css");
     dynaLoadCss("/css/datepicker.css");
+    dynaLoadCss("/css/select2.css");
 
     dynaLoadJs("/js/jquery.validate.js");
     dynaLoadJs("/js/jquery.wizard.js");

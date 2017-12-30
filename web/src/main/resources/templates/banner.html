@@ -1,0 +1,63 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <div id="content-header" >
+        <div id="breadcrumb"><a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a
+                href="#">Sample pages</a> <a href="#" class="current">Gallery</a></div>
+        <h1>Banner管理</h1>
+    </div>
+
+    <!-- 添加页面 -->
+    <div id="addItem_frame" th:include="addBannerPage" style="display: none"></div>
+    <!-- 添加页面end -->
+    <div class="container-fluid" id="preview_frame">
+        <hr>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title"><span class="icon"> <i class="icon-picture"></i> </span>
+                        <h5 onclick="addOne()">点我添加一个</h5>
+                    </div>
+
+                    <div class="widget-content">
+                        <ul class="thumbnails" id="banners_area">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/x-jsrender" id="bannerTpl">
+    <li class="span2"> <a> <img src="{{:image.img}}" alt="" id="bannerClicked({{:id}})"> </a></li>
+
+
+</script>
+    <script type="text/x-jsrender" id="f_c_Tpl">
+          <option value="{{:id}}">{{:cname}}</option>
+    </script>
+
+    <script>
+        function initPage() {
+            jsonGet('/admin/banner/list', '', function (data) {
+                var template = $.templates("#bannerTpl");
+                var html = template.render(data);
+                $("#banners_area").html(html);
+            });
+
+            $.getJSON('/admin/category/list','',function (data,status) {
+                var template = $.templates("#f_c_Tpl");
+                var html = template.render(data);
+                $("#f_c").html(html);
+                fatherCategoryChange();
+            })
+        }
+
+        function bannerClicked(bannerId) {
+            console.log(bannerId);
+        }
+
+        function addOne() {
+            $("#preview_frame").fadeOut();
+            $("#addItem_frame").fadeIn();
+        }
+    </script>
+</div>
